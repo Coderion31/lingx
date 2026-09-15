@@ -7,63 +7,80 @@
 <script src="https://skulpt.org/js/skulpt.min.js"></script>
 <script src="https://skulpt.org/js/skulpt-stdlib.js"></script>
 <style>
+:root{--bg:#f8fafc;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent-hover:#1d4ed8;--header-border:#e2e8f0;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;}
+.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent-hover:#3b82f6;--header-border:#334155;--code-bg:#1e293b;--shadow:rgba(0,0,0,0.3);--editor-bg:#1e293b;}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8fafc;color:#1e293b;display:flex;flex-direction:column;min-height:100vh}
-header{background:#fff;padding:4px 20px;border-bottom:2px solid #e2e8f0;display:flex;align-items:center;gap:10px;min-height:48px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;transition:background .2s,color .2s}
+header{background:var(--card);padding:4px 16px;border-bottom:2px solid var(--header-border);display:flex;align-items:center;gap:10px;min-height:48px;box-shadow:0 1px 3px var(--shadow);transition:background .2s}
 .header-logo{width:26px;height:26px;flex-shrink:0}
-.header-title{font-size:18px;font-weight:700;color:#2563eb;letter-spacing:-0.5px;flex-shrink:0;cursor:pointer}
-.header-divider{color:#cbd5e1;font-size:14px;flex-shrink:0}
-.header-bread{font-size:12px;color:#94a3b8;flex-shrink:0}
+.header-title{font-size:18px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;flex-shrink:0;cursor:pointer}
+.header-divider{color:var(--text2);font-size:14px;flex-shrink:0}
+.header-bread{font-size:12px;color:var(--text2);flex-shrink:0}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.header-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;transition:.2s}
+.header-btn:hover{background:var(--hover);color:var(--text)}
+.theme-toggle{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 8px;border-radius:6px;cursor:pointer;font-size:14px;transition:.2s;line-height:1}
+.theme-toggle:hover{background:var(--hover);color:var(--text)}
+.user-avatar{background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0}
+.user-email{font-size:12px;color:var(--text2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .container{display:flex;flex:1;overflow:hidden}
-.sidebar{width:280px;background:#fff;overflow-y:auto;padding:15px;flex-shrink:0;border-right:1px solid #e2e8f0}
-.sidebar h3{color:#2563eb;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.lesson{cursor:pointer;padding:10px 14px;margin:4px 0;border-radius:8px;transition:.2s;font-size:14px;border-left:3px solid transparent;color:#475569}
-.lesson:hover{background:#f1f5f9}
-.lesson.active{background:#eff6ff;border-left-color:#2563eb;color:#2563eb;font-weight:600}
+.sidebar{width:240px;background:var(--card);overflow-y:auto;padding:12px;flex-shrink:0;border-right:1px solid var(--border);transition:background .2s}
+.sidebar h3{color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.lesson{cursor:pointer;padding:8px 12px;margin:3px 0;border-radius:6px;transition:.2s;font-size:13px;border-left:3px solid transparent;color:var(--text2)}
+.lesson:hover{background:var(--hover)}
+.lesson.active{background:var(--active);border-left-color:var(--accent);color:var(--accent);font-weight:600}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.content{flex:1;overflow-y:auto;padding:25px}
-.content h2{color:#1e293b;margin-bottom:12px;font-size:22px}
-.content h3{color:#2563eb;margin:16px 0 8px;font-size:16px}
-.content p{line-height:1.7;margin:8px 0;color:#475569}
-.content pre{background:#f1f5f9;padding:14px;border-radius:8px;overflow-x:auto;margin:10px 0;border:1px solid #e2e8f0;font-size:13px}
-.content code{color:#2563eb}
-.content .example{background:#f8fafc;border-left:3px solid #2563eb;padding:12px;margin:10px 0;border-radius:0 8px 8px 0}
-.content .exercise{background:#fff;border:1px solid #2563eb;padding:15px;border-radius:8px;margin:15px 0}
-.content .exercise h4{color:#2563eb;margin-bottom:8px}
-.editor-panel{background:#fff;border-top:2px solid #e2e8f0;padding:15px;flex-shrink:0}
-.editor-panel h3{color:#2563eb;font-size:14px;margin-bottom:8px}
-.editor-row{display:flex;gap:12px;min-height:250px}
+.content{flex:1;overflow-y:auto;padding:20px 25px}
+.content h2{color:var(--text);margin-bottom:12px;font-size:20px}
+.content h3{color:var(--accent);margin:14px 0 6px;font-size:15px}
+.content p{line-height:1.7;margin:6px 0;color:var(--text2)}
+.content pre{background:var(--code-bg);padding:12px;border-radius:6px;overflow-x:auto;margin:8px 0;border:1px solid var(--border);font-size:13px;transition:background .2s}
+.content code{color:var(--accent)}
+.content .exercise{background:var(--card);border:1px solid var(--accent);padding:14px;border-radius:8px;margin:15px 0;transition:background .2s}
+.content .exercise h4{color:var(--accent);margin-bottom:8px;font-size:14px}
+.task-nav{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.task-btn{padding:5px 12px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;font-size:12px;transition:.2s}
+.task-btn:hover{border-color:var(--accent);color:var(--accent)}
+.task-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.editor-panel{background:var(--card);border-top:2px solid var(--border);padding:12px 15px;flex-shrink:0;transition:background .2s}
+.editor-panel h3{color:var(--accent);font-size:13px;margin-bottom:6px}
+.editor-row{display:flex;gap:10px;min-height:220px}
 .editor-col{flex:1;display:flex;flex-direction:column}
-.editor-col textarea{flex:1;background:#f8fafc;color:#1e293b;border:1px solid #e2e8f0;border-radius:8px;padding:12px;font-family:'Consolas','Courier New',monospace;font-size:13px;resize:vertical;min-height:200px;tab-size:4;outline:none}
-.editor-col textarea:focus{border-color:#2563eb}
-.output{flex:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:auto;white-space:pre-wrap;min-height:200px;color:#475569}
-.btn-bar{display:flex;gap:8px;margin-bottom:8px}
-.btn{background:#2563eb;color:#fff;border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s}
-.btn:hover{background:#1d4ed8}
-.btn.outline{background:transparent;border:1px solid #2563eb;color:#2563eb}
-.btn.outline:hover{background:#2563eb;color:#fff}
-.btn.green{background:#2563eb;color:#fff}
-.btn.green:hover{background:#1d4ed8}
-.btn.small{padding:5px 12px;font-size:12px}
-.error{color:#dc2626}
-.success{color:#16a34a}
-.collapse-btn{background:none;border:1px solid #e2e8f0;color:#64748b;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px}
-.collapse-btn:hover{color:#1e293b}
-@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:200px}.editor-row{flex-direction:column}}
+.editor-col textarea{flex:1;background:var(--editor-bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;resize:vertical;min-height:180px;tab-size:4;outline:none;transition:background .2s,color .2s}
+.editor-col textarea:focus{border-color:var(--accent)}
+.output{flex:1;background:var(--editor-bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:auto;white-space:pre-wrap;min-height:180px;color:var(--text2);transition:background .2s,color .2s}
+.btn-bar{display:flex;gap:6px;margin-bottom:6px}
+.btn{background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
+.btn:hover{background:var(--accent-hover)}
+.btn.outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn.outline:hover{background:var(--accent);color:#fff}
+.btn.small{padding:4px 10px;font-size:11px}
+.error{color:#ef4444}
+.success{color:#22c55e}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:100}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:12px;padding:24px;width:340px;box-shadow:0 10px 40px var(--shadow);transition:background .2s}
+.modal h2{color:var(--text);font-size:18px;margin-bottom:6px}
+.modal p{color:var(--text2);font-size:13px;margin-bottom:16px}
+.modal input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:14px;background:var(--editor-bg);color:var(--text);outline:none;transition:border .2s}
+.modal input:focus{border-color:var(--accent)}
+.modal .btn{width:100%;margin-top:12px;padding:10px;font-size:14px}
+.modal-err{color:#ef4444;font-size:12px;margin-top:8px;display:none}
+@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:160px}.editor-row{flex-direction:column}.header-bread{display:none}}
 </style>
 </head>
 <body>
 
 <header>
-<svg class="header-logo" viewBox="0 -0.077 110 110" width="26" height="26">
+<svg class="header-logo" viewBox="0 -0.077 110 110">
   <defs>
     <linearGradient id="pyBlue" x1="63.8159" y1="56.6829" x2="118.4934" y2="1.8225" gradientTransform="matrix(1 0 0 -1 -53.2974 66.4321)">
-      <stop offset="0" stop-color="#387EB8"/>
-      <stop offset="1" stop-color="#366994"/>
+      <stop offset="0" stop-color="#387EB8"/><stop offset="1" stop-color="#366994"/>
     </linearGradient>
     <linearGradient id="pyYellow" x1="97.0444" y1="21.6321" x2="155.6665" y2="-34.5308" gradientTransform="matrix(1 0 0 -1 -53.2974 66.4321)">
-      <stop offset="0" stop-color="#FFE052"/>
-      <stop offset="1" stop-color="#FFC331"/>
+      <stop offset="0" stop-color="#FFE052"/><stop offset="1" stop-color="#FFC331"/>
     </linearGradient>
   </defs>
   <path fill="url(#pyBlue)" d="M55.023-0.077c-25.971,0-26.25,10.081-26.25,12.156c0,3.148,0,12.594,0,12.594h26.75v3.781 c0,0-27.852,0-37.375,0c-7.949,0-17.938,4.833-17.938,26.25c0,19.673,7.792,27.281,15.656,27.281c2.335,0,9.344,0,9.344,0 s0-9.765,0-13.125c0-5.491,2.721-15.656,15.406-15.656c15.91,0,19.971,0,26.531,0c3.902,0,14.906-1.696,14.906-14.406 c0-13.452,0-17.89,0-24.219C82.054,11.426,81.515-0.077,55.023-0.077z M40.273,8.392c2.662,0,4.813,2.15,4.813,4.813 c0,2.661-2.151,4.813-4.813,4.813s-4.813-2.151-4.813-4.813C35.46,10.542,37.611,8.392,40.273,8.392z"/>
@@ -72,25 +89,27 @@ header{background:#fff;padding:4px 20px;border-bottom:2px solid #e2e8f0;display:
 <span class="header-title" onclick="goHome()">PYTHON</span>
 <span class="header-divider">|</span>
 <span class="header-bread" id="headerBread">Главная</span>
+<div class="header-right">
+<span class="user-email" id="userEmail"></span>
+<div class="user-avatar" id="userAvatar" onclick="openLogin()" title="Войти">?</div>
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Сменить тему">☀️</button>
+</div>
 </header>
 
 <div class="container">
-
 <div class="sidebar" id="sidebar">
 <h3>Уроки</h3>
 <div id="lessonList"></div>
 </div>
-
 <div class="main">
 <div class="content" id="content"></div>
-
 <div class="editor-panel">
 <div class="btn-bar">
-<h3 style="color:#2563eb;margin:0;line-height:32px">Редактор кода</h3>
+<h3 style="color:var(--accent);margin:0;line-height:28px;font-size:13px">Редактор кода</h3>
 <div style="flex:1"></div>
-<button class="btn green small" onclick="runCode()">▶ Запустить</button>
+<button class="btn small" onclick="runCode()">▶ Запустить</button>
 <button class="btn outline small" onclick="resetCode()">↺ Сброс</button>
-<button class="btn small" onclick="showHint()" style="background:#2563eb;color:#fff">💡 Подсказка</button>
+<button class="btn outline small" onclick="showHint()">💡 Подсказка</button>
 </div>
 <div class="editor-row">
 <div class="editor-col">
@@ -102,251 +121,304 @@ header{background:#fff;padding:4px 20px;border-bottom:2px solid #e2e8f0;display:
 </div>
 </div>
 </div>
+</div>
 
+<div class="modal-overlay" id="loginModal">
+<div class="modal">
+<h2>Войти в аккаунт</h2>
+<p>Введи email, чтобы сохранять прогресс и настройки</p>
+<input type="email" id="loginEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()">
+<div class="modal-err" id="loginErr">Нужен корректный email</div>
+<button class="btn" onclick="doLogin()">Войти</button>
+<button class="btn outline" style="margin-top:8px" onclick="closeLogin()">Отмена</button>
+</div>
 </div>
 
 <script>
+// ========== LESSONS ==========
 const lessons = [
 {
 title:'Введение в Python',
-theory:`# Введение в Python
+tasks:[
+{name:'Привет, мир!', theory:`# Твоя первая программа
 
-Python — это язык программирования. Его придумали, чтобы людям было **легко** отдавать команды компьютеру.
+Python — язык программирования. Это как **робот**, который понимает команды.
 
-## Почему Python — лучший для начала?
-- **Просто читать** — код похож на английские предложения
-- **Можно сразу играть** — написал 1 строчку — уже видишь результат
-- **Всё понятно** — не нужно знать сложные штуки
-
-## Твоя первая программа
-
-Напиши это и нажми "Запустить":
+## Команда print()
+\`print()\` — "напечатай". Computer выводит на экран то, что в скобках.
 
 \`\`\`python
 print("Привет, мир!")
 \`\`\`
 
-\`print\` — это команда "напечатай". Computer напечатает то, что в скобках. Текст нужно брать в кавычки — это как упаковка для слов.
+Текст берётся в кавычки — это как упаковка для слов.`, starter:'print("Привет, мир!")\n', hint:'print("твой текст")'},
+{name:'Выведи имя', theory:`# Выводим разное
 
-## Это как?
-Представь, что Python — это робот, который понимает только английские команды. Ты говоришь ему \`print("...") \` — и он говорит это вслух.
+Можно выводить **любой** текст. Главное — не забывать кавычки!
 
-## Попробуй сам
-Напиши, что хочешь сказать миру, внутри \`print()\`.`,
-exercise:'**Задание 1.** Напиши программу, которая выводит твоё любимое слово.\n\n**Задание 2.** (сложнее) Выведи **две** разные фразы в двух строчках. Подсказка: print() два раза.',
-starter:'# Напиши print со своим любимым словом\n',
-expected:'',
-hint:'print("твоё слово") — не забудь кавычки!'
+\`\`\`python
+print("Меня зовут Дима")
+print("Я люблю Python")
+\`\`\`
+
+Можно выводить числа без кавычек:
+\`\`\`python
+print(5)
+print(100+200)
+\`\`\``, starter:'print("Меня зовут ...")\n', hint:'print("Твоё имя")'},
+{name:'Две строки', theory:`# Несколько строк
+
+Чтобы вывести несколько строк, напиши \`print()\` несколько раз.
+
+\`\`\`python
+print("Привет!")
+print("Как дела?")
+print("Я учу Python!")
+\`\`\`
+
+Каждый \`print()\` — новая строка.`, starter:'print("Строка 1")\nprint("Строка 2")\n', hint:'Напиши два print()'}
+]}
 },
 {
 title:'Переменные',
-theory:`# Переменные
+tasks:[
+{name:'Создай переменную', theory:`# Переменные — коробки
 
-Переменная — это **коробка с именем**, в которую можно положить значение.
+Переменная — **коробка с именем**, куда можно положить значение.
 
 \`\`\`python
-name = "Аня"      # положили слово "Аня" в коробку name
-age = 10           # положили число 10 в коробку age
+name = "Аня"
+age = 10
 \`\`\`
 
-Знак \`=\` здесь не "равно", а "положи в коробку".
+Знак \`=\` — не "равно", а "положи в коробку".
 
-## Как назвать коробку?
-- Используй английские буквы
+## Как назвать?
+- Английские буквы
 - Не начинай с цифры
-- Называй понятно: \`player_name\`, \`score\`, \`my_age\`
+- Называй понятно
 
-## Что лежит в коробке? (типы)
-- "текст" — это **строка** (\`str\`). Всегда в кавычках.
-- \`5\`, \`-3\`, \`100\` — это **число** (\`int\`). Без кавычек.
-- \`3.14\`, \`0.5\` — это **дробное число** (\`float\`).
+## Типы
+- \`"текст"\` — строка (str), с кавычками
+- \`5\`, \`-3\` — число (int), без кавычек
+- \`3.14\` — дробное (float)`, starter:'name = "Твоё имя"\nprint(name)\n', hint:'name = "имя"\nprint(name)'},
+{name:'Выведи с текстом', theory:`# Текст + переменная
 
-## Используем коробку
+Можно выводить текст и переменную вместе через \`,\` — запятая ставит пробел.
+
+\`\`\`python
+city = "Москва"
+print("Я живу в", city)
+\`\`\`
+
+Запятая \`,\` автоматически вставляет пробел между частями.`, starter:'city = "Москва"\nprint("Я живу в", city)\n', hint:'print("Я живу в", city)'},
+{name:'Две переменные', theory:`# Несколько переменных
+
+Можно создать сколько угодно переменных и использовать их все.
+
 \`\`\`python
 name = "Макс"
 age = 10
+hobby = "футбол"
 print("Меня зовут", name)
 print("Мне", age, "лет")
-\`\`\`
-
-Заметь: запятая \` , \` ставит пробел между словами.`,
-exercise:'**Задание 1.** Создай переменную \`pet\` с именем твоего питомца (или любым животным) и выведи "Мой питомец — ...".\n\n**Задание 2.** Создай переменную \`year\` с годом, в котором ты родился, и выведи "Я родился в ... году".',
-starter:'pet = "Барсик"\n# Выведи\n',
-expected:'',
-hint:'Сначала pet = "имя", потом print("Мой питомец —", pet)'
+print("Моё хобби —", hobby)
+\`\`\``, starter:'name = "Макс"\nage = 10\nhobby = "рисование"\nprint(name, age, hobby)\n', hint:'Создай 3 переменные и выведи их'}
+]}
 },
 {
-title:'Математика и числа',
-theory:`# Математика в Python
+title:'Математика',
+tasks:[
+{name:'Сложение и вычитание', theory:`# Python считает!
 
-Python умеет считать! Это его суперсила.
+Python — это ещё и калькулятор!
 
-## Действия с числами
 \`\`\`python
-print(5 + 3)   # 8 — сложение
-print(10 - 4)  # 6 — вычитание
-print(3 * 5)   # 15 — умножение
-print(15 / 3)  # 5.0 — деление (всегда даёт дробное)
+print(5 + 3)   # 8 — плюс
+print(10 - 4)  # 6 — минус
 \`\`\`
 
-## Хитрые значки
-| Действие | Знак | Пример | Результат |
-|----------|------|--------|-----------|
-| Сложить | \`+\` | \`5 + 2\` | \`7\` |
-| Вычесть | \`-\` | \`10 - 3\` | \`7\` |
-| Умножить | \`*\` | \`4 * 3\` | \`12\` |
-| Разделить | \`/\` | \`9 / 2\` | \`4.5\` |
-| Целая часть деления | \`//\` | \`9 // 2\` | \`4\` |
-| Остаток от деления | \`%\` | \`9 % 2\` | \`1\` |
+Знаки: \`+\` \`-\` \`*\` \`/\`
 
-## Это как?
-\`9 // 2 = 4\` — сколько раз 2 помещается в 9? 4 раза.
-\`9 % 2 = 1\` — и ещё 1 остался (остаток).
-
-## Считаем с переменными
 \`\`\`python
-a = 10
-b = 3
-print(a + b)   # 13
-print(a // b)  # 3 (сколько троек в десятке)
-print(a % b)   # 1 (остаток)
-\`\`\``,
-exercise:'**Задание 1.** Напиши код, который считает, сколько будет 7 умножить на 8.\n\n**Задание 2.** У тебя есть 17 конфет и 5 друзей. Сколько конфет достанется каждому поровну (целых)? А сколько останется? Используй \`//\` и \`%\`.',
-starter:'print(7 * 8)\n# Теперь конфеты:\ntotal = 17\nfriends = 5\n',
-expected:'',
-hint:'Каждому: total // friends, останется: total % friends'
+print(3 * 5)   # 15 — умножить
+print(15 / 3)  # 5.0 — разделить
+\`\`\`
+
+Деление \`/\` всегда даёт дробное число.`, starter:'print(5 + 3)\nprint(10 - 4)\nprint(3 * 5)\n', hint:'Просто напиши print(c примером)'},
+{name:'// и % — хитрые деления', theory:`# Остаток и целая часть
+
+\`//\` — целая часть (сколько раз помещается)
+\`%\` — остаток
+
+\`\`\`python
+print(9 // 2)  # 4 — двойка помещается 4 раза
+print(9 % 2)   # 1 — ещё 1 остался
+\`\`\`
+
+## Это как пицца
+У тебя 9 кусков пиццы и 2 друга.
+Каждому даёшь по 4 куска (\`9 // 2 = 4\`).
+Остался 1 кусок (\`9 % 2 = 1\`).`, starter:'print(9 // 2)\nprint(9 % 2)\n', hint:'// — целая часть, % — остаток'},
+{name:'Конфеты и друзья', theory:`# Решаем задачку
+
+У тебя 17 конфет и 5 друзей.
+Сколько каждому достанется? Сколько останется?
+
+\`\`\`python
+total = 17
+friends = 5
+print("Каждому:", total // friends)
+print("Останется:", total % friends)
+\`\`\``, starter:'total = 17\nfriends = 5\nprint("Каждому:", total // friends)\nprint("Останется:", total % friends)\n', hint:'total // friends и total % friends'}
+]}
 },
 {
-title:'Сравнения и if',
-theory:`# Условия (if) — это выбор
+title:'Условия if',
+tasks:[
+{name:'Простой if', theory:`# Если ... то ...
 
-Компьютер может **думать** и выбирать, что делать, с помощью \`if\`.
+\`if\` — "если". С него начинается выбор.
 
 \`\`\`python
 age = 12
 if age >= 18:
-    print("Ты взрослый!")
+    print("Взрослый")
 else:
-    print("Ты ребёнок")
+    print("Ребёнок")
 \`\`\`
 
-## Правила
-- После \`if\` ставим \`:\`
-- Следующую строчку начинаем с **4 пробелов** (или Tab)
-- \`else\` — "иначе" — что делать, если условие НЕ сработало
-- \`elif\` — "иначе если" — когда нужно много вариантов
+**Правила:**
+- После \`if\` и \`else\` — \`:\`
+- Внутри — **4 пробела** или Tab
+- \`>=\` — больше или равно
 
-## Знаки сравнения
-| Знак | Значение |
-|------|----------|
-| \`==\` | равно |
-| \`!=\` | не равно |
-| \`>\` | больше |
-| \`<\` | меньше |
-| \`>=\` | больше или равно |
-| \`<=\` | меньше или равно |
+## Знаки
+\`==\` равно | \`!=\` не равно | \`>\` больше | \`<\` меньше`, starter:'age = 12\nif age >= 18:\n    print("Взрослый")\nelse:\n    print("Ребёнок")\n', hint:'if условие: с новой строки с отступом print()'},
+{name:'Три варианта', theory:`# elif — "иначе если"
 
-## Пример с elif
+Когда вариантов больше двух — нужен \`elif\`.
+
 \`\`\`python
 mark = 85
 if mark >= 90:
-    print("Вау! Отлично!")
+    print("Отлично!")
 elif mark >= 70:
-    print("Хорошо, молодец!")
+    print("Хорошо")
 elif mark >= 50:
-    print("Нормально, но можно лучше")
+    print("Нормально")
 else:
     print("Нужно подтянуть")
-\`\`\``,
-exercise:'**Задание 1.** Напиши код: если число \`x\` > 0, выведи "Плюс", если меньше 0 — "Минус", если ровно 0 — "Ноль".\n\n**Задание 2.** Возраст \`age\`. Если меньше 7 — "Садик", от 7 до 17 — "Школа", от 18 — "Взрослая жизнь".',
-starter:'x = 0\n# Напиши if-elif-else\n',
-expected:'',
-hint:'if x > 0: ... elif x < 0: ... else: ...'
+\`\`\`
+
+Проверка идёт сверху вниз. Как только нашлось подходящее — дальше не проверяется.`, starter:'mark = 85\nif mark >= 90:\n    print("Отлично!")\nelif mark >= 70:\n    print("Хорошо")\nelif mark >= 50:\n    print("Нормально")\nelse:\n    print("Нужно подтянуть")\n', hint:'elif — это else + if вместе'},
+{name:'Положительное или нет', theory:`# Определяем знак числа
+
+Напиши программу: если \`x > 0\` — "Плюс", если \`x < 0\` — "Минус", иначе — "Ноль".
+
+\`\`\`python
+x = -5
+if x > 0:
+    print("Плюс")
+elif x < 0:
+    print("Минус")
+else:
+    print("Ноль")
+\`\`\``, starter:'x = -5\nif x > 0:\n    print("Плюс")\nelif x < 0:\n    print("Минус")\nelse:\n    print("Ноль")\n', hint:'if x > 0: ... elif x < 0: ... else: ...'}
+]}
 },
 {
-title:'Цикл for — повторялки',
-theory:`# Цикл for — делаем много раз
+title:'Цикл for',
+tasks:[
+{name:'range до 5', theory:`# Цикл for
 
-Цикл — это когда одна команда выполняется **снова и снова**.
+Цикл — команда, которая выполняется **много раз**.
 
-## Перебираем список
 \`\`\`python
-fruits = ["яблоко", "банан", "вишня"]
-for f in fruits:
-    print(f)
-\`\`\`
-
-Компьютер берёт каждый фрукт по очереди и \`print\` его.
-
-## range() — числовая линейка
-\`\`\`python
-for i in range(5):     # 0, 1, 2, 3, 4
-    print(i)
-
-for i in range(2, 6):  # 2, 3, 4, 5
-    print(i)
-
-for i in range(0, 10, 2):  # 0, 2, 4, 6, 8 (шаг 2)
+for i in range(5):
     print(i)
 \`\`\`
 
+Выведет: \`0 1 2 3 4\`
+
+\`range(5)\` — числа от 0 до 4 (не включая 5).
+
+## Как это работает
+Компьютер берёт \`i = 0\`, печатает, потом \`i = 1\`, печатает... И так 5 раз.`, starter:'for i in range(5):\n    print(i)\n', hint:'for i in range(5): print(i)'},
+{name:'Диапазон с шагом', theory:`# Начало, конец, шаг
+
+У \`range\` может быть 3 числа:
 \`range(начало, конец, шаг)\`
-- Начало — откуда начать
-- Конец — где **остановиться** (не включая его!)
-- Шаг — через сколько прыгать
 
-## Это как
-Представь, что ты раздаёшь листовки на улице. Ты берёшь одну → отдаёшь → берёшь следующую → отдаёшь... Вот это и есть цикл!`,
-exercise:'**Задание 1.** Выведи все чётные числа от 0 до 20 (с шагом 2).\n\n**Задание 2.** Выведи таблицу умножения для числа 5: "5 x 1 = 5", "5 x 2 = 10"... до 5 x 10. Подсказка: \`for i in range(1, 11):\`',
-starter:'# Задание 1\nfor i in range(0, 21, 2):\n    print(i)\n',
-expected:'',
-hint:'Для таблицы: print(f"5 x {i} = {5*i}") или print("5 x", i, "=", 5*i)'
+\`\`\`python
+for i in range(2, 6):   # 2,3,4,5
+    print(i)
+
+for i in range(0, 10, 2):  # 0,2,4,6,8
+    print(i)
+\`\`\`
+
+Конец **не включается**! \`range(2, 6)\` — до 6, но 6 не выводит.`, starter:'for i in range(0, 10, 2):\n    print(i)\n', hint:'range(начало, конец, шаг)'},
+{name:'Таблица умножения', theory:`# Умножаем с циклом
+
+Выведем таблицу умножения для 5:
+
+\`\`\`python
+for i in range(1, 11):
+    print("5 x", i, "=", 5*i)
+\`\`\`
+
+Выведет: \`5 x 1 = 5\`, \`5 x 2 = 10\`... до \`5 x 10 = 50\``, starter:'for i in range(1, 11):\n    print("5 x", i, "=", 5*i)\n', hint:'print("5 x", i, "=", 5*i)'}
+]}
 },
 {
-title:'Списки — коллекции',
-theory:`# Списки (list) — твои коллекции
+title:'Списки',
+tasks:[
+{name:'Создай список', theory:`# Списки — коллекции
 
-Список — это **набор вещей** в квадратных скобках.
+Список — **набор вещей** в квадратных скобках.
 
 \`\`\`python
 toys = ["лего", "кукла", "машинка"]
-print(toys[0])   # лего — первый элемент!
+print(toys[0])   # лего — первый!
 print(toys[1])   # кукла
 print(toys[2])   # машинка
 \`\`\`
 
-**Важно:** счёт начинается с 0, а не с 1!
-\`toys[0]\` — первая игрушка, \`toys[1]\` — вторая.
+**Важно:** счёт с 0! \`toys[0]\` — первый.`, starter:'toys = ["лего", "кукла", "машинка"]\nprint(toys[0])\nprint(toys[1])\nprint(toys[2])\n', hint:'Нумерация с 0'},
+{name:'Добавляем в список', theory:`# Метод .append()
 
-## Отрицательные индексы
+\`.append()\` — добавить элемент в конец списка.
+
 \`\`\`python
-print(toys[-1])  # машинка — последняя
-print(toys[-2])  # кукла
+colors = ["красный", "синий"]
+colors.append("зелёный")
+print(colors)  # ["красный", "синий", "зелёный"]
 \`\`\`
 
-## Методы — что можно делать со списком
+Другие методы:
+- \`.insert(1, "жёлтый")\` — вставить на место 1
+- \`.remove("синий")\` — удалить
+- \`len(colors)\` — сколько всего`, starter:'colors = ["красный", "синий"]\ncolors.append("зелёный")\nprint(colors)\n', hint:'список.append("новый")'},
+{name:'Перебор списка циклом', theory:`# Список + for
+
+Цикл \`for\` отлично работает со списками:
+
 \`\`\`python
-toys.append("робот")      # добавить в конец
-toys.insert(1, "мяч")     # вставить на место 1
-toys.remove("кукла")      # удалить по имени
-print(len(toys))          # сколько всего игрушек
+fruits = ["яблоко", "банан", "вишня"]
+for f in fruits:
+    print("Я люблю", f)
 \`\`\`
 
-## Перебираем список циклом
-\`\`\`python
-for toy in toys:
-    print("У меня есть", toy)
-\`\`\``,
-exercise:'**Задание 1.** Создай список из 3 своих любимых игр. Добавь четвёртую через \`.append()\`. Выведи весь список.\n\n**Задание 2.** (сложнее) Выведи каждую игру с номером: "Игра №1: Minecraft". Используй цикл \`for\` и \`enumerate()\` или счётчик.',
-starter:'games = ["Minecraft", "Roblox", "Terraria"]\n# Добавь и выведи\n',
-expected:'',
-hint:'games.append("Stardew Valley")\nfor g in games: print(g)'
+Компьютер берёт каждый элемент по очереди.`, starter:'fruits = ["яблоко", "банан", "вишня"]\nfor f in fruits:\n    print("Я люблю", f)\n', hint:'for элемент in список:'}
+]}
 },
 {
 title:'Словари',
-theory:`# Словари (dict) — коробки с ярлыками
+tasks:[
+{name:'Создай словарь', theory:`# Словари — с подписями
 
-Список хорош, но как запомнить, что где лежит? Для этого есть **словарь** — вещь + ярлык.
+Словарь — как список, но у каждого элемента есть **имя (ключ)**.
 
 \`\`\`python
 me = {
@@ -355,220 +427,213 @@ me = {
     "hobby": "рисование"
 }
 print(me["name"])   # Дима
-print(me["hobby"])  # рисование
 \`\`\`
 
-Словарь — это \`{ }\` с парами \`ключ: значение\`.
+Ключ — как ярлык на коробке: говоришь "name" — достаётся "Дима".`, starter:'me = {"name": "Дима", "age": 10}\nprint(me["name"])\nprint(me["age"])\n', hint:'словарь["ключ"]'},
+{name:'Меняем словарь', theory:`# Изменяем и добавляем
 
-## Это как гардероб
-Ключ — это номерок, по которому ты находишь свою вещь. \`me["name"]\` — дай мне то, что подписано "name".
+В словарь можно добавлять новые ключи и менять старые.
 
-## Можно менять
 \`\`\`python
-me["age"] = 11     # изменили возраст
-me["city"] = "Москва"  # добавили новый ключ
-\`\`\`
+me = {"name": "Аня", "age": 9}
+me["age"] = 10           # изменили
+me["city"] = "Казань"    # добавили
+print(me)
+\`\`\``, starter:'me = {"name": "Аня", "age": 9}\nme["age"] = 10\nme["city"] = "Казань"\nprint(me)\n', hint:'me["новый_ключ"] = "значение"'},
+{name:'Перебор словаря', theory:`# Цикл по словарю
 
-## Перебираем словарь
+\`for\` может перебирать ключи словаря:
+
 \`\`\`python
+me = {"name": "Тимур", "age": 11, "city": "СПб"}
 for key in me:
     print(key, ":", me[key])
-\`\`\``,
-exercise:'**Задание 1.** Создай словарь про себя: имя, возраст, любимый цвет. Выведи любимый цвет.\n\n**Задание 2.** Добавь в словарь любимую еду. Выведи всё через цикл \`for\`.',
-starter:'me = {\n    "name": "Твоё имя",\n    "age": 10,\n    "color": "синий"\n}\n# Выведи любимый цвет\n',
-expected:'',
-hint:'print(me["color"])\nme["food"] = "пицца"'
+\`\`\`
+
+Выведет:
+\`name : Тимур\`
+\`age : 11\`
+\`city : СПб\``, starter:'me = {"name": "Тимур", "age": 11, "city": "СПб"}\nfor key in me:\n    print(key, ":", me[key])\n', hint:'for key in dict: print(key, dict[key])'}
+]}
 },
 {
-title:'Функции — твои собственные команды',
-theory:`# Функции (def) — создаём свои команды
+title:'Функции',
+tasks:[
+{name:'Создай функцию', theory:`# Твои собственные команды
 
-Функция — это **твоя собственная команда** для компьютера. Ты её один раз создаёшь — и можешь вызывать сколько хочешь!
+Функция — **твоя команда**. Создаёшь один раз — вызываешь когда хочешь.
 
 \`\`\`python
 def say_hello():
     print("Привет!")
     print("Как дела?")
 
-# Теперь вызываем:
 say_hello()
 say_hello()  # снова!
 \`\`\`
 
-## Функция с параметром
-Можно передавать в функцию разные данные:
+\`def\` — объявление функции. \`()\` — скобки обязательны. \`:\` — после.`, starter:'def say_hello():\n    print("Привет!")\n    print("Как дела?")\n\nsay_hello()\n', hint:'def имя(): с отступом тело'},
+{name:'Функция с параметром', theory:`# Функция с данными
+
+Можно передавать в функцию разные данные — **параметры**.
 
 \`\`\`python
 def greet(name):
     print("Привет,", name, "!")
 
-greet("Аня")
-greet("Макс")
+greet("Аня")  # Привет, Аня!
+greet("Макс") # Привет, Макс!
 \`\`\`
 
-## Функция с return (возвращает результат)
+\`name\` — параметр. При каждом вызове подставляется новое значение.`, starter:'def greet(name):\n    print("Привет,", name, "!")\n\ngreet("Аня")\ngreet("Макс")\n', hint:'def имя(параметр):'},
+{name:'return — вернуть результат', theory:`# return
+
+\`return\` — "верни результат обратно".
+
 \`\`\`python
 def double(x):
     return x * 2
 
-result = double(5)  # result = 10
-print(result)
+result = double(5)
+print(result)  # 10
 \`\`\`
 
-\`return\` — это "верни результат обратно". Как в магазине: ты даёшь деньги (5), тебе дают сдачу (10).
-
-## Зачем это нужно?
-- Не писать одно и то же 100 раз
-- Код становится чище
-- Можно собирать программы как из кубиков`,
-exercise:'**Задание 1.** Напиши функцию \`square(x)\`, которая возвращает x в квадрате. Выведи \`square(7)\`.\n\n**Задание 2.** Напиши функцию \`sum_range(a, b)\`, которая считает сумму всех чисел от a до b. Подсказка: используй цикл \`for\` внутри функции.',
-starter:'def square(x):\n    return x * x\n\nprint(square(7))\n\n# Задание 2\n',
-expected:'',
-hint:'def sum_range(a, b):\n    total = 0\n    for i in range(a, b+1):\n        total += i\n    return total'
+Это как в магазине: даёшь 5 → тебе возвращают 10.
+Без \`return\` функция ничего не отдаёт.`, starter:'def square(x):\n    return x * x\n\nprint(square(7))\n', hint:'return ... — функция возвращает значение'}
+]}
 }
 ];
 
+// ========== STATE ==========
 let currentLesson = 0;
-let defaultCodes = lessons.map(l => l.starter);
+let currentTask = 0;
+let userEmail = localStorage.getItem('py_email') || '';
+let darkTheme = localStorage.getItem('py_theme') === 'dark';
 
+// ========== INIT ==========
+if (darkTheme) document.body.classList.add('dark');
+updateThemeBtn();
+updateUserUI();
+
+// ========== RENDER ==========
 function renderLessons() {
 const list = document.getElementById('lessonList');
-list.innerHTML = lessons.map((l,i) =>
-`<div class="lesson${i===currentLesson?' active':''}" onclick="selectLesson(${i})">${i+1}. ${l.title}</div>`
-).join('');
-}
-
-function goHome() {
-selectLesson(0);
+list.innerHTML = lessons.map((l,i) => 
+`<div class="lesson${i===currentLesson?' active':''}" onclick="selectLesson(${i})">
+${i+1}. ${l.title} <span style="font-size:11px;color:var(--text2)">(${l.tasks.length} зад.)</span>
+</div>`).join('');
 }
 
 function selectLesson(i) {
-currentLesson = i;
+currentLesson = i; currentTask = 0;
 document.querySelectorAll('.lesson').forEach((el,idx) => el.className='lesson'+(idx===i?' active':''));
 renderContent();
-document.getElementById('codeEditor').value = lessons[i].starter;
-document.getElementById('output').textContent = '// Результат появится здесь';
-document.getElementById('headerBread').textContent = 'Урок ' + (i+1) + ' — ' + lessons[i].title;
+loadTaskCode();
 }
 
 function renderContent() {
 const el = document.getElementById('content');
 const l = lessons[currentLesson];
-// Render markdown-like theory
+const t = l.tasks[currentTask];
+
 let html = `<h2>${l.title}</h2>`;
-html += renderTheory(l.theory);
-html += `<div class="exercise"><h4>Упражнение ${currentLesson+1}</h4><p>${l.exercise}</p></div>`;
+html += `<div class="task-nav">`;
+l.tasks.forEach((task, idx) => {
+html += `<button class="task-btn${idx===currentTask?' active':''}" onclick="selectTask(${idx})">${idx+1}. ${task.name}</button>`;
+});
+html += `</div>`;
+html += `<div class="exercise"><h4>Задание ${currentLesson+1}.${currentTask+1}: ${t.name}</h4><div>${renderTheory(t.theory)}</div></div>`;
 el.innerHTML = html;
 }
 
-function renderTheory(md) {
-let html = '';
-let lines = md.split('\n');
-let inCode = false;
-let codeLines = [];
-let inTable = false;
-let tableHeaders = [];
-let tableAlign = [];
-let tableRows = [];
+function selectTask(i) {
+currentTask = i;
+renderContent();
+loadTaskCode();
+}
 
-for (let i = 0; i < lines.length; i++) {
-const line = lines[i];
+function loadTaskCode() {
+const t = lessons[currentLesson].tasks[currentTask];
+document.getElementById('codeEditor').value = t.starter;
+document.getElementById('output').textContent = '// Результат появится здесь';
+document.getElementById('output').className = 'output';
+updateBread();
+}
 
-if (line.startsWith('```')) {
-if (inCode) {
-html += '<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>';
-codeLines = [];
-inCode = false;
+function updateBread() {
+document.getElementById('headerBread').textContent = 
+`Урок ${currentLesson+1} — Задание ${currentLesson+1}.${currentTask+1}`;
+}
+
+function goHome() { selectLesson(0); }
+
+// ========== LOGIN ==========
+function openLogin() {
+if (userEmail) { logout(); return; }
+document.getElementById('loginModal').classList.add('open');
+document.getElementById('loginEmail').value = '';
+document.getElementById('loginErr').style.display = 'none';
+setTimeout(()=>document.getElementById('loginEmail').focus(),100);
+}
+function closeLogin() { document.getElementById('loginModal').classList.remove('open'); }
+function doLogin() {
+const email = document.getElementById('loginEmail').value.trim();
+if (!email || !email.includes('@') || !email.includes('.')) {
+document.getElementById('loginErr').style.display = 'block';
+return;
+}
+document.getElementById('loginErr').style.display = 'none';
+userEmail = email;
+localStorage.setItem('py_email', email);
+closeLogin();
+updateUserUI();
+}
+function logout() {
+userEmail = '';
+localStorage.removeItem('py_email');
+updateUserUI();
+}
+function updateUserUI() {
+const avatar = document.getElementById('userAvatar');
+const emailEl = document.getElementById('userEmail');
+if (userEmail) {
+avatar.textContent = userEmail[0].toUpperCase();
+avatar.title = 'Выйти';
+emailEl.textContent = userEmail;
 } else {
-inCode = true;
+avatar.textContent = '?';
+avatar.title = 'Войти';
+emailEl.textContent = '';
 }
-continue;
-}
-if (inCode) {
-codeLines.push(line);
-continue;
 }
 
-// Tables
-if (line.startsWith('|') && line.endsWith('|')) {
-const parts = line.split('|').filter(p => p.trim());
-if (line.includes('---')) {
-tableAlign = parts.map(p => p.includes(':') ? 'center' : 'left');
-continue;
+// ========== THEME ==========
+function toggleTheme() {
+darkTheme = !darkTheme;
+document.body.classList.toggle('dark', darkTheme);
+localStorage.setItem('py_theme', darkTheme ? 'dark' : 'light');
+updateThemeBtn();
 }
-if (tableHeaders.length === 0) {
-tableHeaders = parts;
-} else {
-tableRows.push(parts);
-}
-continue;
-} else if (tableHeaders.length) {
-html += buildTable(tableHeaders, tableAlign, tableRows);
-tableHeaders = []; tableRows = [];
+function updateThemeBtn() {
+document.getElementById('themeBtn').textContent = darkTheme ? '🌙' : '☀️';
 }
 
-if (line.startsWith('# ')) { html += `<h2>${line.slice(2)}</h2>`; }
-else if (line.startsWith('## ')) { html += `<h3>${line.slice(3)}</h3>`; }
-else if (line.startsWith('### ')) { html += `<h4 style="color:#2563eb;margin:12px 0 6px">${line.slice(4)}</h4>`; }
-else if (line.startsWith('- ')) { html += `<li style="margin:3px 0;color:#475569">${inlineCode(line.slice(2))}</li>`; }
-else if (line.startsWith('| ')) { /* already handled above */ }
-else if (line.trim() === '') { html += '<br>'; }
-else if (line.startsWith('*') && line.endsWith('*')) { html += `<p><em>${inlineCode(line.slice(1,-1))}</em></p>`; }
-else { html += `<p>${inlineCode(line)}</p>`; }
-}
-if (inCode) html += '<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>';
-if (tableHeaders.length) html += buildTable(tableHeaders, tableAlign, tableRows);
-return html;
-}
-
-function buildTable(headers, align, rows) {
-let h = '<table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:13px">';
-h += '<thead><tr>';
-headers.forEach((c,i) => {
-h += `<th style="border:1px solid #e2e8f0;padding:8px;background:#f1f5f9;color:#2563eb;text-align:${align[i]||'left'}">${c}</th>`;
-});
-h += '</tr></thead><tbody>';
-rows.forEach(r => {
-h += '<tr>';
-r.forEach((c,i) => {
-h += `<td style="border:1px solid #e2e8f0;padding:8px;color:#475569;text-align:${align[i]||'left'}">${inlineCode(c)}</td>`;
-});
-h += '</tr>';
-});
-h += '</tbody></table>';
-return h;
-}
-
-function inlineCode(text) {
-return text.replace(/\`([^`]+)\`/g, '<code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;color:#2563eb;font-size:13px">$1</code>');
-}
-
-function escapeHtml(s) {
-return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// --- Skulpt runner ---
-function outf(text) {
-const out = document.getElementById('output');
-out.textContent += text;
-}
-
+// ========== EDITOR ==========
+function outf(text) { document.getElementById('output').textContent += text; }
 function builtinRead(x) {
 if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
 throw new Error("File not found: " + x);
 return Sk.builtinFiles["files"][x];
 }
-
 function runCode() {
 const code = document.getElementById('codeEditor').value;
 const out = document.getElementById('output');
 out.textContent = '';
 out.className = 'output';
-
 Sk.configure({output:outf, read:builtinRead, __future__:Sk.python3});
 try {
 Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, {syntaxerrors:"python3"})).then(() => {
-if (out.textContent === '') out.textContent = '✓ Код выполнен успешно (нет вывода)';
+if (out.textContent === '') out.textContent = '✓ Код выполнен успешно';
 out.className = 'output success';
 }).catch(err => {
 out.textContent = err.toString();
@@ -579,24 +644,68 @@ out.textContent = e.toString();
 out.className = 'output error';
 }
 }
-
 function resetCode() {
-document.getElementById('codeEditor').value = lessons[currentLesson].starter;
+const t = lessons[currentLesson].tasks[currentTask];
+document.getElementById('codeEditor').value = t.starter;
 document.getElementById('output').textContent = '// Результат появится здесь';
 document.getElementById('output').className = 'output';
 }
-
 function showHint() {
-const out = document.getElementById('output');
-out.textContent = '💡 Подсказка: ' + lessons[currentLesson].hint;
-out.className = 'output';
+const t = lessons[currentLesson].tasks[currentTask];
+document.getElementById('output').textContent = '💡 Подсказка: ' + t.hint;
+document.getElementById('output').className = 'output';
 }
 
-// Init
+// ========== RENDER THEORY (same as before) ==========
+function renderTheory(md) {
+let html = ''; let lines = md.split('\n'); let inCode = false; let codeLines = [];
+let tableHeaders = []; let tableAlign = []; let tableRows = [];
+for (let i = 0; i < lines.length; i++) {
+const line = lines[i];
+if (line.startsWith('```')) {
+if (inCode) { html += '<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>'; codeLines = []; inCode = false; }
+else { inCode = true; }
+continue;
+}
+if (inCode) { codeLines.push(line); continue; }
+if (line.startsWith('|') && line.endsWith('|')) {
+const parts = line.split('|').filter(p => p.trim());
+if (line.includes('---')) { tableAlign = parts.map(p => p.includes(':')?'center':'left'); continue; }
+if (tableHeaders.length === 0) tableHeaders = parts;
+else tableRows.push(parts);
+continue;
+} else if (tableHeaders.length) {
+html += buildTable(tableHeaders, tableAlign, tableRows);
+tableHeaders = []; tableRows = [];
+}
+if (line.startsWith('# ')) html += `<h2>${line.slice(2)}</h2>`;
+else if (line.startsWith('## ')) html += `<h3>${line.slice(3)}</h3>`;
+else if (line.startsWith('### ')) html += `<h4 style="color:var(--accent);margin:10px 0 4px">${line.slice(4)}</h4>`;
+else if (line.startsWith('- ')) html += `<li style="margin:2px 0;color:var(--text2)">${inlineCode(line.slice(2))}</li>`;
+else if (line.trim() === '') html += '<br>';
+else if (line.startsWith('*') && line.endsWith('*')) html += `<p><em>${inlineCode(line.slice(1,-1))}</em></p>`;
+else html += `<p>${inlineCode(line)}</p>`;
+}
+if (inCode) html += '<pre><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>';
+if (tableHeaders.length) html += buildTable(tableHeaders, tableAlign, tableRows);
+return html;
+}
+function buildTable(headers, align, rows) {
+let h = '<table style="width:100%;border-collapse:collapse;margin:8px 0;font-size:13px">';
+h += '<thead><tr>';
+headers.forEach((c,i) => { h += `<th style="border:1px solid var(--border);padding:6px;background:var(--code-bg);color:var(--accent);text-align:${align[i]||'left'}">${c}</th>`; });
+h += '</tr></thead><tbody>';
+rows.forEach(r => { h += '<tr>'; r.forEach((c,i) => { h += `<td style="border:1px solid var(--border);padding:6px;color:var(--text2);text-align:${align[i]||'left'}">${inlineCode(c)}</td>`; }); h += '</tr>'; });
+h += '</tbody></table>';
+return h;
+}
+function inlineCode(text) { return text.replace(/\`([^`]+)\`/g, '<code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;color:var(--accent);font-size:13px">$1</code>'); }
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ========== START ==========
 renderLessons();
 renderContent();
-document.getElementById('codeEditor').value = lessons[0].starter;
-document.getElementById('headerBread').textContent = 'Урок 1 — ' + lessons[0].title;
+loadTaskCode();
 </script>
 </body>
 </html>

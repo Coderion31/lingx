@@ -7,25 +7,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column}
-header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:40px 20px;border-bottom:2px solid #334155;text-align:center}
-header h1{font-size:44px;font-weight:800;background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header p{color:#94a3b8;font-size:15px;margin-top:8px}
-.container{max-width:1100px;margin:0 auto;padding:30px 20px;flex:1}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
-.card{background:#1e293b;border-radius:14px;padding:26px;border:1px solid #334155;cursor:pointer;transition:.3s;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center}
-.card:hover{transform:translateY(-5px);border-color:#60a5fa;box-shadow:0 10px 40px rgba(96,165,250,0.2)}
-.card .icon{font-size:52px;margin-bottom:12px}
-.card h2{font-size:19px;font-weight:700;margin-bottom:8px}
-.card p{font-size:12.5px;color:#94a3b8;line-height:1.5}
-.card .tag{display:inline-block;margin-top:12px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(96,165,250,0.15);color:#93c5fd}
-.tag.green{background:rgba(52,211,153,0.15);color:#6ee7b7}
+header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
+header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:#94a3b8;font-size:13px;margin-top:3px}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px;flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:#1e293b;border-radius:14px;padding:20px;border:1px solid #334155;cursor:pointer;transition:.3s;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center}
+.card:hover{transform:translateY(-4px);border-color:#60a5fa;box-shadow:0 8px 30px rgba(96,165,250,0.2)}
+.card .icon{width:64px;height:64px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:14px;padding:10px;overflow:hidden}
+.card .icon img{max-width:100%;max-height:100%;object-fit:contain}
+.card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.card p{font-size:12px;color:#94a3b8;line-height:1.5}
+.card .tag{display:inline-block;margin-top:10px;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(96,165,250,0.15);color:#93c5fd}
 .tag.blue{background:rgba(96,165,250,0.15);color:#93c5fd}
 .tag.cyan{background:rgba(34,211,238,0.15);color:#67e8f9}
 .tag.purple{background:rgba(167,139,250,0.15);color:#c4b5fd}
 .tag.orange{background:rgba(251,146,60,0.15);color:#fdba74}
 .tag.yellow{background:rgba(250,204,21,0.15);color:#fde047}
 .tag.pink{background:rgba(244,114,182,0.15);color:#f9a8d4}
-footer{text-align:center;padding:20px;color:#64748b;font-size:12px;border-top:1px solid #334155}
+footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1px solid #334155}
 </style>
 </head>
 <body>
@@ -36,43 +36,43 @@ footer{text-align:center;padding:20px;color:#64748b;font-size:12px;border-top:1p
 <div class="container">
 <div class="grid">
 <a class="card" href="python/">
-<div class="icon">🐍</div>
+<div class="icon"><img src="img/python.svg" alt="Python"></div>
 <h2>Python</h2>
 <p>Переменные, циклы, функции, списки, словари и финальные проекты — с запуском кода прямо в браузере</p>
 <span class="tag blue">13 уроков · 42 задания · код работает</span>
 </a>
 <a class="card" href="cpp/">
-<div class="icon">⚡</div>
+<div class="icon"><img src="img/cpp.svg" alt="C++"></div>
 <h2>C++</h2>
 <p>Синтаксис, типы, массивы, классы, STL — от Hello World до ООП</p>
 <span class="tag cyan">9 уроков · 18 заданий</span>
 </a>
 <a class="card" href="c/">
-<div class="icon">🔧</div>
+<div class="icon"><img src="img/c.png" alt="C"></div>
 <h2>C</h2>
 <p>printf, указатели, структуры, рекурсия — фундамент всех языков</p>
 <span class="tag cyan">9 уроков · 20 заданий</span>
 </a>
 <a class="card" href="csharp/">
-<div class="icon">💎</div>
+<div class="icon"><img src="img/csharp.png" alt="C#"></div>
 <h2>C#</h2>
 <p>Классы, LINQ, async/await — современная разработка на .NET</p>
 <span class="tag purple">9 уроков · 18 заданий</span>
 </a>
 <a class="card" href="html/">
-<div class="icon">🌐</div>
+<div class="icon"><img src="img/html.svg" alt="HTML"></div>
 <h2>HTML</h2>
 <p>Теги, формы, таблицы, семантика — скелет любой веб-страницы</p>
 <span class="tag orange">8 уроков · 12 заданий</span>
 </a>
 <a class="card" href="css/">
-<div class="icon">🎨</div>
+<div class="icon"><img src="img/css.svg" alt="CSS"></div>
 <h2>CSS</h2>
 <p>Flexbox, Grid, анимации, адаптивность — стилизуем всё</p>
 <span class="tag pink">8 уроков · 15 заданий</span>
 </a>
 <a class="card" href="js/">
-<div class="icon">🚀</div>
+<div class="icon"><img src="img/js.png" alt="JavaScript"></div>
 <h2>JavaScript</h2>
 <p>DOM, события, fetch, async — оживляем веб-страницы</p>
 <span class="tag yellow">11 уроков · 21 задание</span>

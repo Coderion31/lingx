@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ Academy</title>
+<style>
+:root{--bg:#f0f4f8;--card:#fff;--text:#1a202c;--text2:#4a5568;--border:#e2e8f0;--hover:#edf2f7;--active:#ebf4ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#edf2f7;--editor-bg:#f7fafc;--header-bg:#fff}
+.dark{--bg:#0f1419;--card:#1a2332;--text:#e2e8f0;--text2:#94a3b8;--border:#2d3a4a;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--editor-bg:#1a2332;--header-bg:#1a2332}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;height:50px;flex-shrink:0}
+.h-title{font-size:16px;font-weight:700;color:var(--accent);cursor:pointer}
+.h-div{color:var(--text2);font-size:13px}
+.h-bread{font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.h-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.h-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 8px;border-radius:5px;cursor:pointer;font-size:11px}
+.h-btn:hover{background:var(--hover);color:var(--text)}
+.av{background:var(--accent);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer}
+.em{font-size:11px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.pr-bar{height:100%;background:var(--accent);transition:width .5s}
+.container{display:flex;flex:1;overflow:hidden}
+.sidebar{width:240px;background:var(--card);overflow-y:auto;flex-shrink:0;border-right:1px solid var(--border)}
+.sidebar-in{padding:10px}
+.sidebar h3{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:0 4px}
+.lgrp{margin-bottom:2px;border-radius:6px;overflow:hidden}
+.lgrp-hdr{cursor:pointer;padding:8px 10px;font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px;border-radius:6px}
+.lgrp-hdr:hover{background:var(--hover)}
+.lgrp-hdr .arr{font-size:10px;transition:transform .2s;color:var(--text2)}
+.lgrp-hdr .arr.open{transform:rotate(90deg)}
+.lgrp-hdr .cnt{font-size:10px;color:var(--text2);margin-left:auto;opacity:.7}
+.lgrp-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.lgrp-body.open{max-height:400px}
+.ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:var(--text2);border-radius:4px;margin:1px 4px;display:flex;align-items:center;gap:5px}
+.ltask:hover{background:var(--hover)}
+.ltask.active{background:var(--active);color:var(--accent);font-weight:600}
+.ltask .dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0}
+.ltask .dot.done{background:var(--ok)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.content{flex:1;overflow-y:auto;padding:18px 22px}
+.content h2{font-size:18px;margin-bottom:8px;color:var(--text)}
+.content h3{color:var(--accent);font-size:14px;margin:12px 0 5px}
+.content p{line-height:1.65;margin:5px 0;color:var(--text2);font-size:14px}
+.content pre{background:var(--code-bg);padding:10px 12px;border-radius:6px;overflow-x:auto;margin:6px 0;border:1px solid var(--border);font-size:13px}
+.content code{color:var(--accent);font-size:13px}
+.content .info{background:var(--active);border-left:3px solid var(--accent);padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13px;color:var(--text2)}
+.task-bar{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.tb{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;font-size:11px}
+.tb:hover{border-color:var(--accent);color:var(--accent)}
+.tb.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tb.done{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.task-box{background:var(--card);border:1px solid var(--accent);padding:12px 14px;border-radius:8px;margin:10px 0}
+.task-box h4{color:var(--accent);font-size:14px;margin-bottom:8px}
+.res-ban{padding:8px 14px;border-radius:6px;margin:8px 0;font-size:13px;font-weight:600;display:none}
+.res-ban.ok{display:block;background:var(--okbg);color:var(--ok);border:1px solid var(--ok)}
+.res-ban.err{display:block;background:var(--errbg);color:var(--err);border:1px solid var(--err)}
+.res-ban.ok::before{content:'✓ '}
+.res-ban.err::before{content:'✗ '}
+.editor-panel{background:var(--card);border-top:2px solid var(--border);padding:10px 15px;flex-shrink:0}
+.er-bar{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.er-bar label{color:var(--accent);font-size:12px;font-weight:600}
+.er-row{display:flex;gap:10px;min-height:200px}
+.er-col{flex:1;display:flex;flex-direction:column}
+.er-col textarea{flex:1;background:var(--editor-bg);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;resize:vertical;min-height:180px;tab-size:4;outline:none}
+.er-col textarea:focus{border-color:var(--accent)}
+.out{flex:1;background:var(--editor-bg);border:1px solid var(--border);border-radius:5px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:auto;white-space:pre-wrap;min-height:180px;color:var(--text2)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:12px;padding:24px;width:340px;box-shadow:0 10px 40px rgba(0,0,0,.1)}
+.modal h2{font-size:17px;margin-bottom:4px;color:var(--text)}
+.modal p{font-size:12px;color:var(--text2);margin-bottom:14px}
+.modal input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:5px;font-size:14px;background:var(--editor-bg);color:var(--text);outline:none}
+.modal input:focus{border-color:var(--accent)}
+.modal .btn{width:100%;margin-top:10px;padding:9px;font-size:13px}
+.modal .merr{color:var(--err);font-size:12px;margin-top:6px;display:none}
+.btn{background:var(--accent);color:#fff;border:none;padding:5px 14px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600}
+.btn:hover{background:var(--accent2)}
+.btn.outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn.outline:hover{background:var(--accent);color:#fff}
+.btn.sm{padding:4px 10px;font-size:11px}
+@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}.h-bread{display:none}}
+</style>
+</head>
+<body>
+<header>
+<span class="h-title" onclick="goHome()">⚡ C++ ACADEMY</span>
+<span class="h-div">|</span>
+<span class="h-bread" id="hBread">Главная</span>
+<div class="h-right">
+<span class="em" id="hEmail"></span>
+<div class="av" id="hAvatar" onclick="openLogin()">?</div>
+<button class="h-btn" onclick="toggleTheme()" id="themeBtn">☀️</button>
+<div class="pr"><div class="pr-bar" id="prBar" style="width:0%"></div></div>
+</div>
+</header>
+<div class="container">
+<div class="sidebar"><div class="sidebar-in">
+<h3>Уроки</h3>
+<div id="lessonList"></div>
+<div style="margin-top:12px;padding:0 4px">
+<h3>Статистика</h3>
+<div style="font-size:11px;color:var(--text2)" id="statsText">Решено: 0 / 0</div>
+</div>
+</div></div>
+<div class="main">
+<div class="content" id="content"></div>
+<div class="editor-panel">
+<div class="er-bar">
+<label>Редактор кода</label>
+<div style="flex:1"></div>
+<button class="btn sm" onclick="runAndCheck()">▶ Проверить</button>
+<button class="btn outline sm" onclick="resetCode()">↺ Сброс</button>
+<button class="btn outline sm" onclick="showHint()">💡 Подсказка</button>
+</div>
+<div class="er-row">
+<div class="er-col"><textarea id="codeEditor" spellcheck="false"></textarea></div>
+<div class="er-col"><div class="out" id="output">// Напиши код и нажми "Проверить"</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-overlay" id="loginModal">
+<div class="modal">
+<h2>Вход</h2>
+<p>Email сохранит твой прогресс</p>
+<input type="email" id="loginEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()">
+<div class="merr" id="loginErr">Некорректный email</div>
+<button class="btn" onclick="doLogin()">Войти</button>
+<button class="btn outline" style="margin-top:6px" onclick="closeLogin()">Отмена</button>
+</div>
+</div>
+<script>
+const lessons = [
+{title:"Начало работы",icon:"1",tasks:[
+{name:"Компиляция",code:'#include <iostream>\n\nint main() {\n    std::cout << "Привет, мир!" << std::endl;\n    return 0;\n}',expect:"Привет, мир!",hint:'std::cout << "текст" << std::endl — вывод'},
+{name:"std::endl",code:'#include <iostream>\n\nint main() {\n    std::cout << "Строка 1" << std::endl;\n    std::cout << "Строка 2" << std::endl;\n    return 0;\n}',expect:"Строка 1\nСтрока 2",hint:'std::endl — перенос строки'}
+]},
+{title:"Переменные",icon:"2",tasks:[
+{name:"Типы переменных",code:'#include <iostream>\n\nint main() {\n    int age = 10;\n    double pi = 3.14;\n    char letter = \'A\';\n    std::string name = "Аня";\n    std::cout << age << " " << pi << " " << letter << " " << name;\n    return 0;\n}',expect:"10 3.14 A Аня",hint:'int — целое, double — дробное, string — строка'},
+{name:"Ввод данных",code:'#include <iostream>\n\nint main() {\n    int x;\n    std::cin >> x;\n    std::cout << x * 2;\n    return 0;\n}',expect:"",hint:'std::cin >> x — ввод числа. В Skulpt не работает, но идея понятна'}
+]},
+{title:"Математика",icon:"+",tasks:[
+{name:"Арифметика",code:'#include <iostream>\n\nint main() {\n    int a = 10;\n    int b = 3;\n    std::cout << a + b << std::endl;\n    std::cout << a - b << std::endl;\n    std::cout << a * b << std::endl;\n    std::cout << a / b << std::endl;\n    return 0;\n}',expect:"13\n7\n30\n3",hint:'+ - * /. int / int = int (целая часть)'},
+{name:"% остаток",code:'#include <iostream>\n\nint main() {\n    int a = 17;\n    int b = 5;\n    std::cout << a % b;\n    return 0;\n}',expect:"2",hint:'% — остаток от деления'}
+]},
+{title:"Условия if",icon:"⚖️",tasks:[
+{name:"if/else",code:'#include <iostream>\n\nint main() {\n    int age = 12;\n    if (age >= 18) {\n        std::cout << "Взрослый";\n    } else {\n        std::cout << "Ребёнок";\n    }\n    return 0;\n}',expect:"Ребёнок",hint:'if (условие) { } else { }'},
+{name:"else if",code:'#include <iostream>\n\nint main() {\n    int mark = 85;\n    if (mark >= 90) {\n        std::cout << "Отлично";\n    } else if (mark >= 70) {\n        std::cout << "Хорошо";\n    } else {\n        std::cout << "Нормально";\n    }\n    return 0;\n}',expect:"Хорошо",hint:'else if (условие) — несколько вариантов'}
+]},
+{title:"Циклы",icon:"🔄",tasks:[
+{name:"for",code:'#include <iostream>\n\nint main() {\n    for (int i = 0; i < 5; i++) {\n        std::cout << i << std::endl;\n    }\n    return 0;\n}',expect:"0\n1\n2\n3\n4",hint:'for (начало; условие; шаг) { }'},
+{name:"while",code:'#include <iostream>\n\nint main() {\n    int n = 5;\n    while (n > 0) {\n        std::cout << n << std::endl;\n        n--;\n    }\n    std::cout << "Пуск!";\n    return 0;\n}',expect:"5\n4\n3\n2\n1\nПуск!",hint:'while (условие) { } — пока верно'}
+]},
+{title:"Массивы",icon:"📋",tasks:[
+{name:"Массив",code:'#include <iostream>\n\nint main() {\n    int nums[3] = {10, 20, 30};\n    std::cout << nums[0] << std::endl;\n    std::cout << nums[2] << std::endl;\n    return 0;\n}',expect:"10\n30",hint:'int arr[N] = {…} — массив. Счёт с 0'},
+{name:"Перебор массива",code:'#include <iostream>\n\nint main() {\n    int nums[4] = {5, 10, 15, 20};\n    int sum = 0;\n    for (int i = 0; i < 4; i++) {\n        sum += nums[i];\n    }\n    std::cout << sum;\n    return 0;\n}',expect:"50",hint:'sum += nums[i] — сумма элементов'}
+]},
+{title:"Функции",icon:"⚙️",tasks:[
+{name:"Функция",code:'#include <iostream>\n\nvoid sayHello() {\n    std::cout << "Привет!" << std::endl;\n}\n\nint main() {\n    sayHello();\n    return 0;\n}',expect:"Привет!",hint:'тип имя() { } — функция. void — ничего не возвращает'},
+{name:"Функция с return",code:'#include <iostream>\n\nint square(int x) {\n    return x * x;\n}\n\nint main() {\n    std::cout << square(7);\n    return 0;\n}',expect:"49",hint:'int — возвращает число. return значение'}
+]},
+{title:"ООП",icon:"🏛️",tasks:[
+{name:"Класс",code:'#include <iostream>\n\nclass Cat {\npublic:\n    std::string name;\n    void meow() {\n        std::cout << name << ": Мяу!";\n    }\n};\n\nint main() {\n    Cat cat;\n    cat.name = "Барсик";\n    cat.meow();\n    return 0;\n}',expect:"Барсик: Мяу!",hint:'class Имя { public: … }; — класс'},
+{name:"Конструктор",code:'#include <iostream>\n\nclass Dog {\npublic:\n    std::string name;\n    Dog(std::string n) {\n        name = n;\n    }\n    void bark() {\n        std::cout << name << ": Гав!";\n    }\n};\n\nint main() {\n    Dog dog("Рекс");\n    dog.bark();\n    return 0;\n}',expect:"Рекс: Гав!",hint:'Конструктор — функция с именем класса'}
+]},
+{title:"STL",icon:"📦",tasks:[
+{name:"Vector",code:'#include <iostream>\n#include <vector>\n\nint main() {\n    std::vector<int> nums = {1, 2, 3};\n    nums.push_back(4);\n    std::cout << nums.size();\n    return 0;\n}',expect:"4",hint:'vector — динамический массив. push_back — добавить'},
+{name:"string методы",code:'#include <iostream>\n#include <string>\n\nint main() {\n    std::string s = "Привет";\n    std::cout << s.length() << std::endl;\n    std::cout << s[0];\n    return 0;\n}',expect:"6\nП",hint:'s.length() — длина. s[0] — первый символ'}
+]}
+];
+let curLesson=0,curTask=0;
+let userEmail=localStorage.getItem('cpp_email')||'';
+let dark=localStorage.getItem('cpp_theme')==='dark';
+let progress=JSON.parse(localStorage.getItem('cpp_progress')||'{}');
+if(dark)document.body.classList.add('dark');
+updateThemeBtn();updateUserUI();
+function stats(){let t=0,d=0;lessons.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
+function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem('cpp_progress',JSON.stringify(progress));updateStats();}
+let openLesson=-1;
+function renderSidebar(){const el=document.getElementById('lessonList');let h='';lessons.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;const o=openLesson===li;h+=`<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson(${li})"><span class="arr ${o?'open':''}">▶</span>${l.icon}. ${l.title}<span class="cnt">${ld}/${l.tasks.length}</span></div><div class="lgrp-body ${o?'open':''}">`;l.tasks.forEach((t,ti)=>{const a=li===curLesson&&ti===curTask;const dn=progress[li+'_'+ti];h+=`<div class="ltask ${a?'active':''}" onclick="selectTask(${li},${ti})"><span class="dot ${dn?'done':''}"></span>${ti+1}. ${t.name}</div>`;});h+=`</div></div>`;});el.innerHTML=h;}
+function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar();}
+function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;renderSidebar();renderContent();loadCode();updateBread();document.getElementById('resBan').className='res-ban';}
+function renderContent(){const c=document.getElementById('content');const l=lessons[curLesson];const t=l.tasks[curTask];let h=`<h2>${l.title}</h2><div class="task-bar">`;l.tasks.forEach((ta,idx)=>{let cl='tb'+(idx===curTask?' active':'')+(progress[curLesson+'_'+idx]?' done':'');h+=`<button class="${cl}" onclick="selectTask(${curLesson},${idx})">${idx+1}. ${ta.name}</button>`;});h+=`</div><div class="task-box"><h4>Задание ${curLesson+1}.${curTask+1}: ${t.name}</h4>${renderTheory(getTheory(curLesson,curTask))}<div class="res-ban" id="resBan"></div></div>`;c.innerHTML=h;}
+const theories={
+"0_0":"## Первая программа на C++\n\nC++ — мощный язык. Программа начинается с `main()`.\n\n```cpp\n#include <iostream>\n\nint main() {\n    // твой код\n    return 0;\n}\n```\n\n- `#include <iostream>` — подключаем библиотеку ввода/вывода\n- `std::cout` — вывод на экран\n- `<<` — передать данные\n- `std::endl` — новая строка\n- `return 0;` — программа завершилась успешно",
+"0_1":"## std::endl\n\n`std::endl` — это перенос строки.\n\nКаждый `std::cout << ... << std::endl` — новая строка.",
+"1_0":"## Типы данных\n\nC++ — язык со строгой типизацией. У каждой переменной есть тип.\n\n- `int` — целое число\n- `double` — дробное\n- `char` — один символ\n- `std::string` — строка (нужен `#include <string>`)",
+"1_1":"## std::cin\n\n`std::cin >> x` — считывает число с клавиатуры.\n\n> ⚠️ В браузерном редакторе ввод не работает, но в настоящем C++ — работает!",
+"2_0":"## Арифметика\n\n- `+` сложение\n- `-` вычитание\n- `*` умножение\n- `/` деление\n\nВажно: `int / int` = `int`. Дробная часть отбрасывается! `10 / 3 = 3`",
+"2_1":"## Остаток %\n\n`a % b` — остаток от деления. `17 % 5 = 2`, потому что 17 = 3*5 + 2.",
+"3_0":"## if/else\n\n```cpp\nif (условие) {\n    // если верно\n} else {\n    // иначе\n}\n```\n\nЗнаки: `==`, `!=`, `>`, `<`, `>=`, `<=`",
+"3_1":"## else if\n\n`else if` — ещё одно условие. Можно несколько подряд.",
+"4_0":"## for\n\n```cpp\nfor (начало; условие; шаг) {\n    // тело\n}\n```\n\n`for (int i = 0; i < 5; i++)` — i от 0 до 4.",
+"4_1":"## while\n\n`while (условие) { }` — повторяет, пока условие верно.",
+"5_0":"## Массивы\n\nМассив — набор элементов одного типа.\n\n`int nums[3] = {10, 20, 30};`\n\nСчёт с 0: `nums[0]` — первый.",
+"5_1":"## Перебор массива\n\n`sum += nums[i]` — добавляем элемент к сумме.",
+"6_0":"## Функции\n\n`void имя()` — функция, ничего не возвращает.\n\n`int имя()` — возвращает число через `return`.",
+"7_0":"## Классы\n\nКласс — чертёж объекта. У него есть поля (данные) и методы (действия).",
+"7_1":"## Конструктор\n\nКонструктор — особая функция, вызывается при создании объекта.",
+"8_0":"## vector\n\n`std::vector` — динамический массив из STL.\n\n- `push_back(x)` — добавить в конец\n- `size()` — размер",
+"8_1":"## string\n\n`std::string` — строка. `length()` — длина, `s[0]` — первый символ."
+};
+function getTheory(li,ti){return theories[li+'_'+ti]||"## Задание\n\nНапиши код, который выводит ожидаемый результат.";}
+function renderTheory(md){let html='',lines=md.split('\n'),inCode=false,cl=[];let th=[],ta=[],tal=[];for(let i=0;i<lines.length;i++){const l=lines[i];if(l.startsWith('```')){if(inCode){html+='<pre><code>'+esc(cl.join('\n'))+'</code></pre>';cl=[];inCode=false;}else inCode=true;continue;}if(inCode){cl.push(l);continue;}if(l.startsWith('|')&&l.endsWith('|')){const p=l.split('|').filter(x=>x.trim());if(l.includes('---')){tal=p.map(x=>x.includes(':')?'center':'left');continue;}if(!th.length)th=p;else ta.push(p);continue;}else if(th.length){html+=buildT(th,tal,ta);th=[];ta=[];}if(l.startsWith('## '))html+=`<h3>${l.slice(3)}</h3>`;else if(l.startsWith('> '))html+=`<div class="info">${inline(l.slice(2))}</div>`;else if(l.startsWith('- '))html+=`<li style="margin:2px 0;color:var(--text2);font-size:13px">${inline(l.slice(2))}</li>`;else if(l.trim()==='')html+='<br>';else html+=`<p style="font-size:14px">${inline(l)}</p>`;}if(inCode)html+='<pre><code>'+esc(cl.join('\n'))+'</code></pre>';if(th.length)html+=buildT(th,tal,ta);return html;}
+function buildT(hd,al,rows){let h='<table style="width:100%;border-collapse:collapse;margin:6px 0;font-size:13px"><thead><tr>';hd.forEach((c,i)=>{h+=`<th style="border:1px solid var(--border);padding:5px;background:var(--code-bg);color:var(--accent);text-align:${al[i]||'left'}">${c}</th>`;});h+='</tr></thead><tbody>';rows.forEach(r=>{h+='<tr>';r.forEach((c,i)=>{h+=`<td style="border:1px solid var(--border);padding:5px;color:var(--text2);text-align:${al[i]||'left'}">${inline(c)}</td>`;});h+='</tr>';});h+='</tbody></table>';return h;}
+function inline(t){return t.replace(/\`([^`]+)\`/g,'<code style="background:var(--code-bg);padding:1px 5px;border-radius:3px;color:var(--accent);font-size:13px">$1</code>');}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function normalize(s){return s.replace(/\s+$/gm,'').replace(/^\s+/gm,'').replace(/[\r\n]+/g,'\n').trim();}
+function runAndCheck(){const code=document.getElementById('codeEditor').value;const out=document.getElementById('output');const ban=document.getElementById('resBan');const t=lessons[curLesson].tasks[curTask];out.textContent='';out.className='out';ban.className='res-ban';
+if(!t.expect){ban.textContent='Код написан! Запусти в настоящем компиляторе (например, onlinegdb.com)';ban.className='res-ban ok';return;}
+// C++ не выполняется в браузере — просто показываем ожидаемый результат
+out.textContent='// C++ не выполняется в браузере.\n// Ожидаемый вывод:\n'+t.expect;
+ban.textContent='C++ запускается только в компиляторе. Сравни со своим кодом!';
+ban.className='res-ban ok';}
+function loadCode(){document.getElementById('codeEditor').value=lessons[curLesson].tasks[curTask].code;document.getElementById('output').textContent='// Напиши код и нажми "Проверить"';document.getElementById('output').className='out';}
+function resetCode(){loadCode();document.getElementById('resBan').className='res-ban';}
+function showHint(){const t=lessons[curLesson].tasks[curTask];document.getElementById('output').textContent='💡 Подсказка: '+t.hint;document.getElementById('output').className='out';}
+function goHome(){selectTask(0,0);}
+function updateBread(){document.getElementById('hBread').textContent=`Урок ${curLesson+1} — Зад. ${curLesson+1}.${curTask+1}`;}
+function openLogin(){if(userEmail){logout();return;}document.getElementById('loginModal').classList.add('open');document.getElementById('loginEmail').value='';setTimeout(()=>document.getElementById('loginEmail').focus(),100);}
+function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
+function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('cpp_email',email);const s=localStorage.getItem('cpp_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('cpp_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
+function logout(){userEmail='';localStorage.removeItem('cpp_email');localStorage.removeItem('cpp_progress');progress={};updateUserUI();updateStats();}
+function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();em.textContent=userEmail;}else{av.textContent='?';em.textContent='';}}
+function toggleTheme(){dark=!dark;document.body.classList.toggle('dark',dark);localStorage.setItem('cpp_theme',dark?'dark':'light');updateThemeBtn();}
+function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
+renderSidebar();renderContent();loadCode();updateBread();updateStats();
+</script>
+</body>
+</html>

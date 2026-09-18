@@ -1,0 +1,6 @@
+.env
+.gitignore
+data/
+*.md
+api/test_smtp.js
+api/_smtptest.js

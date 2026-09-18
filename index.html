@@ -170,22 +170,49 @@ LingX v1.0 — учись программировать
 
 <div class="settings-modal" id="loginModal">
 <div class="settings-window">
-<h3>Вход по email</h3>
-<p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Настройки и прогресс сохранятся в твоём браузере</p>
-<input type="email" id="loginEmail" placeholder="email@example.com" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()">
-<div style="color:#ef4444;font-size:12px;margin-top:6px;display:none" id="loginErr">Некорректный email</div>
+<h3 id="loginTitle">Вход</h3>
+<p style="font-size:13px;color:#94a3b8;margin-bottom:16px" id="loginDesc">Введи email и пароль</p>
+<input type="email" id="loginEmail" placeholder="Email" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px;margin-bottom:8px" autocomplete="email">
+<input type="password" id="loginPass" placeholder="Пароль (мин. 6 символов)" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px;margin-bottom:8px" autocomplete="new-password">
+<input type="text" id="loginCode" placeholder="Код из письма" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px;display:none;margin-bottom:8px">
+<div style="color:#ef4444;font-size:12px;margin-top:6px;display:none" id="loginErr"></div>
 <div style="display:flex;gap:8px;margin-top:14px">
-<button class="set-btn" style="flex:1;padding:10px" onclick="doLogin()">Войти</button>
+<button class="set-btn" style="flex:1;padding:10px" id="loginSubmitBtn" onclick="submitLogin()">Войти</button>
 <button class="set-btn" style="flex:1;padding:10px" onclick="closeLogin()">Отмена</button>
+</div>
+<div style="margin-top:10px;text-align:center">
+<button class="set-btn" id="loginToggleBtn" style="padding:6px 12px;font-size:12px" onclick="toggleLoginMode()">Нет аккаунта? Зарегистрироваться</button>
 </div>
 </div>
 </div>
 
 <script>
 let darkTheme=localStorage.getItem('lingx_theme')==='dark';
+let token=localStorage.getItem('lingx_token')||'';
 let userEmail=localStorage.getItem('lingx_email')||'';
+let isRegMode=false;
 applyTheme();
 updateSettingsUI();
+checkSession();
+
+const API=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'http://localhost:3000/api':'/api';
+
+function api(path, body){
+return fetch(API+path,{
+method:body?'POST':'GET',
+headers:{'Content-Type':'application/json'},
+body:body?JSON.stringify(body):undefined
+}).then(r=>r.json());
+}
+
+async function checkSession(){
+if(!token)return;
+const r=await fetch(API+'/me?token='+encodeURIComponent(token));
+if(r.ok){
+const d=await r.json();
+if(d.ok&&d.user){userEmail=d.user.email;localStorage.setItem('lingx_email',userEmail);updateSettingsUI();}
+}
+}
 
 function toggleMenu(){
 document.getElementById('menuOverlay').classList.toggle('open');
@@ -218,6 +245,17 @@ if(cb)cb.checked=is;
 }
 function openLogin(){
 closeSettings();
+isRegMode=false;
+document.getElementById('loginTitle').textContent='Вход';
+document.getElementById('loginDesc').textContent='Введи email и пароль';
+document.getElementById('loginPass').style.display='block';
+document.getElementById('loginCode').style.display='none';
+document.getElementById('loginToggleBtn').textContent='Нет аккаунта? Зарегистрироваться';
+document.getElementById('loginSubmitBtn').textContent='Войти';
+document.getElementById('loginErr').style.display='none';
+document.getElementById('loginEmail').value='';
+document.getElementById('loginPass').value='';
+document.getElementById('loginCode').value='';
 const modal=document.getElementById('loginModal');
 modal.classList.add('open');
 setTimeout(()=>document.getElementById('loginEmail').focus(),100);
@@ -225,21 +263,72 @@ setTimeout(()=>document.getElementById('loginEmail').focus(),100);
 function closeLogin(){
 document.getElementById('loginModal').classList.remove('open');
 }
-function doLogin(){
-const email=document.getElementById('loginEmail').value.trim();
-if(!email||!email.includes('@')||!email.includes('.')){
-document.getElementById('loginErr').style.display='block';
+function toggleLoginMode(){
+isRegMode=!isRegMode;
+document.getElementById('loginTitle').textContent=isRegMode?'Регистрация':'Вход';
+document.getElementById('loginDesc').textContent=isRegMode?'Придумай пароль и подтверди email':'Введи email и пароль';
+document.getElementById('loginPass').style.display='block';
+document.getElementById('loginCode').style.display='none';
+document.getElementById('loginSubmitBtn').textContent=isRegMode?'Зарегистрироваться':'Войти';
+document.getElementById('loginToggleBtn').textContent=isRegMode?'Уже есть аккаунт? Войти':'Нет аккаунта? Зарегистрироваться';
+document.getElementById('loginErr').style.display='none';
+}
+function showCodeInput(){
+document.getElementById('loginTitle').textContent='Подтверждение';
+document.getElementById('loginDesc').textContent='Введи код из письма';
+document.getElementById('loginCode').style.display='block';
+document.getElementById('loginCode').focus();
+document.getElementById('loginPass').style.display='none';
+document.getElementById('loginSubmitBtn').textContent='Подтвердить';
+document.getElementById('loginToggleBtn').style.display='none';
+document.getElementById('loginErr').style.display='none';
+}
+async function submitLogin(){
+const err=document.getElementById('loginErr');
+err.style.display='none';
+const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+const password=document.getElementById('loginPass').value;
+const code=document.getElementById('loginCode').value.trim();
+if(!email||!email.includes('@')){err.textContent='Некорректный email';err.style.display='block';return;}
+if(isRegMode){
+if(password.length<6){err.textContent='Пароль минимум 6 символов';err.style.display='block';return;}
+const name=email.split('@')[0];
+const r=await api('/register',{email,password,name});
+if(r.error){err.textContent=r.error;err.style.display='block';return;}
+showCodeInput();
 return;
 }
-document.getElementById('loginErr').style.display='none';
-userEmail=email;
-localStorage.setItem('lingx_email',email);
-closeLogin();
-updateSettingsUI();
+if(document.getElementById('loginCode').style.display!=='none'&&code){
+// submitting code verification
+const r=await api('/verify',{email,code});
+if(r.error){err.textContent=r.error;err.style.display='block';return;}
+if(r.token){token=r.token;userEmail=r.user.email;
+localStorage.setItem('lingx_token',token);
+localStorage.setItem('lingx_email',userEmail);
+closeLogin();updateSettingsUI();return;}
+}
+await loginWithPassword(email,password);
+}
+async function loginWithPassword(email,password){
+const err=document.getElementById('loginErr');
+if(!password||password.length<6){err.textContent='Введи пароль';err.style.display='block';return;}
+const r=await api('/login',{email,password});
+if(r.error){
+if(r.needCode){
+// needs code verification
+const cr=await api('/register',{email,password,name:email.split('@')[0]});
+if(cr.ok){showCodeInput();return;}
+}
+err.textContent=r.error;err.style.display='block';return;
+}
+if(r.token){token=r.token;userEmail=r.user.email;
+localStorage.setItem('lingx_token',token);
+localStorage.setItem('lingx_email',userEmail);
+closeLogin();updateSettingsUI();}
 }
 function logout(){
-userEmail='';
-localStorage.removeItem('lingx_email');
+token='';userEmail='';
+localStorage.removeItem('lingx_token');localStorage.removeItem('lingx_email');
 updateSettingsUI();
 }
 function updateSettingsUI(){
@@ -262,7 +351,7 @@ const loginBtns=document.querySelectorAll('.login-toggle-btn');
 loginBtns.forEach(b=>b.textContent='Войти');
 }
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='Enter'&&document.getElementById('loginModal').classList.contains('open'))submitLogin();});
 </script>
 </body>
 </html>

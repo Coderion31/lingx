@@ -13,11 +13,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
 .menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
 .menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
-.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;align-items:flex-start;justify-content:center;padding:80px 16px 20px;border:1px solid rgba(255,255,255,0.08)}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
 .menu-overlay.open{transform:translateX(0)}
 .menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
 .menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
 .menu-items a:hover{background:rgba(255,255,255,0.1)}
+.menu-bottom{margin-top:auto;width:100%}
+.menu-settings{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:15px;font-weight:500;transition:.3s}
+.menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
+.menu-settings .gear{font-size:18px}
 header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
 header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 header p{color:#94a3b8;font-size:13px;margin-top:3px}
@@ -37,6 +41,20 @@ header p{color:#94a3b8;font-size:13px;margin-top:3px}
 .tag.yellow{background:rgba(250,204,21,0.15);color:#fde047}
 .tag.pink{background:rgba(244,114,182,0.15);color:#f9a8d4}
 footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1px solid #334155}
+.settings-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px)}
+.settings-modal.open{display:flex}
+.settings-window{background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:28px;width:320px;border:1px solid rgba(255,255,255,0.1)}
+.settings-window h3{font-size:18px;margin-bottom:20px;color:#e2e8f0}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.set-row label{font-size:15px;color:#cbd5e1}
+.toggle{position:relative;width:44px;height:24px;cursor:pointer}
+.toggle input{display:none}
+.sli{position:absolute;inset:0;background:rgba(255,255,255,0.15);border-radius:12px;transition:.3s}
+.toggle input:checked+.sli{background:#60a5fa}
+.sli::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s}
+.toggle input:checked+.sli::before{transform:translateX(20px)}
+.set-close{width:100%;margin-top:20px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;transition:.3s}
+.set-close:hover{background:rgba(255,255,255,0.12);color:#fff}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:540px){.grid{grid-template-columns:1fr}}
 </style>
@@ -63,6 +81,9 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 <a href="html/">HTML</a>
 <a href="css/">CSS</a>
 <a href="js/">JavaScript</a>
+</div>
+<div class="menu-bottom">
+<button class="menu-settings" onclick="openSettings()">⚙️ <span>Настройки</span></button>
 </div>
 </div>
 
@@ -113,12 +134,54 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 </div>
 </div>
 <footer>LingX — учись программировать бесплатно</footer>
+
+<div class="settings-modal" id="settingsModal">
+<div class="settings-window">
+<h3>⚙️ Настройки</h3>
+<div class="set-row">
+<label>Тёмная тема</label>
+<label class="toggle"><input type="checkbox" id="themeCheck" onchange="toggleTheme()"><span class="sli"></span></label>
+</div>
+<button class="set-close" onclick="closeSettings()">Закрыть</button>
+</div>
+</div>
+
 <script>
+let darkTheme=localStorage.getItem('lingx_theme')==='dark';
+applyTheme();
+
 function toggleMenu(){
 document.getElementById('menuOverlay').classList.toggle('open');
 }
 function closeMenu(){
 document.getElementById('menuOverlay').classList.remove('open');
+}
+function openSettings(){
+closeMenu();
+document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettings(){
+document.getElementById('settingsModal').classList.remove('open');
+}
+function toggleTheme(){
+darkTheme=!darkTheme;
+localStorage.setItem('lingx_theme',darkTheme?'dark':'light');
+applyTheme();
+}
+function applyTheme(){
+const light='#f8fafc', dark='#0f172a', lightCard='#ffffff', darkCard='#1e293b', lightText='#1e293b', darkText='#e2e8f0', lightText2='#475569', darkText2='#94a3b8';
+const is=darkTheme;
+document.body.style.background=is?dark:light;
+document.body.style.color=is?darkText:lightText;
+document.querySelectorAll('.card').forEach(c=>{
+c.style.background=is?darkCard:lightCard;
+c.style.color=is?darkText:lightText;
+});
+document.querySelectorAll('.card p').forEach(p=>p.style.color=is?darkText2:lightText2);
+document.querySelectorAll('.card .icon').forEach(c=>c.style.background='#fff');
+document.querySelectorAll('footer').forEach(f=>{f.style.color=is?darkText2:lightText2;f.style.borderTopColor='rgba(255,255,255,0.1)'});
+const cb=document.getElementById('themeCheck');
+if(cb)cb.checked=is;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 </script>

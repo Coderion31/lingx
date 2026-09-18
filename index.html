@@ -16,10 +16,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
 .menu-overlay.open{transform:translateX(0)}
 .menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
-.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
+.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
 .menu-items a:hover{background:rgba(255,255,255,0.1)}
 .menu-bottom{margin-top:auto;width:100%}
-.menu-settings{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:15px;font-weight:500;transition:.3s}
+.menu-settings{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:15px;font-weight:500;transition:.3s}
 .menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
 .menu-settings .gear{font-size:18px}
 header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
@@ -53,8 +53,10 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 .toggle input:checked+.sli{background:#60a5fa}
 .sli::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s}
 .toggle input:checked+.sli::before{transform:translateX(20px)}
-.set-close{width:100%;margin-top:20px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;transition:.3s}
+.set-close{width:100%;margin-top:20px;padding:10px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;transition:.3s}
 .set-close:hover{background:rgba(255,255,255,0.12);color:#fff}
+.set-btn{padding:6px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:13px;transition:.3s}
+.set-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:540px){.grid{grid-template-columns:1fr}}
 </style>
@@ -142,13 +144,39 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 <label>Тёмная тема</label>
 <label class="toggle"><input type="checkbox" id="themeCheck" onchange="toggleTheme()"><span class="sli"></span></label>
 </div>
-<button class="set-close" onclick="closeSettings()">Закрыть</button>
+<div class="set-row">
+<label>Вход по email</label>
+<button class="set-btn" onclick="closeSettings();openLogin()">Войти</button>
+</div>
+<div class="set-row" id="emailRow" style="display:none">
+<label id="emailLabel"></label>
+<button class="set-btn" onclick="closeSettings();logout()">Выйти</button>
+</div>
+<div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:#64748b;text-align:center">
+LingX v1.0 — учись программировать
+</div>
+<button class="set-close" onclick="closeSettings()">Готово</button>
+</div>
+</div>
+
+<div class="settings-modal" id="loginModal">
+<div class="settings-window">
+<h3>👤 Вход</h3>
+<p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Введи email — настройки и прогресс сохранятся</p>
+<input type="email" id="loginEmail" placeholder="email@example.com" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()">
+<div style="color:#ef4444;font-size:12px;margin-top:6px;display:none" id="loginErr">Некорректный email</div>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button class="set-btn" style="flex:1;padding:10px" onclick="doLogin()">Войти</button>
+<button class="set-btn" style="flex:1;padding:10px" onclick="closeLogin()">Отмена</button>
+</div>
 </div>
 </div>
 
 <script>
 let darkTheme=localStorage.getItem('lingx_theme')==='dark';
+let userEmail=localStorage.getItem('lingx_email')||'';
 applyTheme();
+updateSettingsUI();
 
 function toggleMenu(){
 document.getElementById('menuOverlay').classList.toggle('open');
@@ -159,6 +187,7 @@ document.getElementById('menuOverlay').classList.remove('open');
 function openSettings(){
 closeMenu();
 document.getElementById('settingsModal').classList.add('open');
+updateSettingsUI();
 }
 function closeSettings(){
 document.getElementById('settingsModal').classList.remove('open');
@@ -169,19 +198,53 @@ localStorage.setItem('lingx_theme',darkTheme?'dark':'light');
 applyTheme();
 }
 function applyTheme(){
-const light='#f8fafc', dark='#0f172a', lightCard='#ffffff', darkCard='#1e293b', lightText='#1e293b', darkText='#e2e8f0', lightText2='#475569', darkText2='#94a3b8';
 const is=darkTheme;
-document.body.style.background=is?dark:light;
-document.body.style.color=is?darkText:lightText;
-document.querySelectorAll('.card').forEach(c=>{
-c.style.background=is?darkCard:lightCard;
-c.style.color=is?darkText:lightText;
-});
-document.querySelectorAll('.card p').forEach(p=>p.style.color=is?darkText2:lightText2);
+document.body.style.background=is?'#0f172a':'#f8fafc';
+document.body.style.color=is?'#e2e8f0':'#1e293b';
+document.querySelectorAll('.card').forEach(c=>{c.style.background=is?'#1e293b':'#fff';c.style.color=is?'#e2e8f0':'#1e293b'});
+document.querySelectorAll('.card p').forEach(p=>p.style.color=is?'#94a3b8':'#475569');
 document.querySelectorAll('.card .icon').forEach(c=>c.style.background='#fff');
-document.querySelectorAll('footer').forEach(f=>{f.style.color=is?darkText2:lightText2;f.style.borderTopColor='rgba(255,255,255,0.1)'});
 const cb=document.getElementById('themeCheck');
 if(cb)cb.checked=is;
+}
+function openLogin(){
+closeSettings();
+const modal=document.getElementById('loginModal');
+modal.classList.add('open');
+setTimeout(()=>document.getElementById('loginEmail').focus(),100);
+}
+function closeLogin(){
+document.getElementById('loginModal').classList.remove('open');
+}
+function doLogin(){
+const email=document.getElementById('loginEmail').value.trim();
+if(!email||!email.includes('@')||!email.includes('.')){
+document.getElementById('loginErr').style.display='block';
+return;
+}
+document.getElementById('loginErr').style.display='none';
+userEmail=email;
+localStorage.setItem('lingx_email',email);
+closeLogin();
+updateSettingsUI();
+}
+function logout(){
+userEmail='';
+localStorage.removeItem('lingx_email');
+updateSettingsUI();
+}
+function updateSettingsUI(){
+const emailRow=document.getElementById('emailRow');
+const emailLabel=document.getElementById('emailLabel');
+const loginBtn=document.querySelector('.set-row .set-btn');
+if(userEmail){
+emailRow.style.display='flex';
+emailLabel.textContent=userEmail;
+if(loginBtn)loginBtn.textContent='Выйти';
+} else {
+emailRow.style.display='none';
+if(loginBtn)loginBtn.textContent='Войти';
+}
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 </script>

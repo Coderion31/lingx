@@ -21,6 +21,17 @@
       "createdAt": "2026-09-18T17:23:15.317Z",
       "lastLogin": null,
       "progress": {}
+    },
+    "serg035g@yandex.ru": {
+      "email": "serg035g@yandex.ru",
+      "name": "serg035g",
+      "verified": false,
+      "createdAt": "2026-09-18T17:35:56.241Z",
+      "progress": {},
+      "code": "310124",
+      "codeExpires": 1789753556241,
+      "confirmToken": "367b5a085b94c66c9c9a0f95cbcafd42cf432d453c94c19c",
+      "confirmExpires": 1789839356241
     }
   }
 }

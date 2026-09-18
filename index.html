@@ -18,8 +18,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
 .menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
 .menu-items a:hover{background:rgba(255,255,255,0.1)}
-.menu-bottom{margin-top:auto;width:100%}
-.menu-settings{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:15px;font-weight:500;transition:.3s}
+.menu-bottom{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:8px}
+.menu-account{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08)}
+.acc-avatar{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#e2e8f0;font-size:13px;font-weight:600;flex-shrink:0}
+.acc-info{display:flex;flex-direction:column;overflow:hidden}
+.acc-info span:first-child{font-size:13px;font-weight:500;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-info span:last-child{font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
 .menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
 .menu-settings .gear{font-size:18px}
 header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
@@ -85,7 +90,11 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 <a href="js/">JavaScript</a>
 </div>
 <div class="menu-bottom">
-<button class="menu-settings" onclick="openSettings()">⚙️ <span>Настройки</span></button>
+<div class="menu-account" id="menuAccount" style="display:none">
+<div class="acc-avatar" id="accAvatar"></div>
+<div class="acc-info"><span id="accName">Email</span><span id="accEmail"></span></div>
+</div>
+<button class="menu-settings" onclick="openSettings()">Настройки</button>
 </div>
 </div>
 
@@ -139,7 +148,7 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 
 <div class="settings-modal" id="settingsModal">
 <div class="settings-window">
-<h3>⚙️ Настройки</h3>
+<h3>Настройки</h3>
 <div class="set-row">
 <label>Тёмная тема</label>
 <label class="toggle"><input type="checkbox" id="themeCheck" onchange="toggleTheme()"><span class="sli"></span></label>
@@ -161,8 +170,8 @@ LingX v1.0 — учись программировать
 
 <div class="settings-modal" id="loginModal">
 <div class="settings-window">
-<h3>👤 Вход</h3>
-<p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Введи email — настройки и прогресс сохранятся</p>
+<h3>Вход по email</h3>
+<p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Настройки и прогресс сохранятся в твоём браузере</p>
 <input type="email" id="loginEmail" placeholder="email@example.com" style="width:100%;padding:10px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#e2e8f0;outline:none;font-size:14px" onkeydown="if(event.key==='Enter')doLogin()">
 <div style="color:#ef4444;font-size:12px;margin-top:6px;display:none" id="loginErr">Некорректный email</div>
 <div style="display:flex;gap:8px;margin-top:14px">
@@ -236,14 +245,21 @@ updateSettingsUI();
 function updateSettingsUI(){
 const emailRow=document.getElementById('emailRow');
 const emailLabel=document.getElementById('emailLabel');
-const loginBtn=document.querySelector('.set-row .set-btn');
+const accBox=document.getElementById('menuAccount');
+const accAvatar=document.getElementById('accAvatar');
+const accName=document.getElementById('accName');
+const accEmail=document.getElementById('accEmail');
 if(userEmail){
-emailRow.style.display='flex';
-emailLabel.textContent=userEmail;
-if(loginBtn)loginBtn.textContent='Выйти';
+if(emailRow)emailRow.style.display='flex';
+if(emailLabel)emailLabel.textContent=userEmail;
+if(accBox){accBox.style.display='flex';accAvatar.textContent=userEmail[0].toUpperCase();accName.textContent=userEmail.split('@')[0];accEmail.textContent=userEmail;}
+const loginBtns=document.querySelectorAll('.login-toggle-btn');
+loginBtns.forEach(b=>b.textContent='Выйти');
 } else {
-emailRow.style.display='none';
-if(loginBtn)loginBtn.textContent='Войти';
+if(emailRow)emailRow.style.display='none';
+if(accBox)accBox.style.display='none';
+const loginBtns=document.querySelectorAll('.login-toggle-btn');
+loginBtns.forEach(b=>b.textContent='Войти');
 }
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});

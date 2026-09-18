@@ -10,6 +10,17 @@
       "createdAt": "2026-09-18T17:22:06.159Z",
       "lastLogin": null,
       "progress": {}
+    },
+    "l9204644@xmail.ru": {
+      "email": "l9204644@xmail.ru",
+      "name": "l9204644",
+      "passwordHash": "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
+      "verified": false,
+      "code": "234517",
+      "codeExpires": 1789752795317,
+      "createdAt": "2026-09-18T17:23:15.317Z",
+      "lastLogin": null,
+      "progress": {}
     }
   }
 }

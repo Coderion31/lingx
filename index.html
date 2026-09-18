@@ -364,13 +364,12 @@ loginBtns.forEach(b=>b.textContent='Войти');
 }
 }
 async function sendConfirmLink(){
-if(!userEmail)return;
+if(!userEmail||!token)return;
 const btn=document.getElementById('verifyBtn');
 btn.textContent='Отправка...';
-const r=await api('/send-code',{email:userEmail});
-btn.textContent='Ссылка отправлена ✓';
+const r=await api('/send-confirm',{email:userEmail,token});
+btn.textContent=r.ok?'Ссылка отправлена ✓':'Ошибка';
 setTimeout(()=>{btn.textContent=userVerified?'Отправить ссылку снова':'Подтвердить email';},3000);
-if(r.error){btn.textContent='Ошибка: '+r.error;}
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='Enter'&&document.getElementById('loginModal').classList.contains('open'))stepLogin();});
 </script>

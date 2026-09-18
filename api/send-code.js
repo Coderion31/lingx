@@ -1,8 +1,7 @@
 // POST /api/send-code {email}
-// Creates/updates pending user, sends 6-digit code + confirmation link.
+// Sends only the 6-digit login code. No confirm link in this email.
 const { readDb, writeDb } = require('./_db');
-const { sendVerification } = require('./_mail');
-const crypto = require('crypto');
+const { sendLoginCode } = require('./_mail');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method' });
@@ -16,7 +15,6 @@ module.exports = async function handler(req, res) {
     db.users = db.users || {};
     const now = Date.now();
     const code = String(Math.floor(100000 + Math.random() * 900000));
-    const confirmToken = crypto.randomBytes(24).toString('hex');
 
     const existing = db.users[email];
     const user = existing || {
@@ -28,25 +26,18 @@ module.exports = async function handler(req, res) {
     };
     user.code = code;
     user.codeExpires = now + 10 * 60 * 1000;
-    user.confirmToken = confirmToken;
-    user.confirmExpires = now + 24 * 60 * 60 * 1000;
     db.users[email] = user;
     await writeDb(db);
 
-    // Build confirm link based on request host (works on Vercel + local)
-    const host = req.headers['x-forwarded-host'] || req.headers['host'] || 'lingx.vercel.app';
-    const link = `${req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'https'}://${host}/api/confirm?email=${encodeURIComponent(email)}&t=${confirmToken}`;
-
     try {
-      await sendVerification(email, code, link);
+      await sendLoginCode(email, code);
     } catch (e) {
       delete db.users[email];
       await writeDb(db);
       return res.status(500).json({ error: 'Не удалось отправить письмо. Проверь SMTP-настройки' });
     }
 
-    const isNew = !existing;
-    res.json({ ok: true, message: 'Код отправлен на почту', email, isNew });
+    res.json({ ok: true, message: 'Код отправлен на почту', email, isNew: !existing });
   } catch (e) {
     res.status(500).json({ error: 'Server error: ' + e.message });
   }

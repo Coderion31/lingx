@@ -5,11 +5,12 @@
       "name": "bunseriy",
       "passwordHash": "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
       "verified": false,
-      "code": "130973",
-      "codeExpires": 1789754300195,
       "createdAt": "2026-09-18T17:22:06.159Z",
-      "lastLogin": null,
-      "progress": {}
+      "lastLogin": "2026-09-18T17:48:39.263Z",
+      "progress": {},
+      "tokens": {
+        "6be25619b625d8b1d3e82ec9bcaacd4c7cc8ef1ffff16683d92476eed06d1f7e": 1792345719263
+      }
     },
     "l9204644@xmail.ru": {
       "email": "l9204644@xmail.ru",

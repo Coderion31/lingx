@@ -6,7 +6,22 @@
 <title>Python Academy</title>
 <script src="https://skulpt.org/js/skulpt.min.js"></script>
 <script src="https://skulpt.org/js/skulpt-stdlib.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
 <style>
+.CodeMirror{height:100%!important;font-family:'Consolas','Courier New',monospace!important;font-size:13px!important;border-radius:5px;background:var(--editor-bg)!important;color:var(--text)!important}
+.CodeMirror-gutters{background:var(--editor-bg)!important;border-right:1px solid var(--border)!important}
+.CodeMirror-cursor{border-color:var(--accent)!important}
+.cm-s-default .cm-keyword{color:#c792ea!important}
+.cm-s-default .cm-builtin{color:#82aaff!important}
+.cm-s-default .cm-string{color:#c3e88d!important}
+.cm-s-default .cm-number{color:#f78c6c!important}
+.cm-s-default .cm-comment{color:#546e7a!important;font-style:italic}
+.cm-s-default .cm-def{color:#82aaff!important;font-weight:600}
+.dark .CodeMirror{background:#0d1117!important;color:#e2e8f0!important}
+.dark .CodeMirror-gutters{background:#0d1117!important;border-color:#334155!important}
+.dark .CodeMirror-activeline-background{background:rgba(255,255,255,0.04)!important}
 :root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--shadow:rgba(0,0,0,0.3);--editor-bg:#1a2332;--header-bg:#1a2332}
 .light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -147,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button class="btn outline sm" onclick="showHint()">💡 Подсказка</button>
 </div>
 <div class="er-row">
-<div class="er-col"><textarea id="codeEditor" spellcheck="false"></textarea></div>
+<div class="er-col"><div id="codeEditor" class="cm-wrap"></div></div>
 <div class="er-col"><div class="out" id="output">// Напиши код и нажми "Проверить"</div></div>
 </div>
 </div>
@@ -420,11 +435,30 @@ function inline(t) { return t.replace(/\`([^`]+)\`/g, '<code style="background:v
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // ====== EDITOR ======
+let editor = null;
+function initEditor(){
+if(editor)return;
+const ta = document.createElement('textarea');
+document.getElementById('codeEditor').appendChild(ta);
+editor = CodeMirror.fromTextArea(ta,{
+mode:'python',
+lineNumbers:true,
+indentUnit:4,
+tabSize:4,
+indentWithTabs:false,
+lineWrapping:false,
+theme:'default'
+});
+editor.setSize('100%','100%');
+}
 function loadCode() {
 const t = lessons[curLesson].tasks[curTask];
-document.getElementById('codeEditor').value = t.code;
+if(editor){editor.setValue(t.code);}else{initEditor();editor.setValue(t.code);}
 document.getElementById('output').textContent = '// Напиши код и нажми "Проверить"';
 document.getElementById('output').className = 'out';
+}
+function getCode(){
+return editor?editor.getValue():document.getElementById('codeEditor').value||'';
 }
 
 function normalize(s) {
@@ -432,7 +466,7 @@ return s.replace(/\s+$/gm,'').replace(/^\s+/gm,'').replace(/[\r\n]+/g,'\n').trim
 }
 
 function runAndCheck() {
-const code = document.getElementById('codeEditor').value;
+const code = getCode();
 const out = document.getElementById('output');
 const ban = document.getElementById('resBan');
 const task = lessons[curLesson].tasks[curTask];

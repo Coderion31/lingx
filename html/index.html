@@ -9,7 +9,6 @@
 .light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;transition:background .3s,color .3s}
-header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;height:50px;flex-shrink:0}
 .h-title{font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;letter-spacing:-.3px;white-space:nowrap}
 .h-div{color:var(--text2);font-size:13px}
 .h-bread{font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -124,17 +123,7 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 <button class="menu-settings" onclick="location.href='../'">Настройки</button>
 </div>
 </div>
-<header>
-<span class="h-title" onclick="goHome()">🌐 HTML ACADEMY</span>
-<span class="h-div">|</span>
-<span class="h-bread" id="hBread">Главная</span>
-<div class="h-right">
-<span class="em" id="hEmail"></span>
-<div class="av" id="hAvatar" onclick="openLogin()">?</div>
-<button class="h-btn" onclick="toggleTheme()" id="themeBtn">☀️</button>
-<div class="pr"><div class="pr-bar" id="prBar" style="width:0%"></div></div>
-</div>
-</header>
+
 <div class="container">
 <div class="sidebar"><div class="sidebar-in">
 <h3>Уроки</h3>

@@ -11,7 +11,6 @@
 .light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;transition:background .3s,color .3s}
-header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;height:50px;flex-shrink:0}
 .h-logo{width:24px;height:24px;flex-shrink:0}
 .h-title{font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;letter-spacing:-.3px}
 .h-div{color:var(--text2);font-size:13px}
@@ -127,23 +126,7 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 <button class="menu-settings" onclick="location.href='../'">Настройки</button>
 </div>
 </div>
-<header>
-<svg class="h-logo" viewBox="0 -0.077 110 110">
-<linearGradient id="pb" x1="63.8159" y1="56.6829" x2="118.4934" y2="1.8225" gradientTransform="matrix(1 0 0 -1 -53.2974 66.4321)"><stop offset="0" stop-color="#387EB8"/><stop offset="1" stop-color="#366994"/></linearGradient>
-<linearGradient id="py" x1="97.0444" y1="21.6321" x2="155.6665" y2="-34.5308" gradientTransform="matrix(1 0 0 -1 -53.2974 66.4321)"><stop offset="0" stop-color="#FFE052"/><stop offset="1" stop-color="#FFC331"/></linearGradient>
-<path fill="url(#pb)" d="M55.023-0.077c-25.971,0-26.25,10.081-26.25,12.156v12.594h26.75v3.781H17.398c-7.949,0-17.938,4.833-17.938,26.25 0,19.673,7.792,27.281,15.656,27.281h9.344v-13.125c0-5.491,2.721-15.656,15.406-15.656h26.531c3.902,0,14.906-1.696,14.906-14.406V24.219C82.054,11.426,81.515-0.077,55.023-0.077zM40.273,8.392c2.662,0,4.813,2.15,4.813,4.813s-2.151,4.813-4.813,4.813-4.813-2.151-4.813-4.813S37.611,8.392,40.273,8.392z"/>
-<path fill="url(#py)" d="M55.397,109.923c25.959,0,26.282-10.271,26.282-12.156V85.173H54.897v-3.781h37.375c8.009,0,17.938-4.954,17.938-26.25 0-23.322-10.538-27.281-15.656-27.281h-9.344v13.125c0,5.491-2.631,15.656-15.406,15.656H43.272c-3.892,0-14.906,1.696-14.906,14.406v24.219C27.367,98.419,27.905,109.923,55.397,109.923zM70.147,101.454c-2.662,0-4.813-2.15-4.813-4.813s2.151-4.813,4.813-4.813 4.813,2.151,4.813,4.813S72.808,101.454,70.147,101.454z"/>
-</svg>
-<span class="h-title" onclick="goHome()">PYTHON</span>
-<span class="h-div">|</span>
-<span class="h-bread" id="hBread">Главная</span>
-<div class="h-right">
-<span class="em" id="hEmail"></span>
-<div class="av" id="hAvatar" onclick="openLogin()" title="Войти">?</div>
-<button class="h-btn" onclick="toggleTheme()" id="themeBtn">☀️</button>
-<div class="pr"><div class="pr-bar" id="prBar" style="width:0%"></div></div>
-</div>
-</header>
+
 <div class="container">
 <div class="sidebar"><div class="sidebar-in">
 <h3>Уроки</h3>

@@ -170,7 +170,7 @@ let progress=JSON.parse(localStorage.getItem('lingx_progress')||'{}');
 if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
-function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
+function updateStats(){const{t,d}=stats();const st=document.getElementById('statsText');if(st)st.textContent='Решено: '+d+' / '+t;const pb=document.getElementById('prBar');if(pb)pb.style.width=t?(d/t*100)+'%':'0%';renderSidebar()}
 function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem('lingx_progress',JSON.stringify(progress));updateStats();}
 let openLesson=-1;
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;const o=openLesson===li;h+=`<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson(${li})"><span class="arr ${o?'open':''}">▶</span>${l.icon}. ${l.title}<span class="cnt">${ld}/${l.tasks.length}</span></div><div class="lgrp-body ${o?'open':''}">`;l.tasks.forEach((t,ti)=>{const a=li===curLesson&&ti===curTask;const dn=progress[li+'_'+ti];h+=`<div class="ltask ${a?'active':''}" onclick="selectTask(${li},${ti})"><span class="dot ${dn?'done':''}"></span>${ti+1}. ${t.name}</div>`;});h+=`</div></div>`;});el.innerHTML=h;}
@@ -195,27 +195,17 @@ function openLogin(){if(userEmail){logout();return;}document.getElementById('log
 function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
 function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('lingx_email',email);const s=localStorage.getItem('lingx_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('lingx_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
 function logout(){userEmail='';localStorage.removeItem('lingx_email');localStorage.removeItem('lingx_progress');progress={};updateUserUI();updateStats();}
-function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();av.title='Выйти';em.textContent=userEmail;}else{av.textContent='?';av.title='Войти';em.textContent='';}}
+function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(!av&&!em)return;if(userEmail){if(av){av.textContent=userEmail[0].toUpperCase();av.title='Выйти'}if(em)em.textContent=userEmail}else{if(av){av.textContent='?';av.title='Войти'}if(em)em.textContent=''}}
 function toggleTheme(){
 dark=!dark;
 localStorage.setItem('lingx_theme',dark?'dark':'light');
 if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
 else{document.body.classList.remove('dark');document.body.classList.add('light')}
 }
-function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
-renderSidebar();renderContent();loadCode();updateBread();updateStats();
-
+function updateThemeBtn(){const tb=document.getElementById('themeBtn');if(tb)tb.textContent=dark?'🌙':'☀️'}
 function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
 function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
-function syncAccount(){
-const ue=localStorage.getItem('lingx_email')||'';
-const tok=localStorage.getItem('lingx_token')||'';
-const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
-if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
-if(hem)hem.textContent=ue||'';
-}
-syncAccount();
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+function syncAccount(){const ue=localStorage.getItem('lingx_email')||'',tok=localStorage.getItem('lingx_token')||'',hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');if(!hav&&!hem)return;if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';if(hem)hem.textContent=ue||''}
 
 </script>
 </body>

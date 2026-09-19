@@ -264,8 +264,8 @@ return {total,done};
 
 function updateStats() {
 const {total,done} = stats();
-document.getElementById('statsText').textContent = `Решено: ${done} / ${total}`;
-document.getElementById('prBar').style.width = total ? (done/total*100)+'%' : '0%';
+const st=document.getElementById('statsText');if(st)st.textContent=`Решено: ${done} / ${total}`;
+const pb=document.getElementById('prBar');if(pb)pb.style.width=total?(done/total*100)+'%':'0%';
 renderSidebar();
 }
 
@@ -536,13 +536,14 @@ updateUserUI(); updateStats();
 }
 function updateUserUI() {
 const av = document.getElementById('hAvatar'), em = document.getElementById('hEmail');
-if (userEmail) { av.textContent = userEmail[0].toUpperCase(); av.title='Выйти'; em.textContent=userEmail; }
-else { av.textContent='?'; av.title='Войти'; em.textContent=''; }
+if(!av&&!em)return;
+if (userEmail) { if(av){av.textContent=userEmail[0].toUpperCase();av.title='Выйти'} if(em)em.textContent=userEmail; }
+else { if(av){av.textContent='?';av.title='Войти'} if(em)em.textContent=''; }
 }
 
 // ====== THEME ======
 function toggleTheme() { dark=!dark; if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}else{document.body.classList.remove('dark');document.body.classList.add('light')} localStorage.setItem('lingx_theme',dark?'dark':'light'); updateThemeBtn(); }
-function updateThemeBtn() { document.getElementById('themeBtn').textContent = dark?'🌙':'☀️'; }
+function updateThemeBtn() { const tb=document.getElementById('themeBtn'); if(tb)tb.textContent=dark?'🌙':'☀️'; }
 
 // ====== START ======
 renderSidebar();
@@ -557,6 +558,7 @@ function syncAccount(){
 const ue=localStorage.getItem('lingx_email')||'';
 const tok=localStorage.getItem('lingx_token')||'';
 const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
+if(!hav&&!hem)return;
 if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
 if(hem)hem.textContent=ue||'';
 }

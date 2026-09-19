@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>C++ Academy</title>
 <style>
-:root{--bg:#f0f4f8;--card:#fff;--text:#1a202c;--text2:#4a5568;--border:#e2e8f0;--hover:#edf2f7;--active:#ebf4ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#edf2f7;--editor-bg:#f7fafc;--header-bg:#fff}
-.dark{--bg:#0f1419;--card:#1a2332;--text:#e2e8f0;--text2:#94a3b8;--border:#2d3a4a;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--editor-bg:#1a2332;--header-bg:#1a2332}
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--shadow:rgba(0,0,0,0.3);--editor-bg:#1a2332;--header-bg:#1a2332}
+.light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
 header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;height:50px;flex-shrink:0}
@@ -171,9 +171,9 @@ const lessons = [
 ];
 let curLesson=0,curTask=0;
 let userEmail=localStorage.getItem('cpp_email')||'';
-let dark=localStorage.getItem('cpp_theme')==='dark';
+let dark=localStorage.getItem('cpp_theme')!=='light';
 let progress=JSON.parse(localStorage.getItem('cpp_progress')||'{}');
-if(dark)document.body.classList.add('dark');
+if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;lessons.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
 function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
@@ -224,7 +224,12 @@ function closeLogin(){document.getElementById('loginModal').classList.remove('op
 function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('cpp_email',email);const s=localStorage.getItem('cpp_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('cpp_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
 function logout(){userEmail='';localStorage.removeItem('cpp_email');localStorage.removeItem('cpp_progress');progress={};updateUserUI();updateStats();}
 function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();em.textContent=userEmail;}else{av.textContent='?';em.textContent='';}}
-function toggleTheme(){dark=!dark;document.body.classList.toggle('dark',dark);localStorage.setItem('cpp_theme',dark?'dark':'light');updateThemeBtn();}
+function toggleTheme(){
+dark=!dark;
+localStorage.setItem(P+'_theme',dark?'dark':'light');
+if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
+else{document.body.classList.remove('dark');document.body.classList.add('light')}
+}
 function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
 renderSidebar();renderContent();loadCode();updateBread();updateStats();
 </script>

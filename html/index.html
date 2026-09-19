@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HTML Academy</title>
 <style>
-:root{--bg:#f0f4f8;--card:#fff;--text:#1a202c;--text2:#4a5568;--border:#e2e8f0;--hover:#edf2f7;--active:#ebf4ff;--accent:#3182ce;--accent2:#2b6cb0;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#edf2f7;--editor-bg:#f7fafc;--header-bg:#fff}
-.dark{--bg:#0f1419;--card:#1a2332;--text:#e2e8f0;--text2:#94a3b8;--border:#2d3a4a;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--editor-bg:#1a2332;--header-bg:#1a2332}
+:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--shadow:rgba(0,0,0,0.3);--editor-bg:#1a2332;--header-bg:#1a2332}
+.light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;transition:background .3s,color .3s}
 header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;height:50px;flex-shrink:0}
@@ -135,9 +135,9 @@ const P='html';
 const LESSONS=[{"title": "Структура документа", "icon": "1", "tasks": [{"name": "Базовая страница", "code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Моя страница</title>\n</head>\n<body>\n    <p>Привет, мир!</p>\n</body>\n</html>", "expect": "Привет, мир!", "sample": "Привет, мир!", "hint": "<p> — абзац. Открой в браузере"}, {"name": "Комментарии", "code": "<!-- Это комментарий -->\n<p>Видимый текст</p>", "expect": "Видимый текст", "sample": "Видимый текст", "hint": "<!-- ... --> — комментарий"}]}, {"title": "Теги", "icon": "2", "tasks": [{"name": "Заголовки", "code": "<h1>Большой</h1>\n<h2>Средний</h2>\n<h3>Маленький</h3>", "expect": "Большой\nСредний\nМаленький", "sample": "Большой/Средний/Маленький", "hint": "h1..h6 — заголовки"}, {"name": "Форматирование", "code": "<p><b>Жирный</b> и <i>курсив</i></p>\n<p><u>Подчёркнутый</u></p>", "expect": "Жирный и курсив\nПодчёркнутый", "sample": "Жирный и курсив / Подчёркнутый", "hint": "<b>, <i>, <u> — формат"}]}, {"title": "Ссылки и картинки", "icon": "🔗", "tasks": [{"name": "Ссылка", "code": "<a href=\"https://python.org\">Сайт Python</a>", "expect": "Сайт Python", "sample": "Сайт Python (кликабельная ссылка)", "hint": "<a href=\"URL\">текст</a>"}, {"name": "Картинка", "code": "<img src=\"https://www.python.org/static/img/python-logo.png\" alt=\"Логотип Python\" width=\"200\">", "expect": "Логотип Python", "sample": "Картинка с логотипом", "hint": "<img src=\"URL\" alt=\"описание\">"}]}, {"title": "Списки", "icon": "📃", "tasks": [{"name": "Маркированный", "code": "<ul>\n    <li>Яблоко</li>\n    <li>Банан</li>\n    <li>Вишня</li>\n</ul>", "expect": "• Яблоко\n• Банан\n• Вишня", "sample": "Список с точками", "hint": "<ul> + <li> — маркированный"}, {"name": "Нумерованный", "code": "<ol>\n    <li>Первый</li>\n    <li>Второй</li>\n</ol>", "expect": "1. Первый\n2. Второй", "sample": "Нумерованный список", "hint": "<ol> — нумерованный"}]}, {"title": "Таблицы", "icon": "📊", "tasks": [{"name": "Таблица", "code": "<table border=\"1\">\n    <tr><th>Имя</th><th>Возраст</th></tr>\n    <tr><td>Аня</td><td>10</td></tr>\n</table>", "expect": "Имя | Возраст\nАня | 10", "sample": "Таблица 2x2", "hint": "<table> <tr> — строка, <td> — ячейка, <th> — заголовок"}]}, {"title": "Формы", "icon": "📝", "tasks": [{"name": "Форма входа", "code": "<form>\n    <label>Email:</label>\n    <input type=\"email\" placeholder=\"email@example.com\">\n    <button type=\"submit\">Войти</button>\n</form>", "expect": "Email: [поле] [Войти]", "sample": "Форма с полем и кнопкой", "hint": "<input type=\"email\">, <button>"}]}, {"title": "Семантика", "icon": "🏗️", "tasks": [{"name": "Семантическая структура", "code": "<header>Шапка</header>\n<nav>Меню</nav>\n<main>Контент</main>\n<footer>Подвал</footer>", "expect": "Шапка\nМеню\nКонтент\nПодвал", "sample": "Структура страницы", "hint": "header, nav, main, footer — семантические теги"}]}, {"title": "Медиа", "icon": "🎬", "tasks": [{"name": "Видео", "code": "<video controls width=\"320\">\n    <source src=\"movie.mp4\" type=\"video/mp4\">\n</video>", "expect": "Видеоплеер", "sample": "Встраиваемый видеоплеер", "hint": "<video controls> + <source>"}]}];
 let curLesson=0,curTask=0;
 let userEmail=localStorage.getItem(P+'_email')||'';
-let dark=localStorage.getItem(P+'_theme')==='dark';
+let dark=localStorage.getItem(P+'_theme')!=='light';
 let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
-if(dark)document.body.classList.add('dark');
+if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
 function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
@@ -166,7 +166,12 @@ function closeLogin(){document.getElementById('loginModal').classList.remove('op
 function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem(P+'_email',email);const s=localStorage.getItem(P+'_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem(P+'_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
 function logout(){userEmail='';localStorage.removeItem(P+'_email');localStorage.removeItem(P+'_progress');progress={};updateUserUI();updateStats();}
 function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();av.title='Выйти';em.textContent=userEmail;}else{av.textContent='?';av.title='Войти';em.textContent='';}}
-function toggleTheme(){dark=!dark;document.body.classList.toggle('dark',dark);localStorage.setItem(P+'_theme',dark?'dark':'light');updateThemeBtn();}
+function toggleTheme(){
+dark=!dark;
+localStorage.setItem(P+'_theme',dark?'dark':'light');
+if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
+else{document.body.classList.remove('dark');document.body.classList.add('light')}
+}
 function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
 renderSidebar();renderContent();loadCode();updateBread();updateStats();
 </script>

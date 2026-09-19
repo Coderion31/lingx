@@ -32,33 +32,7 @@ header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;bord
 header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,var(--accent),#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 header p{color:#94a3b8;font-size:13px;margin-top:3px}
 .main{max-width:1100px;margin:0 auto;padding:60px 24px 40px;flex:1}
-.welcome{max-width:680px;margin:0 auto}
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:40px;color:var(--accent);font-weight:700;font-size:16px;letter-spacing:-.3px}
-.logo svg{width:26px;height:26px}
-.welcome h1{font-size:34px;font-weight:800;line-height:1.15;margin-bottom:14px;color:#e2e8f0;letter-spacing:-.5px}
-.welcome .desc{font-size:15px;line-height:1.7;color:#94a3b8;margin-bottom:24px;max-width:520px}
-.btns{display:flex;gap:10px;margin-bottom:36px}
-.btn-primary,.btn-ghost{display:inline-block;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:.2s}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:#3b82f6}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:#cbd5e1}
-.btn-ghost:hover{background:rgba(255,255,255,0.06);color:#e2e8f0}
-.codex{background:#1a1f2e;border:1px solid #334155;border-radius:10px;overflow:hidden;margin-bottom:28px;font-family:'Consolas','Courier New',monospace;font-size:13px;line-height:1.9}
-.cd-head{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#16213e;border-bottom:1px solid #334155}
-.cd-head span{width:10px;height:10px;border-radius:50%;display:inline-block}
-.cd-head span:nth-child(1){background:#ff5f57}
-.cd-head span:nth-child(2){background:#febc2e}
-.cd-head span:nth-child(3){background:#28c840}
-.cd-head em{margin-left:auto;font-style:normal;color:#64748b;font-size:12px}
-.cd-body{padding:10px 14px;color:#c0c8d4;white-space:pre}
-.cd-body .ln{color:#64748b;display:inline-block;width:22px;text-align:right;margin-right:12px;user-select:none}
-.cd-body .kw{color:#c792ea}
-.cd-body .fn{color:#82aaff}
-.cd-body .str{color:#c3e88d}
-.cd-body .num{color:#f78c6c}
-.cd-body .cmt{color:#546e7a;font-style:italic}
-.stats{display:flex;gap:28px;color:#94a3b8;font-size:13px}
-.stats b{color:#e2e8f0;font-weight:700}
+.footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1px solid #334155}
 .footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1px solid #334155}
 .settings-modal{position:fixed;inset:0;display:none;z-index:200;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);align-items:center;justify-content:center}
 .settings-modal.open{display:flex}
@@ -121,36 +95,8 @@ header p{color:#94a3b8;font-size:13px;margin-top:3px}
 </div>
 </div>
 
-<div class="main">
-<div class="welcome">
-  <div class="logo">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-    <span>LingX</span>
-  </div>
-  <h1>Python-учебник в&nbsp;браузере</h1>
-  <p class="desc">Теория простым языком, код работает на месте, проверка — сразу. 13&nbsp;уроков, 42&nbsp;задания. Ничего не надо устанавливать.</p>
-  <div class="btns">
-    <a class="btn-primary" href="python/">Начать</a>
-    <a class="btn-ghost" href="#" onclick="event.preventDefault();toggleMenu()">Курсы</a>
-  </div>
-  <div class="codex">
-    <div class="cd-head"><span></span><span></span><span></span><em>tasks.py</em></div>
-    <div class="cd-body">
-      <span class="ln">1</span><span class="kw">print</span>(<span class="str">"Привет, мир!"</span>)<br>
-      <span class="ln">2</span><span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>):<br>
-      <span class="ln">3</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">print</span>(i)<br>
-      <span class="ln">4</span><span class="cmt"># Результат: 0 1 2 3 4</span>
-    </div>
-  </div>
-  <div class="stats">
-    <span><b>13</b> уроков</span>
-    <span><b>42</b> задания</span>
-    <span><b>0 ₽</b> бесплатно</span>
-    <span><b>✓</b> автопроверка</span>
-  </div>
-</div>
-</div>
-<footer class="footer">LingX 2026</footer>
+<div class="main"></div>
+<footer class="footer">LingX</footer>
 
 <div class="settings-modal" id="settingsModal">
 <div class="settings-window">

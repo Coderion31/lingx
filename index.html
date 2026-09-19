@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LingX — учись программировать</title>
 <style>
+:root{--accent:#60a5fa;--accent-soft:rgba(96,165,250,0.15);--accent-text:#93c5fd;--glass-bg:0.92;--glass-blur:16px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column;padding-top:0}
 .nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:4px;height:44px}
@@ -13,7 +14,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
 .menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
 .menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
-.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,var(--glass-bg,0.92));backdrop-filter:blur(var(--glass-blur,16px));-webkit-backdrop-filter:blur(var(--glass-blur,16px));border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
 .menu-overlay.open{transform:translateX(0)}
 .menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
 .menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
@@ -28,12 +29,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
 .menu-settings .gear{font-size:18px}
 header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
-header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,var(--accent),#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 header p{color:#94a3b8;font-size:13px;margin-top:3px}
 .container{max-width:1100px;margin:0 auto;padding:60px 20px 24px;flex:1}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .card{background:#1e293b;border-radius:14px;padding:20px;border:1px solid #334155;cursor:pointer;transition:.3s;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center}
-.card:hover{transform:translateY(-4px);border-color:#60a5fa;box-shadow:0 8px 30px rgba(96,165,250,0.2)}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 30px rgba(96,165,250,0.2)}
 .card .icon{width:64px;height:64px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:14px;padding:10px;overflow:hidden}
 .card .icon img{max-width:100%;max-height:100%;object-fit:contain}
 .card h2{font-size:18px;font-weight:700;margin-bottom:6px}
@@ -52,7 +53,7 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 .settings-sidebar{width:140px;flex-shrink:0;padding:16px 0;border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:1px;overflow-y:auto}
 .settings-tab{padding:7px 14px;font-size:12.5px;color:rgba(255,255,255,0.45);cursor:pointer;border:none;background:none;text-align:left;transition:.15s;margin:0 6px;border-radius:6px;font-weight:500}
 .settings-tab:hover{color:#e2e8f0;background:rgba(255,255,255,0.06)}
-.settings-tab.active{color:#60a5fa;background:rgba(96,165,250,0.12)}
+.settings-tab.active{color:var(--accent);background:rgba(96,165,250,0.12)}
 .settings-main{flex:1;padding:16px 20px;display:flex;flex-direction:column;overflow-y:auto;position:relative}
 .settings-page{display:none;flex-direction:column}
 .settings-page.active{display:flex}
@@ -67,7 +68,7 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 .toggle{position:relative;width:34px;height:18px;cursor:pointer;flex-shrink:0}
 .toggle input{display:none}
 .sli{position:absolute;inset:0;background:rgba(255,255,255,0.15);border-radius:9px;transition:.25s}
-.toggle input:checked+.sli{background:#60a5fa}
+.toggle input:checked+.sli{background:var(--accent)}
 .sli::before{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.25s}
 .toggle input:checked+.sli::before{transform:translateX(16px)}
 .set-btn{padding:4px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.05);color:#cbd5e1;cursor:pointer;font-size:11px;transition:.2s;white-space:nowrap}
@@ -517,23 +518,29 @@ setTimeout(()=>{btn.textContent=userVerified?'Отправить ссылку с
 function toggleAccent(){
 const on=document.getElementById('accentCheck').checked;
 localStorage.setItem('lingx_accent',on?'1':'0');
-document.documentElement.style.setProperty('--accent-c',on?'#a78bfa':'#60a5fa');
+setAccentColor(on?'#a78bfa':'#60a5fa');
 }
 function toggleBigText(){
 const on=document.getElementById('bigTextCheck').checked;
 localStorage.setItem('lingx_bigtext',on?'1':'0');
-document.body.style.fontSize=on?'17px':'14px';
+document.documentElement.style.fontSize=on?'17px':'14px';
 }
 function setColor(c){
 localStorage.setItem('lingx_color',c);
-document.documentElement.style.setProperty('--accent-c',c);
-document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c));
-document.querySelectorAll('.settings-tab.active,.menu-settings,.h-title,.header-title').forEach(e=>e.style.color=c);
+setAccentColor(c);
+document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c||d.style.background==='rgb(96, 165, 250)'&&c==='#60a5fa'));
+const cb=document.getElementById('accentCheck');
+if(cb)cb.checked=c!=='#60a5fa';
+}
+function setAccentColor(c){
+document.documentElement.style.setProperty('--accent',c);
 }
 function setGlass(v){
 localStorage.setItem('lingx_glass',v);
-const w=document.querySelector('.menu-overlay');
-if(w)w.style.backdropFilter=v==='low'?'blur(4px)':v==='high'?'blur(28px)':'blur(16px)';
+const blurs={low:'4px',mid:'16px',high:'28px'};
+document.documentElement.style.setProperty('--glass-blur',blurs[v]||'16px');
+const bgs={low:'0.96',mid:'0.92',high:'0.88'};
+document.documentElement.style.setProperty('--glass-bg',bgs[v]||'0.92');
 }
 function setCols(v){
 localStorage.setItem('lingx_cols',v);
@@ -542,13 +549,20 @@ document.querySelector('.grid').style.gridTemplateColumns=`repeat(${v},1fr)`;
 function toggleNotify(which,btn){
 const cur=btn.textContent==='Вкл';
 btn.textContent=cur?'Выкл':'Вкл';
-btn.style.background=cur?'rgba(255,255,255,0.05)':'#60a5fa';
+btn.style.background=cur?'rgba(255,255,255,0.05)':'var(--accent)';
 btn.style.color=cur?'#cbd5e1':'#fff';
 }
 function setLang(v){
 localStorage.setItem('lingx_lang',v);
-const tr={ru:{home:'Главная'},en:{home:'Home'},es:{home:'Inicio'},de:{home:'Start'}};
+const tr={
+ru:{home:'Главная',sets:'Настройки',code:'Редактор кода'},
+en:{home:'Home',sets:'Settings',code:'Code Editor'},
+es:{home:'Inicio',sets:'Ajustes',code:'Editor de código'},
+de:{home:'Start',sets:'Einstellungen',code:'Code-Editor'}
+};
 document.querySelector('.menu-items a[href="#"]').textContent=tr[v].home;
+const btns=document.querySelectorAll('.menu-settings');
+btns.forEach(b=>b.textContent=tr[v].sets);
 }
 function editName(){
 const n=prompt('Введите имя профиля:');
@@ -570,15 +584,19 @@ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=
 // init custom prefs
 (function(){
 const c=localStorage.getItem('lingx_color');
-if(c)document.documentElement.style.setProperty('--accent-c',c);
+if(c)setAccentColor(c);
 const cols=localStorage.getItem('lingx_cols');
 if(cols)document.querySelector('.grid').style.gridTemplateColumns=`repeat(${cols},1fr)`;
 const glass=localStorage.getItem('lingx_glass');
 if(glass)setGlass(glass);
 const big=localStorage.getItem('lingx_bigtext');
-if(big==='1')document.body.style.fontSize='17px';
-const acc=document.getElementById('accentCheck');
-if(acc)acc.checked=localStorage.getItem('lingx_accent')==='1';
+if(big==='1')document.documentElement.style.fontSize='17px';
+const accCb=document.getElementById('accentCheck');
+if(accCb)accCb.checked=localStorage.getItem('lingx_accent')==='1';
+const color=localStorage.getItem('lingx_color');
+if(color){document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===color));}
+const lang=localStorage.getItem('lingx_lang');
+if(lang)setLang(lang);
 })();
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='Enter'&&document.getElementById('loginModal').classList.contains('open'))stepLogin();});

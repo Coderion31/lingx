@@ -46,22 +46,32 @@ header p{color:#94a3b8;font-size:13px;margin-top:3px}
 .tag.yellow{background:rgba(250,204,21,0.15);color:#fde047}
 .tag.pink{background:rgba(244,114,182,0.15);color:#f9a8d4}
 footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1px solid #334155}
-.settings-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px)}
+.settings-modal{position:fixed;inset:0;display:none;z-index:200;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);align-items:center;justify-content:center}
 .settings-modal.open{display:flex}
-.settings-window{background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);border-radius:20px;padding:28px;width:320px;border:1px solid rgba(255,255,255,0.1)}
-.settings-window h3{font-size:18px;margin-bottom:20px;color:#e2e8f0}
-.set-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
-.set-row label{font-size:15px;color:#cbd5e1}
-.toggle{position:relative;width:44px;height:24px;cursor:pointer}
+.settings-window{background:rgba(15,23,42,0.96);backdrop-filter:blur(24px);border-radius:20px;width:560px;max-height:420px;display:flex;border:1px solid rgba(255,255,255,0.08);overflow:hidden}
+.settings-sidebar{width:160px;flex-shrink:0;padding:20px 0;border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;gap:2px}
+.settings-tab{padding:8px 16px;font-size:13px;color:rgba(255,255,255,0.5);cursor:pointer;border:none;background:none;text-align:left;transition:.2s;margin:0 8px;border-radius:8px}
+.settings-tab:hover{color:#e2e8f0;background:rgba(255,255,255,0.05)}
+.settings-tab.active{color:#60a5fa;background:rgba(96,165,250,0.1)}
+.settings-main{flex:1;padding:20px 24px;display:flex;flex-direction:column;overflow-y:auto;position:relative}
+.settings-page{display:none;flex-direction:column;gap:0;height:100%}
+.settings-page.active{display:flex}
+.settings-page h3{font-size:15px;color:#e2e8f0;margin-bottom:16px;font-weight:600}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.set-row:last-child{border-bottom:none}
+.set-row label{font-size:13px;color:#cbd5e1}
+.set-row .hint{font-size:11px;color:#64748b;margin-top:2px}
+.set-close{position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:18px;cursor:pointer;padding:4px;transition:.2s;line-height:1}
+.set-close:hover{color:#e2e8f0}
+.toggle{position:relative;width:38px;height:20px;cursor:pointer;flex-shrink:0}
 .toggle input{display:none}
-.sli{position:absolute;inset:0;background:rgba(255,255,255,0.15);border-radius:12px;transition:.3s}
+.sli{position:absolute;inset:0;background:rgba(255,255,255,0.15);border-radius:10px;transition:.3s}
 .toggle input:checked+.sli{background:#60a5fa}
-.sli::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s}
-.toggle input:checked+.sli::before{transform:translateX(20px)}
-.set-close{width:100%;margin-top:20px;padding:10px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;transition:.3s}
-.set-close:hover{background:rgba(255,255,255,0.12);color:#fff}
-.set-btn{padding:6px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:13px;transition:.3s}
+.sli::before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.3s}
+.toggle input:checked+.sli::before{transform:translateX(18px)}
+.set-btn{padding:5px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:12px;transition:.3s;white-space:nowrap}
 .set-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
+.set-btn.sm{padding:4px 10px;font-size:11px}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:540px){.grid{grid-template-columns:1fr}}
 </style>
@@ -148,27 +158,56 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 
 <div class="settings-modal" id="settingsModal">
 <div class="settings-window">
-<h3>Настройки</h3>
+<div class="settings-sidebar">
+<button class="settings-tab active" data-tab="account" onclick="switchTab('account')">Аккаунт</button>
+<button class="settings-tab" data-tab="appearance" onclick="switchTab('appearance')">Вид</button>
+<button class="settings-tab" data-tab="security" onclick="switchTab('security')">Безопасность</button>
+<button class="settings-tab" data-tab="about" onclick="switchTab('about')">О приложении</button>
+</div>
+<div class="settings-main">
+<button class="set-close" onclick="closeSettings()">✕</button>
+
+<div class="settings-page active" id="page-account">
+<h3>Аккаунт</h3>
+<div class="set-row" id="emailRow" style="display:none">
+<div><label id="emailLabel"></label><div class="hint">Email</div></div>
+<button class="set-btn" onclick="closeSettings();logout()">Выйти</button>
+</div>
+<div class="set-row" id="verifyRow" style="display:none">
+<div><label id="verifyStatus">Не подтверждён</label><div class="hint">Подтверди email — это безопасно</div></div>
+<button class="set-btn sm" id="verifyBtn" onclick="sendConfirmLink()">Подтвердить</button>
+</div>
+<div class="set-row" id="loginRow">
+<div><label>Войти</label><div class="hint">Email + код из письма</div></div>
+<button class="set-btn" onclick="closeSettings();openLogin()">Войти</button>
+</div>
+</div>
+
+<div class="settings-page" id="page-appearance">
+<h3>Вид</h3>
 <div class="set-row">
 <label>Тёмная тема</label>
 <label class="toggle"><input type="checkbox" id="themeCheck" onchange="toggleTheme()"><span class="sli"></span></label>
 </div>
-<div class="set-row">
-<label>Вход по email</label>
-<button class="set-btn" onclick="closeSettings();openLogin()">Войти</button>
 </div>
-<div class="set-row" id="emailRow" style="display:none">
-<label id="emailLabel"></label>
-<button class="set-btn" onclick="closeSettings();logout()">Выйти</button>
+
+<div class="settings-page" id="page-security">
+<h3>Безопасность</h3>
+<div class="set-row" id="secVerifyRow">
+<div><label>Подтверждение email</label><div class="hint">Для восстановления доступа</div></div>
+<button class="set-btn sm" onclick="closeSettings();openLogin()">Войти</button>
 </div>
-<div class="set-row" id="verifyRow" style="display:none">
-<label id="verifyStatus">Не подтверждён</label>
-<button class="set-btn" id="verifyBtn" onclick="sendConfirmLink()">Подтвердить email</button>
 </div>
-<div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);font-size:12px;color:#64748b;text-align:center">
-LingX v1.0 — учись программировать
+
+<div class="settings-page" id="page-about">
+<h3>О приложении</h3>
+<div style="font-size:13px;color:#94a3b8;line-height:1.7">
+<p>LingX v1.0 — интерактивное обучение программированию.</p>
+<p>7 языков: Python, C++, C, C#, HTML, CSS, JavaScript.</p>
+<p style="margin-top:8px;color:#64748b;font-size:11px">Сделано в России</p>
 </div>
-<button class="set-close" onclick="closeSettings()">Готово</button>
+</div>
+</div>
 </div>
 </div>
 
@@ -237,6 +276,10 @@ updateSettingsUI();
 }
 function closeSettings(){
 document.getElementById('settingsModal').classList.remove('open');
+}
+function switchTab(tab){
+document.querySelectorAll('.settings-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+document.querySelectorAll('.settings-page').forEach(p=>p.classList.toggle('active',p.id==='page-'+tab));
 }
 function toggleTheme(){
 darkTheme=!darkTheme;
@@ -341,24 +384,30 @@ const accEmail=document.getElementById('accEmail');
 const verifyRow=document.getElementById('verifyRow');
 const verifyStatus=document.getElementById('verifyStatus');
 const verifyBtn=document.getElementById('verifyBtn');
+const loginRow=document.getElementById('loginRow');
 if(userEmail){
 if(emailRow)emailRow.style.display='flex';
 if(emailLabel)emailLabel.textContent=userEmail;
 if(accBox){accBox.style.display='flex';accAvatar.textContent=userEmail[0].toUpperCase();accName.textContent=userEmail.split('@')[0];accEmail.textContent=userEmail;}
 if(verifyRow){
 verifyRow.style.display='flex';
-if(verifyStatus)verifyStatus.textContent=userVerified?'Подтверждён ✓':'Не подтверждён';
+if(verifyStatus){
+verifyStatus.textContent=userVerified?'Подтверждён ✓':'Не подтверждён';
+verifyStatus.parentElement.querySelector('.hint').textContent=userVerified?'Email подтверждён':'Подтверди email — это безопасно';
+}
 if(verifyBtn){
-verifyBtn.textContent=userVerified?'Отправить ссылку снова':'Подтвердить email';
+verifyBtn.textContent=userVerified?'Отправить снова':'Подтвердить';
 verifyBtn.style.display='block';
 }
 }
+if(loginRow)loginRow.style.display='none';
 const loginBtns=document.querySelectorAll('.login-toggle-btn');
 loginBtns.forEach(b=>b.textContent='Выйти');
 } else {
 if(emailRow)emailRow.style.display='none';
 if(accBox)accBox.style.display='none';
 if(verifyRow)verifyRow.style.display='none';
+if(loginRow)loginRow.style.display='flex';
 const loginBtns=document.querySelectorAll('.login-toggle-btn');
 loginBtns.forEach(b=>b.textContent='Войти');
 }

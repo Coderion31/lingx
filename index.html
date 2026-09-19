@@ -31,6 +31,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:16px 20px;border-bottom:2px solid #334155;text-align:center}
 header h1{font-size:28px;font-weight:800;background:linear-gradient(90deg,var(--accent),#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 header p{color:#94a3b8;font-size:13px;margin-top:3px}
+.hero{max-width:1100px;margin:0 auto;padding:70px 24px 40px;text-align:center}
+.hero .badge{display:inline-block;padding:5px 14px;border-radius:100px;background:var(--accent-soft);color:var(--accent-text);font-size:12px;font-weight:600;margin-bottom:18px;border:1px solid rgba(96,165,250,0.25)}
+.hero h1{font-size:44px;font-weight:800;line-height:1.15;margin-bottom:16px;background:linear-gradient(90deg,#e2e8f0,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .grad{background:linear-gradient(90deg,var(--accent),#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:17px;color:#94a3b8;max-width:640px;margin:0 auto 28px;line-height:1.6}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-lg{display:inline-block;padding:13px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:.25s;cursor:pointer;border:none}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 24px rgba(96,165,250,0.35)}
+.btn-primary:hover{background:#3b82f6;transform:translateY(-2px)}
+.btn-ghost{background:rgba(255,255,255,0.06);color:#e2e8f0;border:1px solid rgba(255,255,255,0.15)}
+.btn-ghost:hover{background:rgba(255,255,255,0.12);transform:translateY(-2px)}
+.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:44px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat b{font-size:26px;font-weight:800;color:#e2e8f0;display:block}
+.hstat span{font-size:12px;color:#64748b}
+.section{max-width:1100px;margin:0 auto;padding:40px 24px}
+.section h2{font-size:28px;font-weight:800;text-align:center;margin-bottom:8px}
+.section .sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:36px}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.feat{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:24px;transition:.25s}
+.feat:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 30px rgba(96,165,250,0.12)}
+.feat .fi{font-size:30px;margin-bottom:12px}
+.feat h3{font-size:16px;margin-bottom:8px;color:#e2e8f0}
+.feat p{font-size:13px;color:#94a3b8;line-height:1.55}
+.cta{max-width:1100px;margin:20px auto 40px;padding:40px;text-align:center;background:linear-gradient(135deg,rgba(96,165,250,0.12),rgba(167,139,250,0.12));border:1px solid rgba(96,165,250,0.25);border-radius:20px}
+.cta h2{font-size:26px;font-weight:800;margin-bottom:10px}
+.cta p{color:#94a3b8;font-size:14px;margin-bottom:22px}
 .container{max-width:1100px;margin:0 auto;padding:60px 20px 24px;flex:1}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .card{background:#1e293b;border-radius:14px;padding:20px;border:1px solid #334155;cursor:pointer;transition:.3s;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -110,13 +137,64 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 </div>
 
 <div class="container">
-<div class="grid">
-<a class="card" href="python/">
-<div class="icon"><img src="img/python.svg" alt="Python"></div>
-<h2>Python</h2>
-<p>Переменные, циклы, функции, списки, словари и финальные проекты — с запуском кода прямо в браузере</p>
-<span class="tag blue">13 уроков · 42 задания · код работает</span>
-</a>
+
+<div class="hero">
+<div class="badge">Новая платформа обучения</div>
+<h1>Учись программировать<br><span class="grad">с нуля до своих проектов</span></h1>
+<p>LingX — интерактивный учебник прямо в браузере. Теория простым языком, задания с проверкой и код, который запускается на месте.</p>
+<div class="hero-btns">
+<a class="btn-lg btn-primary" href="python/">Начать учить Python →</a>
+<a class="btn-lg btn-ghost" href="#" onclick="event.preventDefault();toggleMenu()">Посмотреть курсы</a>
+</div>
+<div class="hero-stats">
+<div class="hstat"><b>13</b><span>уроков</span></div>
+<div class="hstat"><b>42</b><span>задания</span></div>
+<div class="hstat"><b>0 ₽</b><span>цена</span></div>
+<div class="hstat"><b>24/7</b><span>доступ</span></div>
+</div>
+</div>
+
+<div class="section">
+<h2>Почему LingX</h2>
+<p class="sub">Всё, что нужно для старта — на одной странице</p>
+<div class="feat-grid">
+<div class="feat">
+<div class="fi">📖</div>
+<h3>Теория без воды</h3>
+<p>Каждая тема объясняется простым языком, как для новичка. Аналогии, примеры, таблицы.</p>
+</div>
+<div class="feat">
+<div class="fi">⌨️</div>
+<h3>Код запускается сразу</h3>
+<p>Не нужно ничего устанавливать. Пишешь код в редакторе и жмёшь «Проверить» — работает прямо в браузере.</p>
+</div>
+<div class="feat">
+<div class="fi">✅</div>
+<h3>Автопроверка</h3>
+<p>Каждое задание проверяется автоматически: верно — зелёный, ошибка — красный с подсказкой.</p>
+</div>
+<div class="feat">
+<div class="fi">📈</div>
+<h3>Прогресс сохраняется</h3>
+<p>Продолжай с того места, где остановился. Статистика решённых заданий и полоса прогресса.</p>
+</div>
+<div class="feat">
+<div class="fi">🔐</div>
+<h3>Вход по email</h3>
+<p>Один аккаунт на все курсы. Подтверждение по ссылке — как в популярных сервисах.</p>
+</div>
+</div>
+</div>
+<div class="cta">
+<h2>Готов начать?</h2>
+<p>Открой учебник Python и напиши свой первый код уже через минуту.</p>
+<a class="btn-lg btn-primary" href="python/">Начать учить Python →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="cta">
+<h2>Готов начать?</h2>
 </div>
 </div>
 <footer>LingX — учись программировать бесплатно</footer>
@@ -254,8 +332,7 @@ footer{text-align:center;padding:16px;color:#64748b;font-size:12px;border-top:1p
 <div class="settings-page" id="page-about">
 <h3>О приложении</h3>
 <div style="font-size:12px;color:#94a3b8;line-height:1.6">
-<p>LingX v1.0 — интерактивное обучение программированию.</p>
-<p>7 языков: Python, C++, C, C#, HTML, CSS, JavaScript.</p>
+<p>LingX v1.0 — интерактивное обучение программированию.</p><p>Python — твой первый язык программирования.</p>
 <p style="margin-top:6px;color:#64748b;font-size:10.5px">Сделано в России</p>
 </div>
 </div>

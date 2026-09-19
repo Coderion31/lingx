@@ -80,9 +80,50 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 .btn.outline:hover{background:var(--accent);color:#fff}
 .btn.sm{padding:4px 10px;font-size:11px}
 @media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}.h-bread{display:none}}
+
+.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:4px;height:44px}
+.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.7);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
+.nav-bar button:hover{background:rgba(255,255,255,0.12);color:#fff}
+.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
+.menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
+.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
+.menu-overlay.open{transform:translateX(0)}
+.menu-items{display:flex;flex-direction:column;gap:8px;width:100%;flex:1;overflow-y:auto}
+.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
+.menu-items a:hover{background:rgba(255,255,255,0.1)}
+.menu-bottom{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:8px}
+.menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
+.menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
+
 </style>
 </head>
 <body>
+<div class="nav-bar">
+<button onclick="history.back()" title="Назад">←</button>
+<button onclick="location.href='../'" title="Домой">⌂</button>
+<button onclick="history.forward()" title="Вперёд">→</button>
+</div>
+
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+<div class="menu-items" onclick="closeMenu()">
+<a href="../">Главная</a>
+<a href="../python/">Python</a>
+<a href="../cpp/">C++</a>
+<a href="../c/">C</a>
+<a href="../csharp/">C#</a>
+<a href="../html/">HTML</a>
+<a href="../css/">CSS</a>
+<a href="../js/">JavaScript</a>
+</div>
+<div class="menu-bottom">
+<button class="menu-settings" onclick="location.href='../'">Настройки</button>
+</div>
+</div>
 <header>
 <span class="h-title" onclick="goHome()">💎 C# ACADEMY</span>
 <span class="h-div">|</span>
@@ -134,14 +175,14 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 const P='csharp';
 const LESSONS=[{"title": "Основы", "icon": "1", "tasks": [{"name": "Hello World", "code": "using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine(\"Привет, мир!\");\n    }\n}", "expect": "Привет, мир!", "sample": "Привет, мир!", "hint": "Console.WriteLine — вывод с новой строки"}, {"name": "Две строки", "code": "using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine(\"Строка 1\");\n        Console.WriteLine(\"Строка 2\");\n    }\n}", "expect": "Строка 1\nСтрока 2", "sample": "Строка 1\\nСтрока 2", "hint": "WriteLine — каждая строка отдельно"}]}, {"title": "Переменные", "icon": "2", "tasks": [{"name": "var и типы", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int age = 10;\n        double pi = 3.14;\n        string name = \"Аня\";\n        bool ok = true;\n        Console.WriteLine($\"{age} {pi} {name} {ok}\");\n    }\n}", "expect": "10 3.14 Аня True", "sample": "10 3.14 Аня True", "hint": "$ — интерполяция строк"}, {"name": "Ввод Console.ReadLine", "code": "using System;\n\nclass Program {\n    static void Main() {\n        string name = Console.ReadLine();\n        Console.WriteLine(\"Привет, \" + name);\n    }\n}", "expect": "", "sample": "Привет, Аня (если ввести Аня)", "hint": "Console.ReadLine() — чтение строки"}]}, {"title": "Математика", "icon": "+", "tasks": [{"name": "Арифметика", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int a = 10, b = 3;\n        Console.WriteLine(a + b);\n        Console.WriteLine(a - b);\n        Console.WriteLine(a * b);\n        Console.WriteLine(a / b);\n        Console.WriteLine(a % b);\n    }\n}", "expect": "13\n7\n30\n3\n1", "sample": "13\\n7\\n30\\n3\\n1", "hint": "% — остаток, int / int = int"}, {"name": "Math класс", "code": "using System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine(Math.Max(5, 9));\n        Console.WriteLine(Math.Abs(-7));\n        Console.WriteLine(Math.Pow(2, 3));\n    }\n}", "expect": "9\n7\n8", "sample": "9\\n7\\n8", "hint": "Math.Max, Math.Abs, Math.Pow"}]}, {"title": "Условия", "icon": "⚖️", "tasks": [{"name": "if/else", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int age = 12;\n        if (age >= 18) {\n            Console.WriteLine(\"Взрослый\");\n        } else {\n            Console.WriteLine(\"Ребёнок\");\n        }\n    }\n}", "expect": "Ребёнок", "sample": "Ребёнок", "hint": "if (условие) { } else { }"}, {"name": "switch", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int day = 3;\n        switch (day) {\n            case 1: Console.WriteLine(\"Пн\"); break;\n            case 2: Console.WriteLine(\"Вт\"); break;\n            case 3: Console.WriteLine(\"Ср\"); break;\n            default: Console.WriteLine(\"Другой\"); break;\n        }\n    }\n}", "expect": "Ср", "sample": "Ср", "hint": "switch (значение) { case N: break; }"}]}, {"title": "Циклы", "icon": "🔄", "tasks": [{"name": "for", "code": "using System;\n\nclass Program {\n    static void Main() {\n        for (int i = 0; i < 5; i++) {\n            Console.WriteLine(i);\n        }\n    }\n}", "expect": "0\n1\n2\n3\n4", "sample": "0\\n1\\n2\\n3\\n4", "hint": "for (начало; условие; шаг)"}, {"name": "foreach", "code": "using System;\n\nclass Program {\n    static void Main() {\n        string[] fruits = {\"яблоко\", \"банан\", \"вишня\"};\n        foreach (string f in fruits) {\n            Console.WriteLine(\"Я люблю \" + f);\n        }\n    }\n}", "expect": "Я люблю яблоко\nЯ люблю банан\nЯ люблю вишня", "sample": "Я люблю яблоко\\nЯ люблю банан\\nЯ люблю вишня", "hint": "foreach (тип перем in коллекция)"}]}, {"title": "Массивы", "icon": "📋", "tasks": [{"name": "Массив", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int[] nums = {10, 20, 30};\n        Console.WriteLine(nums[0]);\n        Console.WriteLine(nums.Length);\n    }\n}", "expect": "10\n3", "sample": "10\\n3", "hint": "nums.Length — длина"}, {"name": "Сумма", "code": "using System;\n\nclass Program {\n    static void Main() {\n        int[] nums = {1, 2, 3, 4, 5};\n        int sum = 0;\n        foreach (int n in nums) {\n            sum += n;\n        }\n        Console.WriteLine(sum);\n    }\n}", "expect": "15", "sample": "15", "hint": "sum += n"}]}, {"title": "Методы", "icon": "⚙️", "tasks": [{"name": "Метод", "code": "using System;\n\nclass Program {\n    static void Greet() {\n        Console.WriteLine(\"Привет!\");\n    }\n    \n    static void Main() {\n        Greet();\n        Greet();\n    }\n}", "expect": "Привет!\nПривет!", "sample": "Привет!\\nПривет!", "hint": "static void Имя() — метод"}, {"name": "Метод с return", "code": "using System;\n\nclass Program {\n    static int Square(int x) {\n        return x * x;\n    }\n    \n    static void Main() {\n        Console.WriteLine(Square(7));\n    }\n}", "expect": "49", "sample": "49", "hint": "static int Имя(int x) { return ...; }"}]}, {"title": "Классы и ООП", "icon": "🏛️", "tasks": [{"name": "Класс", "code": "using System;\n\nclass Cat {\n    public string Name;\n    public void Meow() {\n        Console.WriteLine(Name + \": Мяу!\");\n    }\n}\n\nclass Program {\n    static void Main() {\n        Cat cat = new Cat();\n        cat.Name = \"Барсик\";\n        cat.Meow();\n    }\n}", "expect": "Барсик: Мяу!", "sample": "Барсик: Мяу!", "hint": "class Имя { } + new"}, {"name": "Конструктор", "code": "using System;\n\nclass Dog {\n    public string Name;\n    public Dog(string n) {\n        Name = n;\n    }\n    public void Bark() {\n        Console.WriteLine(Name + \": Гав!\");\n    }\n}\n\nclass Program {\n    static void Main() {\n        Dog d = new Dog(\"Рекс\");\n        d.Bark();\n    }\n}", "expect": "Рекс: Гав!", "sample": "Рекс: Гав!", "hint": "Конструктор — метод с именем класса"}]}, {"title": "LINQ и async", "icon": "📦", "tasks": [{"name": "LINQ Where", "code": "using System;\nusing System.Linq;\nusing System.Collections.Generic;\n\nclass Program {\n    static void Main() {\n        int[] nums = {1, 2, 3, 4, 5, 6};\n        var even = nums.Where(n => n % 2 == 0);\n        foreach (var n in even) {\n            Console.WriteLine(n);\n        }\n    }\n}", "expect": "2\n4\n6", "sample": "2\\n4\\n6", "hint": "Where(условие) — фильтр. => — лямбда"}, {"name": "async/await", "code": "using System;\nusing System.Threading.Tasks;\n\nclass Program {\n    static async Task Main() {\n        await Task.Delay(100);\n        Console.WriteLine(\"Готово\");\n    }\n}", "expect": "Готово", "sample": "Готово", "hint": "async — асинхронный метод, await — ожидание"}]}];
 let curLesson=0,curTask=0;
-let userEmail=localStorage.getItem(P+'_email')||'';
-let dark=localStorage.getItem(P+'_theme')!=='light';
-let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+let userEmail=localStorage.getItem('lingx_email')||'';
+let dark=localStorage.getItem('lingx_theme')!=='light';
+let progress=JSON.parse(localStorage.getItem('lingx_progress')||'{}');
 if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
 function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
-function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats();}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem('lingx_progress',JSON.stringify(progress));updateStats();}
 let openLesson=-1;
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;const o=openLesson===li;h+=`<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson(${li})"><span class="arr ${o?'open':''}">▶</span>${l.icon}. ${l.title}<span class="cnt">${ld}/${l.tasks.length}</span></div><div class="lgrp-body ${o?'open':''}">`;l.tasks.forEach((t,ti)=>{const a=li===curLesson&&ti===curTask;const dn=progress[li+'_'+ti];h+=`<div class="ltask ${a?'active':''}" onclick="selectTask(${li},${ti})"><span class="dot ${dn?'done':''}"></span>${ti+1}. ${t.name}</div>`;});h+=`</div></div>`;});el.innerHTML=h;}
 function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar();}
@@ -163,17 +204,30 @@ function goHome(){selectTask(0,0);}
 function updateBread(){document.getElementById('hBread').textContent=`Урок ${curLesson+1} — Зад. ${curLesson+1}.${curTask+1}`;}
 function openLogin(){if(userEmail){logout();return;}document.getElementById('loginModal').classList.add('open');document.getElementById('loginEmail').value='';document.getElementById('loginErr').style.display='none';setTimeout(()=>document.getElementById('loginEmail').focus(),100);}
 function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
-function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem(P+'_email',email);const s=localStorage.getItem(P+'_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem(P+'_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
-function logout(){userEmail='';localStorage.removeItem(P+'_email');localStorage.removeItem(P+'_progress');progress={};updateUserUI();updateStats();}
+function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('lingx_email',email);const s=localStorage.getItem('lingx_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('lingx_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
+function logout(){userEmail='';localStorage.removeItem('lingx_email');localStorage.removeItem('lingx_progress');progress={};updateUserUI();updateStats();}
 function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();av.title='Выйти';em.textContent=userEmail;}else{av.textContent='?';av.title='Войти';em.textContent='';}}
 function toggleTheme(){
 dark=!dark;
-localStorage.setItem(P+'_theme',dark?'dark':'light');
+localStorage.setItem('lingx_theme',dark?'dark':'light');
 if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
 else{document.body.classList.remove('dark');document.body.classList.add('light')}
 }
 function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
 renderSidebar();renderContent();loadCode();updateBread();updateStats();
+
+function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
+function syncAccount(){
+const ue=localStorage.getItem('lingx_email')||'';
+const tok=localStorage.getItem('lingx_token')||'';
+const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
+if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
+if(hem)hem.textContent=ue||'';
+}
+syncAccount();
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+
 </script>
 </body>
 </html>

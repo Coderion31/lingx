@@ -80,9 +80,50 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 .btn.outline:hover{background:var(--accent);color:#fff}
 .btn.sm{padding:4px 10px;font-size:11px}
 @media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}.h-bread{display:none}}
+
+.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:4px;height:44px}
+.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.7);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
+.nav-bar button:hover{background:rgba(255,255,255,0.12);color:#fff}
+.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
+.menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
+.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
+.menu-overlay.open{transform:translateX(0)}
+.menu-items{display:flex;flex-direction:column;gap:8px;width:100%;flex:1;overflow-y:auto}
+.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
+.menu-items a:hover{background:rgba(255,255,255,0.1)}
+.menu-bottom{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:8px}
+.menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
+.menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
+
 </style>
 </head>
 <body>
+<div class="nav-bar">
+<button onclick="history.back()" title="Назад">←</button>
+<button onclick="location.href='../'" title="Домой">⌂</button>
+<button onclick="history.forward()" title="Вперёд">→</button>
+</div>
+
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+<div class="menu-items" onclick="closeMenu()">
+<a href="../">Главная</a>
+<a href="../python/">Python</a>
+<a href="../cpp/">C++</a>
+<a href="../c/">C</a>
+<a href="../csharp/">C#</a>
+<a href="../html/">HTML</a>
+<a href="../css/">CSS</a>
+<a href="../js/">JavaScript</a>
+</div>
+<div class="menu-bottom">
+<button class="menu-settings" onclick="location.href='../'">Настройки</button>
+</div>
+</div>
 <header>
 <span class="h-title" onclick="goHome()">🚀 JavaScript ACADEMY</span>
 <span class="h-div">|</span>
@@ -134,14 +175,14 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 const P='js';
 const LESSONS=[{"title": "Основы", "icon": "1", "tasks": [{"name": "console.log", "code": "console.log(\"Привет, мир!\");", "expect": "Привет, мир!", "sample": "Привет, мир!", "hint": "console.log — вывод в консоль"}, {"name": "Комментарии", "code": "// Это комментарий\n/* Тоже\n   комментарий */\nconsole.log(42);", "expect": "42", "sample": "42", "hint": "// и /* */ — комментарии"}]}, {"title": "Переменные", "icon": "2", "tasks": [{"name": "let и const", "code": "let age = 10;\nconst name = \"Аня\";\nage = 11;\nconsole.log(age, name);", "expect": "11 Аня", "sample": "11 Аня", "hint": "let — можно менять, const — нельзя"}, {"name": "Типы", "code": "console.log(typeof \"текст\");\nconsole.log(typeof 42);\nconsole.log(typeof true);\nconsole.log(typeof [1,2]);", "expect": "string\nnumber\nboolean\nobject", "sample": "string/number/boolean/object", "hint": "typeof — тип значения"}]}, {"title": "Функции", "icon": "⚙️", "tasks": [{"name": "Функция", "code": "function greet(name) {\n    return \"Привет, \" + name + \"!\";\n}\nconsole.log(greet(\"Макс\"));", "expect": "Привет, Макс!", "sample": "Привет, Макс!", "hint": "function имя(параметр) { }"}, {"name": "Стрелочная", "code": "const double = (x) => x * 2;\nconsole.log(double(5));", "expect": "10", "sample": "10", "hint": "const f = (x) => x * 2 — стрелочная функция"}]}, {"title": "Условия", "icon": "⚖️", "tasks": [{"name": "if/else", "code": "let age = 12;\nif (age >= 18) {\n    console.log(\"Взрослый\");\n} else {\n    console.log(\"Ребёнок\");\n}", "expect": "Ребёнок", "sample": "Ребёнок", "hint": "if (условие) { } else { }"}, {"name": "Тернарный", "code": "let x = 5;\nlet result = x > 0 ? \"Плюс\" : \"Минус\";\nconsole.log(result);", "expect": "Плюс", "sample": "Плюс", "hint": "условие ? да : нет"}]}, {"title": "Циклы", "icon": "🔄", "tasks": [{"name": "for", "code": "for (let i = 0; i < 5; i++) {\n    console.log(i);\n}", "expect": "0\n1\n2\n3\n4", "sample": "0\\n1\\n2\\n3\\n4", "hint": "for (начало; условие; шаг)"}, {"name": "for...of", "code": "let fruits = [\"яблоко\", \"банан\"];\nfor (let f of fruits) {\n    console.log(\"Я люблю \" + f);\n}", "expect": "Я люблю яблоко\nЯ люблю банан", "sample": "Я люблю яблоко\\nЯ люблю банан", "hint": "for (let x of массив)"}]}, {"title": "Массивы", "icon": "📋", "tasks": [{"name": "Методы", "code": "let nums = [1, 2, 3];\nnums.push(4);\nconsole.log(nums.length);\nconsole.log(nums.includes(2));", "expect": "4\ntrue", "sample": "4\\ntrue", "hint": "push, length, includes"}, {"name": "map и filter", "code": "let nums = [1, 2, 3, 4];\nlet doubled = nums.map(n => n * 2);\nlet even = nums.filter(n => n % 2 === 0);\nconsole.log(doubled);\nconsole.log(even);", "expect": "[2, 4, 6, 8]\n[2, 4]", "sample": "[2, 4, 6, 8] [2, 4]", "hint": "map — преобразует, filter — фильтрует"}]}, {"title": "Объекты", "icon": "📖", "tasks": [{"name": "Объект", "code": "let person = {\n    name: \"Дима\",\n    age: 10\n};\nconsole.log(person.name);\nconsole.log(person[\"age\"]);", "expect": "Дима\n10", "sample": "Дима\\n10", "hint": "obj.ключ или obj[\"ключ\"]"}, {"name": "Деструктуризация", "code": "let {name, age} = {name: \"Аня\", age: 9};\nconsole.log(name, age);", "expect": "Аня 9", "sample": "Аня 9", "hint": "let {ключ} = объект"}]}, {"title": "DOM", "icon": "🖥️", "tasks": [{"name": "Выбор элементов", "code": "// В браузере:\ndocument.querySelector(\"#app\").textContent = \"Привет\";\ndocument.querySelectorAll(\".item\").length;", "expect": "Элемент #app = Привет", "sample": "Работа с DOM", "hint": "querySelector, querySelectorAll"}, {"name": "Создание элемента", "code": "let div = document.createElement(\"div\");\ndiv.textContent = \"Новый\";\ndocument.body.appendChild(div);", "expect": "div добавлен в body", "sample": "Создание и вставка", "hint": "createElement + appendChild"}]}, {"title": "События", "icon": "🔔", "tasks": [{"name": "addEventListener", "code": "let btn = document.querySelector(\"button\");\nbtn.addEventListener(\"click\", () => {\n    console.log(\"Клик!\");\n});", "expect": "Клик! по нажатию", "sample": "Обработчик клика", "hint": "addEventListener(\"click\", функция)"}]}, {"title": "Fetch и async", "icon": "🌐", "tasks": [{"name": "fetch", "code": "fetch(\"https://api.example.com/data\")\n    .then(r => r.json())\n    .then(data => console.log(data));", "expect": "Данные с сервера", "sample": "Запрос к API", "hint": "fetch + .then + .json()"}, {"name": "async/await", "code": "async function load() {\n    let res = await fetch(\"https://api.example.com/data\");\n    let data = await res.json();\n    console.log(data);\n}\nload();", "expect": "Данные с сервера", "sample": "Асинхронная загрузка", "hint": "async function + await"}]}, {"title": "Продвинутое", "icon": "🚀", "tasks": [{"name": "Классы", "code": "class Cat {\n    constructor(name) {\n        this.name = name;\n    }\n    meow() {\n        return this.name + \": Мяу!\";\n    }\n}\nlet cat = new Cat(\"Барсик\");\nconsole.log(cat.meow());", "expect": "Барсик: Мяу!", "sample": "Барсик: Мяу!", "hint": "class + constructor + new"}, {"name": "Spread", "code": "let a = [1, 2];\nlet b = [3, 4];\nlet c = [...a, ...b];\nconsole.log(c);", "expect": "[1, 2, 3, 4]", "sample": "[1, 2, 3, 4]", "hint": "... — распаковка массива"}]}];
 let curLesson=0,curTask=0;
-let userEmail=localStorage.getItem(P+'_email')||'';
-let dark=localStorage.getItem(P+'_theme')!=='light';
-let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+let userEmail=localStorage.getItem('lingx_email')||'';
+let dark=localStorage.getItem('lingx_theme')!=='light';
+let progress=JSON.parse(localStorage.getItem('lingx_progress')||'{}');
 if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
 function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
-function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats();}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem('lingx_progress',JSON.stringify(progress));updateStats();}
 let openLesson=-1;
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;const o=openLesson===li;h+=`<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson(${li})"><span class="arr ${o?'open':''}">▶</span>${l.icon}. ${l.title}<span class="cnt">${ld}/${l.tasks.length}</span></div><div class="lgrp-body ${o?'open':''}">`;l.tasks.forEach((t,ti)=>{const a=li===curLesson&&ti===curTask;const dn=progress[li+'_'+ti];h+=`<div class="ltask ${a?'active':''}" onclick="selectTask(${li},${ti})"><span class="dot ${dn?'done':''}"></span>${ti+1}. ${t.name}</div>`;});h+=`</div></div>`;});el.innerHTML=h;}
 function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar();}
@@ -163,17 +204,30 @@ function goHome(){selectTask(0,0);}
 function updateBread(){document.getElementById('hBread').textContent=`Урок ${curLesson+1} — Зад. ${curLesson+1}.${curTask+1}`;}
 function openLogin(){if(userEmail){logout();return;}document.getElementById('loginModal').classList.add('open');document.getElementById('loginEmail').value='';document.getElementById('loginErr').style.display='none';setTimeout(()=>document.getElementById('loginEmail').focus(),100);}
 function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
-function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem(P+'_email',email);const s=localStorage.getItem(P+'_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem(P+'_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
-function logout(){userEmail='';localStorage.removeItem(P+'_email');localStorage.removeItem(P+'_progress');progress={};updateUserUI();updateStats();}
+function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('lingx_email',email);const s=localStorage.getItem('lingx_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('lingx_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
+function logout(){userEmail='';localStorage.removeItem('lingx_email');localStorage.removeItem('lingx_progress');progress={};updateUserUI();updateStats();}
 function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();av.title='Выйти';em.textContent=userEmail;}else{av.textContent='?';av.title='Войти';em.textContent='';}}
 function toggleTheme(){
 dark=!dark;
-localStorage.setItem(P+'_theme',dark?'dark':'light');
+localStorage.setItem('lingx_theme',dark?'dark':'light');
 if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
 else{document.body.classList.remove('dark');document.body.classList.add('light')}
 }
 function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
 renderSidebar();renderContent();loadCode();updateBread();updateStats();
+
+function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
+function syncAccount(){
+const ue=localStorage.getItem('lingx_email')||'';
+const tok=localStorage.getItem('lingx_token')||'';
+const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
+if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
+if(hem)hem.textContent=ue||'';
+}
+syncAccount();
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+
 </script>
 </body>
 </html>

@@ -80,9 +80,50 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 .btn.outline:hover{background:var(--accent);color:#fff}
 .btn.sm{padding:4px 10px;font-size:11px}
 @media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}.h-bread{display:none}}
+
+.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:4px;height:44px}
+.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.7);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
+.nav-bar button:hover{background:rgba(255,255,255,0.12);color:#fff}
+.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
+.menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
+.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
+.menu-overlay.open{transform:translateX(0)}
+.menu-items{display:flex;flex-direction:column;gap:8px;width:100%;flex:1;overflow-y:auto}
+.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
+.menu-items a:hover{background:rgba(255,255,255,0.1)}
+.menu-bottom{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:8px}
+.menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
+.menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
+
 </style>
 </head>
 <body>
+<div class="nav-bar">
+<button onclick="history.back()" title="Назад">←</button>
+<button onclick="location.href='../'" title="Домой">⌂</button>
+<button onclick="history.forward()" title="Вперёд">→</button>
+</div>
+
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+<div class="menu-items" onclick="closeMenu()">
+<a href="../">Главная</a>
+<a href="../python/">Python</a>
+<a href="../cpp/">C++</a>
+<a href="../c/">C</a>
+<a href="../csharp/">C#</a>
+<a href="../html/">HTML</a>
+<a href="../css/">CSS</a>
+<a href="../js/">JavaScript</a>
+</div>
+<div class="menu-bottom">
+<button class="menu-settings" onclick="location.href='../'">Настройки</button>
+</div>
+</div>
 <header>
 <span class="h-title" onclick="goHome()">🎨 CSS ACADEMY</span>
 <span class="h-div">|</span>
@@ -134,14 +175,14 @@ header{background:var(--header-bg);padding:0 16px;border-bottom:2px solid var(--
 const P='css';
 const LESSONS=[{"title": "Селекторы", "icon": "1", "tasks": [{"name": "Базовые селекторы", "code": "p {\n    color: red;\n}\n\n.class-name {\n    font-size: 20px;\n}\n\n#unique {\n    font-weight: bold;\n}", "expect": "p — красный, .class — крупнее, #id — жирный", "sample": "Примеры селекторов", "hint": "тег, .класс, #ид"}, {"name": "Вложенные", "code": "div p {\n    color: blue;\n}\n\ndiv > p {\n    color: green;\n}", "expect": "Вложенные p — синие, прямые дети — зелёные", "sample": "Комбинированные селекторы", "hint": "пробел — потомок, > — прямой ребёнок"}]}, {"title": "Цвета и шрифты", "icon": "🎨", "tasks": [{"name": "Цвета", "code": "h1 {\n    color: #ff0000;\n    background-color: rgb(0, 0, 255);\n}", "expect": "Красный текст на синем фоне", "sample": "Цвет текста и фона", "hint": "hex (#ff0000), rgb(0,0,255)"}, {"name": "Шрифты", "code": "body {\n    font-family: Arial, sans-serif;\n    font-size: 16px;\n    font-weight: 400;\n    line-height: 1.5;\n}", "expect": "Шрифт Arial, 16px, обычный", "sample": "Настройки шрифта", "hint": "font-family, font-size, font-weight, line-height"}]}, {"title": "Боксовая модель", "icon": "📦", "tasks": [{"name": "margin и padding", "code": ".box {\n    width: 200px;\n    padding: 20px;    /* внутри */\n    margin: 10px;     /* снаружи */\n    border: 2px solid black;\n}", "expect": "Отступы, рамка, размер", "sample": "Коробка", "hint": "padding — внутри, margin — снаружи"}, {"name": "border-radius", "code": ".btn {\n    background: #3182ce;\n    color: white;\n    padding: 10px 20px;\n    border-radius: 8px;\n    border: none;\n}", "expect": "Скруглённая кнопка", "sample": "Кнопка с углами", "hint": "border-radius — скругление"}]}, {"title": "Flexbox", "icon": "➡️", "tasks": [{"name": "Основы flex", "code": ".container {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    gap: 10px;\n}", "expect": "Элементы по центру с промежутком", "sample": "Flex-контейнер", "hint": "display:flex, justify-content, align-items, gap"}, {"name": "Направление", "code": ".row {\n    display: flex;\n    flex-direction: row;\n}\n\n.column {\n    display: flex;\n    flex-direction: column;\n}", "expect": "Ряд / колонка", "sample": "Направление flex", "hint": "flex-direction: row / column"}]}, {"title": "Grid", "icon": "🔲", "tasks": [{"name": "Сетка", "code": ".grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr 1fr;\n    gap: 15px;\n}", "expect": "3 колонки с промежутками", "sample": "CSS Grid", "hint": "grid-template-columns: 1fr 1fr 1fr"}, {"name": "Области", "code": ".layout {\n    display: grid;\n    grid-template-areas:\n        \"header header\"\n        \"sidebar content\";\n}", "expect": "Шапка сверху, ниже сайдбар и контент", "sample": "Макет страницы", "hint": "grid-template-areas — раскладка"}]}, {"title": "Анимация", "icon": "✨", "tasks": [{"name": "Transition", "code": ".btn {\n    transition: all 0.3s ease;\n}\n\n.btn:hover {\n    background: #2b6cb0;\n    transform: scale(1.05);\n}", "expect": "Плавное изменение при наведении", "sample": "Анимация наведения", "hint": "transition + :hover"}, {"name": "Keyframes", "code": "@keyframes pulse {\n    0% { opacity: 1; }\n    50% { opacity: 0.5; }\n    100% { opacity: 1; }\n}\n\n.element {\n    animation: pulse 2s infinite;\n}", "expect": "Мерцание элемента", "sample": "Кадровая анимация", "hint": "@keyframes + animation"}]}, {"title": "Адаптивность", "icon": "📱", "tasks": [{"name": "Media queries", "code": ".container {\n    display: flex;\n}\n\n@media (max-width: 768px) {\n    .container {\n        flex-direction: column;\n    }\n}", "expect": "На телефоне — колонкой", "sample": "Адаптивная вёрстка", "hint": "@media (max-width: 768px) { }"}, {"name": "Единицы", "code": ".text {\n    font-size: 2rem;      /* в 2 раза больше корневого */\n    width: 50vw;          /* половина ширины экрана */\n    height: 100vh;        /* вся высота экрана */\n}", "expect": "Адаптивные размеры", "sample": "rem, vw, vh", "hint": "rem, vw, vh — относительные единицы"}]}, {"title": "Позиционирование", "icon": "📍", "tasks": [{"name": "position", "code": ".fixed {\n    position: fixed;\n    top: 0;\n    left: 0;\n}\n\n.absolute {\n    position: absolute;\n    right: 10px;\n    bottom: 10px;\n}", "expect": "Фиксированный и абсолютный", "sample": "Способы позиционирования", "hint": "fixed — привязан к экрану, absolute — к родителю"}]}];
 let curLesson=0,curTask=0;
-let userEmail=localStorage.getItem(P+'_email')||'';
-let dark=localStorage.getItem(P+'_theme')!=='light';
-let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+let userEmail=localStorage.getItem('lingx_email')||'';
+let dark=localStorage.getItem('lingx_theme')!=='light';
+let progress=JSON.parse(localStorage.getItem('lingx_progress')||'{}');
 if(!dark){document.body.classList.add('light')};
 updateThemeBtn();updateUserUI();
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++;}));return{t,d};}
 function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=`Решено: ${d} / ${t}`;document.getElementById('prBar').style.width=t?(d/t*100)+'%':'0%';renderSidebar();}
-function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats();}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem('lingx_progress',JSON.stringify(progress));updateStats();}
 let openLesson=-1;
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;const o=openLesson===li;h+=`<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson(${li})"><span class="arr ${o?'open':''}">▶</span>${l.icon}. ${l.title}<span class="cnt">${ld}/${l.tasks.length}</span></div><div class="lgrp-body ${o?'open':''}">`;l.tasks.forEach((t,ti)=>{const a=li===curLesson&&ti===curTask;const dn=progress[li+'_'+ti];h+=`<div class="ltask ${a?'active':''}" onclick="selectTask(${li},${ti})"><span class="dot ${dn?'done':''}"></span>${ti+1}. ${t.name}</div>`;});h+=`</div></div>`;});el.innerHTML=h;}
 function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar();}
@@ -163,17 +204,30 @@ function goHome(){selectTask(0,0);}
 function updateBread(){document.getElementById('hBread').textContent=`Урок ${curLesson+1} — Зад. ${curLesson+1}.${curTask+1}`;}
 function openLogin(){if(userEmail){logout();return;}document.getElementById('loginModal').classList.add('open');document.getElementById('loginEmail').value='';document.getElementById('loginErr').style.display='none';setTimeout(()=>document.getElementById('loginEmail').focus(),100);}
 function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
-function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem(P+'_email',email);const s=localStorage.getItem(P+'_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem(P+'_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
-function logout(){userEmail='';localStorage.removeItem(P+'_email');localStorage.removeItem(P+'_progress');progress={};updateUserUI();updateStats();}
+function doLogin(){const email=document.getElementById('loginEmail').value.trim();if(!email||!email.includes('@')||!email.includes('.')){document.getElementById('loginErr').style.display='block';return;}document.getElementById('loginErr').style.display='none';userEmail=email;localStorage.setItem('lingx_email',email);const s=localStorage.getItem('lingx_progress_'+email);if(s)progress=JSON.parse(s);else progress={};localStorage.setItem('lingx_progress',JSON.stringify(progress));closeLogin();updateUserUI();updateStats();}
+function logout(){userEmail='';localStorage.removeItem('lingx_email');localStorage.removeItem('lingx_progress');progress={};updateUserUI();updateStats();}
 function updateUserUI(){const av=document.getElementById('hAvatar'),em=document.getElementById('hEmail');if(userEmail){av.textContent=userEmail[0].toUpperCase();av.title='Выйти';em.textContent=userEmail;}else{av.textContent='?';av.title='Войти';em.textContent='';}}
 function toggleTheme(){
 dark=!dark;
-localStorage.setItem(P+'_theme',dark?'dark':'light');
+localStorage.setItem('lingx_theme',dark?'dark':'light');
 if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}
 else{document.body.classList.remove('dark');document.body.classList.add('light')}
 }
 function updateThemeBtn(){document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';}
 renderSidebar();renderContent();loadCode();updateBread();updateStats();
+
+function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
+function syncAccount(){
+const ue=localStorage.getItem('lingx_email')||'';
+const tok=localStorage.getItem('lingx_token')||'';
+const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
+if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
+if(hem)hem.textContent=ue||'';
+}
+syncAccount();
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+
 </script>
 </body>
 </html>

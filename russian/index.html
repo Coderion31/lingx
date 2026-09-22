@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Геометрия — LingX</title>
+<title>Русский язык — LingX</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--accent:#d97757}
@@ -103,8 +103,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <footer class="footer">LingX 2026</footer>
 <script>
-const P='sbj_geometry';
-const LESSONS=[{"title": "Основы геометрии", "tasks": [{"name": "Точки и прямые", "theory": "<p>Через любые две точки можно провести только одну прямую. Отрезок — часть прямой, ограниченная двумя точками.</p>", "q": "Сколько прямых можно провести через одну точку?"}, {"name": "Углы", "theory": "<p>Острый угол < 90°, прямой = 90°, тупой > 90°, развёрнутый = 180°.</p>", "q": "Чему равна сумма смежных углов?"}]}];
+const P='sbj_russian';
+const LESSONS=[{"title": "Фонетика", "tasks": [{"name": "Гласные и согласные", "theory": "<p>В русском языке 10 гласных букв: <b>а, е, ё, и, о, у, ы, э, ю, я</b>. Согласных — 21.</p><p>Гласные — ударные и безударные. Согласные — твёрдые/мягкие, звонкие/глухие.</p>", "q": "Сколько в слове \"молоко\" гласных звуков?"}, {"name": "Ударение", "theory": "<p>В русском языке ударение свободное — может падать на любой слог. Оно помогает различать слова: <b>з'амок</b> (строение) и <b>зам'ок</b> (дверной).</p>", "q": "В каком слове ударение падает на второй слог? а) книга б) окно в) город"}]}];
 let curLesson=0,curTask=0;
 let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
 let openLesson=-1;

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -6,6 +6,7 @@
 <title>Вероятность и статистика — LingX</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#d97757}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#141416;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column}
 .nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.06);padding:4px;height:44px}
 .nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.5);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
@@ -18,18 +19,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
 .menu-items a{color:#a0a0a0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.02);transition:.3s}
 .menu-items a:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-sub-hdr{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:100px;color:#a0a0a0;font-size:16px;font-weight:500;cursor:pointer;transition:.3s}
+.m-sub-hdr:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-arr{font-size:10px;transition:transform .25s;color:rgba(255,255,255,0.3);margin-left:auto}
+.m-arr.open{transform:rotate(90deg)}
+.m-sub-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.m-sub-body.open{max-height:200px}
+.m-sub-body a{padding-left:36px!important;font-size:14px!important;color:rgba(255,255,255,0.5)!important}
+.m-sub-body a:hover{color:#e0e0e0!important;background:rgba(255,255,255,0.04)!important}
 .m-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
 .m-settings{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.04);color:#a0a0a0;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
 .m-settings:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
-.main{max-width:760px;margin:0 auto;padding:70px 24px 50px;flex:1;width:100%}
-.crumb{font-size:13px;color:#6b6b70;margin-bottom:30px}
-.crumb a{color:var(--ac,#d97757);text-decoration:none}
-h1{font-size:30px;font-weight:700;margin-bottom:10px;letter-spacing:-.4px}
-.sub{font-size:15px;color:#a0a0a0;line-height:1.65;margin-bottom:34px;max-width:560px}
-.topic{background:#1a1a1d;border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:.2s}
-.topic:hover{border-color:rgba(217,119,87,0.4);background:#1e1e22}
-.topic b{font-size:15px;font-weight:600}
-.topic span{font-size:12px;color:#6b6b70}
+.container{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:#1a1a1d;overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04)}
+.sidebar-in{padding:10px}
+.sidebar h3{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:0 4px}
+.lgrp{margin-bottom:2px}
+.lgrp-hdr{cursor:pointer;padding:8px 10px;font-size:13px;font-weight:500;color:#e0e0e0;display:flex;align-items:center;gap:6px;border-radius:6px;transition:.2s}
+.lgrp-hdr:hover{background:rgba(255,255,255,0.04)}
+.lgrp-hdr .arr{font-size:10px;transition:transform .2s;color:rgba(255,255,255,0.3)}
+.lgrp-hdr .arr.open{transform:rotate(90deg)}
+.lgrp-hdr .cnt{font-size:10px;color:#6b6b70;margin-left:auto}
+.lgrp-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.lgrp-body.open{max-height:400px}
+.ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:#6b6b70;border-radius:4px;margin:1px 4px;transition:.2s;display:block}
+.ltask:hover{background:rgba(255,255,255,0.04);color:#e0e0e0}
+.ltask.active{background:rgba(217,119,87,0.1);color:var(--accent);font-weight:600}
+.ltask .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.1);margin-right:8px;flex-shrink:0}
+.ltask .dot.done{background:var(--accent)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.content{flex:1;overflow-y:auto;padding:22px 28px}
+.content h2{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+.content h3{color:var(--accent);font-size:15px;margin:16px 0 6px}
+.content p{line-height:1.7;margin:6px 0;color:#a0a0a0;font-size:14px}
+.content .info{background:rgba(217,119,87,0.06);border-left:3px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c0c0c0}
+.task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:16px 20px;border-radius:10px;margin:14px 0}
+.task-box h4{color:var(--accent);font-size:15px;margin-bottom:8px}
+.task-box .q{color:#a0a0a0;font-size:14px;margin-bottom:12px;line-height:1.5}
+.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500}
+.task-box .btn:hover{background:var(--accent);color:#141416}
+.task-box .res{margin-top:10px;font-size:13px;display:none;padding:10px 14px;border-radius:6px}
+.task-box .res.ok{display:block;background:rgba(217,119,87,0.1);color:var(--accent);border:1px solid var(--accent)}
 .footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
 </style>
 </head>
@@ -43,28 +73,58 @@ h1{font-size:30px;font-weight:700;margin-bottom:10px;letter-spacing:-.4px}
 <div class="menu-overlay" id="menuOverlay">
 <div class="menu-items" onclick="closeMenu()">
 <a href="../">Главная</a>
-<a href="../python/">Python</a>
-<a href="stats/">Вероятность и статистика</a>
-<a href="stats/">Вер и стат</a>
-<a href="geometry/">Геометрия</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('mathSub2',this)">Математика <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="mathSub2"><a href="../algebra/">Алгебра</a><a href="../stats/">Вер и стат</a><a href="../geometry/">Геометрия</a></div>
+</div>
+<a href="../russian/">Русский язык</a>
+<a href="../lit/">Литература</a>
+<a href="../physics/">Физика</a>
+<a href="../bio/">Биология</a>
+<a href="../geo/">География</a>
+<a href="../history/">История</a>
+<a href="../english/">Английский язык</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('progSub2',this)">Программирование <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="progSub2"><a href="../python/">Python</a></div>
+</div>
 </div>
 <div class="m-bottom"><button class="m-settings" onclick="location.href='../'">Настройки</button></div>
 </div>
-</div>
+<div class="container">
+<div class="sidebar"><div class="sidebar-in">
+<h3>Уроки</h3>
+<div id="lessonList"></div>
+<div style="margin-top:12px"><h3>Статистика</h3><div style="font-size:11px;color:#6b6b70" id="statsText">0 / 0</div></div>
+</div></div>
 <div class="main">
-<div class="crumb"><a href="../">Главная</a> / Математика / Вероятность и статистика</div>
-<h1>Вероятность и статистика</h1>
-<p class="sub">Случайные события, вероятности, комбинаторика, таблицы — простыми словами, с примерами.</p>
-<div class="topic"><b>Случайные события<span>вероятность, частота</span></div>
-<div class="topic"><b>Комбинаторика<span>перестановки, размещения, сочетания</span></div>
-<div class="topic"><b>Статистика<span>среднее, дисперсия, таблицы</span></div>
-<div class="topic"><b>Математическое ожидание<span>дискретное, непрерывное</span></div>
-<div class="topic"><b>Законы распределения<span>биномиальный, нормальный</span></div>
+<div class="content" id="content"></div>
+</div>
 </div>
 <footer class="footer">LingX 2026</footer>
 <script>
+const P='sbj_stats';
+const LESSONS=[{"title": "Случайные события", "tasks": [{"name": "Вероятность", "theory": "<p>Вероятность события = число благоприятных исходов / общее число исходов.</p><div class=\"info\">Вероятность всегда от 0 до 1. Чем ближе к 1, тем вероятнее.</div>", "q": "В мешке 5 красных и 3 синих шара. Какова вероятность достать красный?"}, {"name": "Частота", "theory": "<p>Относительная частота = сколько раз произошло событие / сколько всего испытаний.</p>", "q": "Монетку подбросили 100 раз, орел выпал 48 раз. Найди частоту орла."}]}];
+let curLesson=0,curTask=0;
+let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+let openLesson=-1;
+renderSidebar();renderContent();
+
+function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++}));return{t,d}}
+function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=d+' / '+t;renderSidebar()}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats()}
+function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
+function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
+function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;renderSidebar();renderContent()}
+function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<button class="btn" onclick="markDone('+curLesson+','+curTask+');document.getElementById(\'res'+curLesson+'_'+curTask+'\').className=\'res ok\'">✓ Отметить</button><div class="res" id="res'+curLesson+'_'+curTask+'">Готово!</div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){const r=document.getElementById('res'+curLesson+'_'+curTask);if(r)r.className='res ok'}}
+
 function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
 function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
+function toggleSubmenu(id,el){
+const body=document.getElementById(id);const arr=el?el.querySelector('.m-arr'):null;
+body.classList.toggle('open');if(arr)arr.classList.toggle('open')
+}
+updateStats();
 </script>
 </body>
 </html>

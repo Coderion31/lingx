@@ -87,13 +87,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="menu-overlay" id="menuOverlay">
 <div class="menu-items" onclick="closeMenu()">
 <a href="#">Главная</a>
-<a href="python/">Python</a>
 <div class="m-sub-wrap">
-<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu()">Математика <span class="m-arr">▶</span></div>
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('mathSub',this)">Математика <span class="m-arr">▶</span></div>
 <div class="m-sub-body" id="mathSub">
 <a href="algebra/" onclick="closeMenu()">Алгебра</a>
 <a href="stats/" onclick="closeMenu()">Вероятность и статистика</a>
 <a href="geometry/" onclick="closeMenu()">Геометрия</a>
+</div>
+</div>
+<a href="russian/" onclick="closeMenu()">Русский язык</a>
+<a href="lit/" onclick="closeMenu()">Литература</a>
+<a href="physics/" onclick="closeMenu()">Физика</a>
+<a href="bio/" onclick="closeMenu()">Биология</a>
+<a href="geo/" onclick="closeMenu()">География</a>
+<a href="history/" onclick="closeMenu()">История</a>
+<a href="english/" onclick="closeMenu()">Английский язык</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('progSub',this)">Программирование <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="progSub">
+<a href="python/" onclick="closeMenu()">Python</a>
 </div>
 </div>
 </div>
@@ -305,9 +317,11 @@ updateSettingsUI();
 function toggleMenu(){
 document.getElementById('menuOverlay').classList.toggle('open');
 }
-function toggleSubmenu(){
-document.getElementById('mathSub').classList.toggle('open');
-document.querySelector('.m-arr').classList.toggle('open');
+function toggleSubmenu(id,el){
+const body=document.getElementById(id);
+const arr=el?el.querySelector('.m-arr'):document.querySelector('.m-sub-wrap .m-arr');
+body.classList.toggle('open');
+if(arr)arr.classList.toggle('open');
 }
 function closeMenu(){
 document.getElementById('menuOverlay').classList.remove('open');

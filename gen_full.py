@@ -1,0 +1,218 @@
+# -*- coding: utf-8 -*-
+import os, json
+
+BASE = r"C:\Users\bunse\OneDrive\Документы\MultiTool\HomeChats\Chat-7"
+
+TEMPLATE = r'''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__TITLE__ — LingX</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#d97757}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#141416;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column}
+.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.06);padding:4px;height:44px}
+.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.5);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
+.nav-bar button:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
+.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.menu-btn:hover{background:rgba(255,255,255,0.08)}
+.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.5)}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(20,20,22,0.96);backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.06)}
+.menu-overlay.open{transform:translateX(0)}
+.menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
+.menu-items a{color:#a0a0a0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.02);transition:.3s}
+.menu-items a:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-sub-hdr{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:100px;color:#a0a0a0;font-size:16px;font-weight:500;cursor:pointer;transition:.3s}
+.m-sub-hdr:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-arr{font-size:10px;transition:transform .25s;color:rgba(255,255,255,0.3);margin-left:auto}
+.m-arr.open{transform:rotate(90deg)}
+.m-sub-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.m-sub-body.open{max-height:200px}
+.m-sub-body a{padding-left:36px!important;font-size:14px!important;color:rgba(255,255,255,0.5)!important}
+.m-sub-body a:hover{color:#e0e0e0!important;background:rgba(255,255,255,0.04)!important}
+.m-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.m-settings{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.04);color:#a0a0a0;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
+.m-settings:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
+.container{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:#1a1a1d;overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04)}
+.sidebar-in{padding:10px}
+.sidebar h3{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:0 4px}
+.lgrp{margin-bottom:2px}
+.lgrp-hdr{cursor:pointer;padding:8px 10px;font-size:13px;font-weight:500;color:#e0e0e0;display:flex;align-items:center;gap:6px;border-radius:6px;transition:.2s}
+.lgrp-hdr:hover{background:rgba(255,255,255,0.04)}
+.lgrp-hdr .arr{font-size:10px;transition:transform .2s;color:rgba(255,255,255,0.3)}
+.lgrp-hdr .arr.open{transform:rotate(90deg)}
+.lgrp-hdr .cnt{font-size:10px;color:#6b6b70;margin-left:auto}
+.lgrp-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.lgrp-body.open{max-height:400px}
+.ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:#6b6b70;border-radius:4px;margin:1px 4px;transition:.2s;display:block}
+.ltask:hover{background:rgba(255,255,255,0.04);color:#e0e0e0}
+.ltask.active{background:rgba(217,119,87,0.1);color:var(--accent);font-weight:600}
+.ltask .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.1);margin-right:8px;flex-shrink:0}
+.ltask .dot.done{background:var(--accent)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.content{flex:1;overflow-y:auto;padding:22px 28px}
+.content h2{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+.content h3{color:var(--accent);font-size:15px;margin:16px 0 6px}
+.content p{line-height:1.7;margin:6px 0;color:#a0a0a0;font-size:14px}
+.content .info{background:rgba(217,119,87,0.06);border-left:3px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c0c0c0}
+.task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:16px 20px;border-radius:10px;margin:14px 0}
+.task-box h4{color:var(--accent);font-size:15px;margin-bottom:8px}
+.task-box .q{color:#a0a0a0;font-size:14px;margin-bottom:12px;line-height:1.5}
+.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500}
+.task-box .btn:hover{background:var(--accent);color:#141416}
+.task-box .res{margin-top:10px;font-size:13px;display:none;padding:10px 14px;border-radius:6px}
+.task-box .res.ok{display:block;background:rgba(217,119,87,0.1);color:var(--accent);border:1px solid var(--accent)}
+.footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
+</style>
+</head>
+<body>
+<div class="nav-bar">
+<button onclick="history.back()" title="Назад">←</button>
+<button onclick="location.href='../'" title="Домой">⌂</button>
+<button onclick="history.forward()" title="Вперёд">→</button>
+</div>
+<button class="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+<div class="menu-overlay" id="menuOverlay">
+<div class="menu-items" onclick="closeMenu()">
+<a href="../">Главная</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('mathSub2',this)">Математика <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="mathSub2"><a href="../algebra/">Алгебра</a><a href="../stats/">Вер и стат</a><a href="../geometry/">Геометрия</a></div>
+</div>
+<a href="../russian/">Русский язык</a>
+<a href="../lit/">Литература</a>
+<a href="../physics/">Физика</a>
+<a href="../bio/">Биология</a>
+<a href="../geo/">География</a>
+<a href="../history/">История</a>
+<a href="../english/">Английский язык</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('progSub2',this)">Программирование <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="progSub2"><a href="../python/">Python</a></div>
+</div>
+</div>
+<div class="m-bottom"><button class="m-settings" onclick="location.href='../'">Настройки</button></div>
+</div>
+<div class="container">
+<div class="sidebar"><div class="sidebar-in">
+<h3>Уроки</h3>
+<div id="lessonList"></div>
+<div style="margin-top:12px"><h3>Статистика</h3><div style="font-size:11px;color:#6b6b70" id="statsText">0 / 0</div></div>
+</div></div>
+<div class="main">
+<div class="content" id="content"></div>
+</div>
+</div>
+<footer class="footer">LingX 2026</footer>
+<script>
+const P='__PREFIX__';
+const LESSONS=__LESSONS__;
+let curLesson=0,curTask=0;
+let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+let openLesson=-1;
+renderSidebar();renderContent();
+
+function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++}));return{t,d}}
+function updateStats(){const{t,d}=stats();document.getElementById('statsText').textContent=d+' / '+t;renderSidebar()}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats()}
+function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
+function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
+function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;renderSidebar();renderContent()}
+function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<button class="btn" onclick="markDone('+curLesson+','+curTask+');document.getElementById(\'res'+curLesson+'_'+curTask+'\').className=\'res ok\'">✓ Отметить</button><div class="res" id="res'+curLesson+'_'+curTask+'">Готово!</div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){const r=document.getElementById('res'+curLesson+'_'+curTask);if(r)r.className='res ok'}}
+
+function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
+function toggleSubmenu(id,el){
+const body=document.getElementById(id);const arr=el?el.querySelector('.m-arr'):null;
+body.classList.toggle('open');if(arr)arr.classList.toggle('open')
+}
+updateStats();
+</script>
+</body>
+</html>
+'''
+
+SUBJECTS = {
+    'algebra': ('Алгебра', 'alg', [
+        {'title':'Введение в алгебру','tasks':[
+            {'name':'Числовые выражения','theory':'<p>Числовое выражение — это запись, составленная из чисел и знаков действий. Например: <code>5 + 3</code>, <code>(12 − 7) × 2</code>.</p><div class="info">Значение выражения — это число, которое получается после выполнения всех действий.</div>','q':'Найди значение выражения: (25 − 10) × 2 + 6'},
+            {'name':'Порядок действий','theory':'<p>Порядок арифметических действий:</p><p>1. Действия в скобках</p><p>2. Умножение и деление</p><p>3. Сложение и вычитание</p>','q':'Расставь порядок действий: 8 + 2 × 5 − (3 + 1)'},
+        ]},
+        {'title':'Уравнения','tasks':[
+            {'name':'Линейные уравнения','theory':'<p>Линейное уравнение — это уравнение вида <code>ax + b = 0</code>. Корень находится так: <code>x = −b / a</code>.</p>','q':'Реши уравнение: 2x + 5 = 13'},
+            {'name':'Квадратные уравнения','theory':'<p>Квадратное уравнение: <code>ax² + bx + c = 0</code>. Дискриминант: <code>D = b² − 4ac</code>.</p><div class="info">Если D > 0 — два корня, D = 0 — один корень, D < 0 — корней нет.</div>','q':'Найди дискриминант: x² − 5x + 6 = 0'},
+        ]},
+    ]),
+    'stats': ('Вероятность и статистика', 'sts', [
+        {'title':'Случайные события','tasks':[
+            {'name':'Вероятность','theory':'<p>Вероятность события = число благоприятных исходов / общее число исходов.</p><div class="info">Вероятность всегда от 0 до 1. Чем ближе к 1, тем вероятнее.</div>','q':'В мешке 5 красных и 3 синих шара. Какова вероятность достать красный?'},
+            {'name':'Частота','theory':'<p>Относительная частота = сколько раз произошло событие / сколько всего испытаний.</p>','q':'Монетку подбросили 100 раз, орел выпал 48 раз. Найди частоту орла.'},
+        ]},
+    ]),
+    'russian': ('Русский язык', 'ru', [
+        {'title':'Фонетика','tasks':[
+            {'name':'Гласные и согласные','theory':'<p>В русском языке 10 гласных букв: <b>а, е, ё, и, о, у, ы, э, ю, я</b>. Согласных — 21.</p><p>Гласные — ударные и безударные. Согласные — твёрдые/мягкие, звонкие/глухие.</p>','q':'Сколько в слове "молоко" гласных звуков?'},
+            {'name':'Ударение','theory':'<p>В русском языке ударение свободное — может падать на любой слог. Оно помогает различать слова: <b>з\'амок</b> (строение) и <b>зам\'ок</b> (дверной).</p>','q':'В каком слове ударение падает на второй слог? а) книга б) окно в) город'},
+        ]},
+    ]),
+    'lit': ('Литература', 'lit', [
+        {'title':'Древнерусская литература','tasks':[
+            {'name':'Слово о полку Игореве','theory':'<p>«Слово о полку Игореве» — памятник древнерусской литературы XII века. Рассказывает о неудачном походе князя Игоря против половцев.</p>','q':'В каком веке было написано «Слово о полку Игореве»?'},
+            {'name':'Былины','theory':'<p>Былины — народные эпические песни о богатырях. Главные герои: Илья Муромец, Добрыня Никитич, Алёша Попович.</p>','q':'Кто из богатырей был сыном попа?'},
+        ]},
+    ]),
+    'physics': ('Физика', 'phys', [
+        {'title':'Механика','tasks':[
+            {'name':'Скорость и движение','theory':'<p>Скорость = расстояние / время. <code>v = s / t</code>. Единица измерения — м/с.</p><div class="info">Равномерное движение — когда скорость не меняется.</div>','q':'Автомобиль проехал 120 км за 2 часа. Найди скорость.'},
+            {'name':'Сила и масса','theory':'<p>Второй закон Ньютона: <code>F = m × a</code>. Сила = масса × ускорение. Единица силы — Ньютон (Н).</p>','q':'Какая сила действует на тело массой 5 кг с ускорением 2 м/с²?'},
+        ]},
+    ]),
+    'bio': ('Биология', 'bio', [
+        {'title':'Клетка','tasks':[
+            {'name':'Строение клетки','theory':'<p>Клетка — основная единица жизни. Основные части: ядро, цитоплазма, клеточная мембрана, митохондрии, рибосомы.</p><div class="info">Растительная клетка отличается от животной наличием хлоропластов и клеточной стенки.</div>','q':'Какой органоид отвечает за выработку энергии в клетке?'},
+            {'name':'Деление клетки','theory':'<p>Митоз — деление, при котором из одной клетки получаются две одинаковые. Мейоз — деление половых клеток.</p>','q':'Сколько клеток получается после митоза из одной?'},
+        ]},
+    ]),
+    'geo': ('География', 'geo', [
+        {'title':'Земля','tasks':[
+            {'name':'Форма и размеры','theory':'<p>Земля — геоид, почти шар. Экватор — 40 075 км. Ось наклонена на 23,5°.</p>','q':'Чему равна длина экватора?'},
+            {'name':'Градусная сетка','theory':'<p>Параллели — линии, параллельные экватору. Меридианы — линии от Северного полюса к Южному.</p>','q':'Сколько всего меридианов на глобусе?'},
+        ]},
+    ]),
+    'history': ('История', 'hist', [
+        {'title':'Древний мир','tasks':[
+            {'name':'Древний Египет','theory':'<p>Древний Египет — одна из первых цивилизаций. Возникла вдоль реки Нил. Фараоны, пирамиды, иероглифы.</p><div class="info">Пирамида Хеопса — единственное сохранившееся чудо света.</div>','q':'Вдоль какой реки возник Древний Египет?'},
+            {'name':'Древняя Греция','theory':'<p>Древняя Греция — колыбель демократии, философии, Олимпийских игр. Полисы: Афины, Спарта, Фивы.</p>','q':'В каком городе-государстве (полисе) была демократия?'},
+        ]},
+    ]),
+    'english': ('Английский язык', 'eng', [
+        {'title':'Грамматика','tasks':[
+            {'name':'Глагол to be','theory':'<p><b>To be</b> — быть, являться, находиться. Формы: <code>I am</code>, <code>you/we/they are</code>, <code>he/she/it is</code>.</p>','q':'Вставь правильную форму: She ___ a student.'},
+            {'name':'Артикли','theory':'<p>Неопределённый артикль <b>a/an</b> — если говорим о чём-то впервые. Определённый <b>the</b> — если уже знаем, о чём речь.</p><p><code>a</code> — перед согласным звуком, <code>an</code> — перед гласным.</p>','q':'Поставь a или an: ___ apple, ___ book'},
+        ]},
+    ]),
+    'geometry': ('Геометрия', 'geom', [
+        {'title':'Основы геометрии','tasks':[
+            {'name':'Точки и прямые','theory':'<p>Через любые две точки можно провести только одну прямую. Отрезок — часть прямой, ограниченная двумя точками.</p>','q':'Сколько прямых можно провести через одну точку?'},
+            {'name':'Углы','theory':'<p>Острый угол < 90°, прямой = 90°, тупой > 90°, развёрнутый = 180°.</p>','q':'Чему равна сумма смежных углов?'},
+        ]},
+    ]),
+}
+
+for code, (title, prefix, lessons) in SUBJECTS.items():
+    fp = os.path.join(BASE, code, 'index.html')
+    # Build progress key prefix
+    page = TEMPLATE.replace('__TITLE__', title)
+    page = page.replace('__PREFIX__', 'sbj_'+code)
+    # Pack lessons into json string safely
+    lessons_json = json.dumps(lessons, ensure_ascii=False)
+    page = page.replace('__LESSONS__', lessons_json)
+    with open(fp, 'w', encoding='utf-8') as f:
+        f.write(page)
+    n = sum(len(l['tasks']) for l in lessons)
+    print(f"{code}: {title} ({n} задач)")
+
+print("DONE")

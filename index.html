@@ -36,17 +36,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .acc-info span:last-child{font-size:11px;color:#6b6b70;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.04);color:#a0a0a0;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
 .menu-settings:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
-.menu-settings .gear{font-size:18px}
-.main{max-width:680px;margin:0 auto;padding:70px 24px 50px;flex:1;text-align:center}
-.hub-title{font-size:26px;font-weight:700;margin-bottom:12px;color:#e0e0e0;letter-spacing:-.3px}
-.hub-desc{font-size:14px;color:#6b6b70;line-height:1.6;margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto}
-.hub-btn{display:inline-block;padding:12px 28px;border-radius:8px;background:var(--accent);color:#141416;font-weight:700;font-size:15px;text-decoration:none;transition:.2s}
-.hub-btn:hover{background:#e2896b}
-.hub-link{display:inline-block;margin-left:12px;padding:12px 20px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);color:#a0a0a0;font-size:14px;text-decoration:none;transition:.2s;cursor:pointer}
-.hub-link:hover{background:rgba(255,255,255,0.04);color:#e0e0e0}
-.hub-stat{margin-top:40px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
-.hub-stat span{font-size:13px;color:#6b6b70}
-.hub-stat b{color:#e0e0e0;font-size:18px;display:block;font-weight:700}
+.main{max-width:680px;margin:0 auto;padding:70px 24px 50px;flex:1}
 .footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
 .settings-modal{position:fixed;inset:0;display:none;z-index:200;background:rgba(0,0,0,0.6);align-items:center;justify-content:center}
 .settings-modal.open{display:flex}
@@ -116,18 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 
-<div class="main">
-<div class="hub-title">LingX</div>
-<div class="hub-desc">Интерактивный учебник Python — теория, код и автопроверка в браузере. 13 уроков, 42 задания.</div>
-<a class="hub-btn" href="python/">Начать учить Python</a>
-<a class="hub-link" href="#" onclick="event.preventDefault();toggleMenu()">Курсы</a>
-<div class="hub-stat">
-<span><b>13</b> уроков</span>
-<span><b>42</b> задания</span>
-<span><b>✓</b> автопроверка</span>
-<span><b>0₽</b> бесплатно</span>
-</div>
-</div>
+<div class="main"></div>
 <footer class="footer">LingX</footer>
 
 <div class="settings-modal" id="settingsModal">
@@ -186,8 +165,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="set-row">
 <label>Цвет акцента</label>
 <div style="display:flex;gap:6px">
-<div class="color-dot" style="background:#60a5fa" onclick="setColor('#60a5fa')"></div>
-<div class="color-dot" style="background:#a78bfa" onclick="setColor('#a78bfa')"></div>
+<div class="color-dot" style="background:#d97757" onclick="setColor('#d97757')"></div>
+<div class="color-dot" style="background:#f0b094" onclick="setColor('#f0b094')"></div>
 <div class="color-dot" style="background:#34d399" onclick="setColor('#34d399')"></div>
 <div class="color-dot" style="background:#f472b6" onclick="setColor('#f472b6')"></div>
 <div class="color-dot" style="background:#fbbf24" onclick="setColor('#fbbf24')"></div>
@@ -352,9 +331,9 @@ applyTheme();
 }
 function applyTheme(){
 const is=darkTheme;
-document.body.style.background=is?'#0f172a':'#f8fafc';
-document.body.style.color=is?'#e2e8f0':'#1e293b';
-document.querySelectorAll('.card').forEach(c=>{c.style.background=is?'#1e293b':'#fff';c.style.color=is?'#e2e8f0':'#1e293b'});
+document.body.style.background=is?'#141416':'#f8fafc';
+document.body.style.color=is?'#e0e0e0':'#1e293b';
+document.querySelectorAll('.card').forEach(c=>{c.style.background=is?'#1a1a1d':'#fff';c.style.color=is?'#e0e0e0':'#1e293b'});
 document.querySelectorAll('.card p').forEach(p=>p.style.color=is?'#94a3b8':'#475569');
 document.querySelectorAll('.card .icon').forEach(c=>c.style.background='#fff');
 const cb=document.getElementById('themeCheck');
@@ -489,7 +468,7 @@ setTimeout(()=>{btn.textContent=userVerified?'Отправить ссылку с
 function toggleAccent(){
 const on=document.getElementById('accentCheck').checked;
 localStorage.setItem('lingx_accent',on?'1':'0');
-setAccentColor(on?'#a78bfa':'#60a5fa');
+setAccentColor(on?'#f0b094':'#d97757');
 }
 function toggleBigText(){
 const on=document.getElementById('bigTextCheck').checked;
@@ -499,9 +478,9 @@ document.documentElement.style.fontSize=on?'17px':'14px';
 function setColor(c){
 localStorage.setItem('lingx_color',c);
 setAccentColor(c);
-document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c||d.style.background==='rgb(96, 165, 250)'&&c==='#60a5fa'));
+document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c||d.style.background==='rgb(217, 119, 87)'&&c==='#d97757'));
 const cb=document.getElementById('accentCheck');
-if(cb)cb.checked=c!=='#60a5fa';
+if(cb)cb.checked=c!=='#d97757';
 }
 function setAccentColor(c){
 document.documentElement.style.setProperty('--accent',c);

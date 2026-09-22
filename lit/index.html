@@ -56,10 +56,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:16px 20px;border-radius:10px;margin:14px 0}
 .task-box h4{color:var(--accent);font-size:15px;margin-bottom:8px}
 .task-box .q{color:#a0a0a0;font-size:14px;margin-bottom:12px;line-height:1.5}
-.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500}
+.task-box input[type=text]{width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:#141416;color:#e0e0e0;font-size:14px;outline:none;margin-bottom:10px}
+.task-box input[type=text]:focus{border-color:var(--accent)}
+.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500;margin-right:8px}
 .task-box .btn:hover{background:var(--accent);color:#141416}
 .task-box .res{margin-top:10px;font-size:13px;display:none;padding:10px 14px;border-radius:6px}
 .task-box .res.ok{display:block;background:rgba(217,119,87,0.1);color:var(--accent);border:1px solid var(--accent)}
+.task-box .res.bad{display:block;background:rgba(229,83,75,0.1);color:#e5534b;border:1px solid #e5534b}
 .footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
 </style>
 </head>
@@ -104,7 +107,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <footer class="footer">LingX 2026</footer>
 <script>
 const P='sbj_lit';
-const LESSONS=[{"title": "Древнерусская литература", "tasks": [{"name": "Слово о полку Игореве", "theory": "<p>«Слово о полку Игореве» — памятник древнерусской литературы XII века. Рассказывает о неудачном походе князя Игоря против половцев.</p>", "q": "В каком веке было написано «Слово о полку Игореве»?"}, {"name": "Былины", "theory": "<p>Былины — народные эпические песни о богатырях. Главные герои: Илья Муромец, Добрыня Никитич, Алёша Попович.</p>", "q": "Кто из богатырей был сыном попа?"}]}];
+const LESSONS=[{"title": "Древнерусская литература", "tasks": [{"name": "Слово о полку Игореве", "theory": "<p>Памятник литературы XII века о походе князя Игоря.</p>", "q": "Век написания?", "ans": "xii"}, {"name": "Былины", "theory": "<p>Богатыри: Илья Муромец, Добрыня Никитич, Алёша Попович.</p>", "q": "Кто сын попа?", "ans": "алёша попович"}]}];
 let curLesson=0,curTask=0;
 let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
 let openLesson=-1;
@@ -116,7 +119,15 @@ function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progr
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
 function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
 function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;renderSidebar();renderContent()}
-function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<button class="btn" onclick="markDone('+curLesson+','+curTask+');document.getElementById(\'res'+curLesson+'_'+curTask+'\').className=\'res ok\'">✓ Отметить</button><div class="res" id="res'+curLesson+'_'+curTask+'">Готово!</div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){const r=document.getElementById('res'+curLesson+'_'+curTask);if(r)r.className='res ok'}}
+function checkAnswer(li,ti,ans){
+const t=LESSONS[li].tasks[ti];
+const inp=document.getElementById('ans_'+li+'_'+ti);
+const res=document.getElementById('res_'+li+'_'+ti);
+const val=inp?inp.value.trim().toLowerCase():'';
+if(val===String(ans).toLowerCase()){markDone(li,ti);res.className='res ok'}
+else{res.className='res bad';res.textContent='Неверно, попробуй ещё'}
+}
+function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<input type="text" id="ans_'+curLesson+'_'+curTask+'" placeholder="Твой ответ">';h+='<button class="btn" onclick="checkAnswer('+curLesson+','+curTask+',\''+t.ans+'\')">Проверить</button><div class="res" id="res_'+curLesson+'_'+curTask+'"></div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){document.getElementById('ans_'+curLesson+'_'+curTask).disabled=true;document.getElementById('res_'+curLesson+'_'+curTask).className='res ok';document.getElementById('res_'+curLesson+'_'+curTask).textContent='Задание выполнено'}}
 
 function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
 function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}

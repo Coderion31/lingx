@@ -61,10 +61,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:16px 20px;border-radius:10px;margin:14px 0}
 .task-box h4{color:var(--accent);font-size:15px;margin-bottom:8px}
 .task-box .q{color:#a0a0a0;font-size:14px;margin-bottom:12px;line-height:1.5}
-.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500}
+.task-box input[type=text]{width:100%;padding:9px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:#141416;color:#e0e0e0;font-size:14px;outline:none;margin-bottom:10px}
+.task-box input[type=text]:focus{border-color:var(--accent)}
+.task-box .btn{padding:8px 18px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-size:13px;transition:.2s;font-weight:500;margin-right:8px}
 .task-box .btn:hover{background:var(--accent);color:#141416}
 .task-box .res{margin-top:10px;font-size:13px;display:none;padding:10px 14px;border-radius:6px}
 .task-box .res.ok{display:block;background:rgba(217,119,87,0.1);color:var(--accent);border:1px solid var(--accent)}
+.task-box .res.bad{display:block;background:rgba(229,83,75,0.1);color:#e5534b;border:1px solid #e5534b}
 .footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
 </style>
 </head>
@@ -121,7 +124,15 @@ function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progr
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
 function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
 function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;renderSidebar();renderContent()}
-function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<button class="btn" onclick="markDone('+curLesson+','+curTask+');document.getElementById(\'res'+curLesson+'_'+curTask+'\').className=\'res ok\'">✓ Отметить</button><div class="res" id="res'+curLesson+'_'+curTask+'">Готово!</div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){const r=document.getElementById('res'+curLesson+'_'+curTask);if(r)r.className='res ok'}}
+function checkAnswer(li,ti,ans){
+const t=LESSONS[li].tasks[ti];
+const inp=document.getElementById('ans_'+li+'_'+ti);
+const res=document.getElementById('res_'+li+'_'+ti);
+const val=inp?inp.value.trim().toLowerCase():'';
+if(val===String(ans).toLowerCase()){markDone(li,ti);res.className='res ok'}
+else{res.className='res bad';res.textContent='Неверно, попробуй ещё'}
+}
+function renderContent(){const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4>';if(t.theory)h+=t.theory;h+=t.q?'<div class="q">'+t.q+'</div>':'';h+='<input type="text" id="ans_'+curLesson+'_'+curTask+'" placeholder="Твой ответ">';h+='<button class="btn" onclick="checkAnswer('+curLesson+','+curTask+',\''+t.ans+'\')">Проверить</button><div class="res" id="res_'+curLesson+'_'+curTask+'"></div></div>';c.innerHTML=h;if(progress[curLesson+'_'+curTask]){document.getElementById('ans_'+curLesson+'_'+curTask).disabled=true;document.getElementById('res_'+curLesson+'_'+curTask).className='res ok';document.getElementById('res_'+curLesson+'_'+curTask).textContent='Задание выполнено'}}
 
 function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
 function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
@@ -138,66 +149,66 @@ updateStats();
 SUBJECTS = {
     'algebra': ('Алгебра', 'alg', [
         {'title':'Введение в алгебру','tasks':[
-            {'name':'Числовые выражения','theory':'<p>Числовое выражение — это запись, составленная из чисел и знаков действий. Например: <code>5 + 3</code>, <code>(12 − 7) × 2</code>.</p><div class="info">Значение выражения — это число, которое получается после выполнения всех действий.</div>','q':'Найди значение выражения: (25 − 10) × 2 + 6'},
-            {'name':'Порядок действий','theory':'<p>Порядок арифметических действий:</p><p>1. Действия в скобках</p><p>2. Умножение и деление</p><p>3. Сложение и вычитание</p>','q':'Расставь порядок действий: 8 + 2 × 5 − (3 + 1)'},
+            {'name':'Числовые выражения','theory':'<p>Числовое выражение — это запись из чисел и знаков действий.</p><div class="info">Значение выражения — число после всех действий.</div>','q':'Найди значение: (25 − 10) × 2 + 6','ans':'36'},
+            {'name':'Порядок действий','theory':'<p>1. Скобки. 2. Умножение/деление. 3. Сложение/вычитание.</p>','q':'Вычисли: 8 + 2 × 5 − (3 + 1)','ans':'14'},
         ]},
         {'title':'Уравнения','tasks':[
-            {'name':'Линейные уравнения','theory':'<p>Линейное уравнение — это уравнение вида <code>ax + b = 0</code>. Корень находится так: <code>x = −b / a</code>.</p>','q':'Реши уравнение: 2x + 5 = 13'},
-            {'name':'Квадратные уравнения','theory':'<p>Квадратное уравнение: <code>ax² + bx + c = 0</code>. Дискриминант: <code>D = b² − 4ac</code>.</p><div class="info">Если D > 0 — два корня, D = 0 — один корень, D < 0 — корней нет.</div>','q':'Найди дискриминант: x² − 5x + 6 = 0'},
+            {'name':'Линейные уравнения','theory':'<p>Уравнение вида ax + b = 0. Корень: x = −b / a.</p>','q':'Реши: 2x + 5 = 13','ans':'4'},
+            {'name':'Квадратные уравнения','theory':'<p>D = b² − 4ac. Если D > 0 — два корня.</p>','q':'Найди D: x² − 5x + 6 = 0','ans':'1'},
         ]},
     ]),
     'stats': ('Вероятность и статистика', 'sts', [
         {'title':'Случайные события','tasks':[
-            {'name':'Вероятность','theory':'<p>Вероятность события = число благоприятных исходов / общее число исходов.</p><div class="info">Вероятность всегда от 0 до 1. Чем ближе к 1, тем вероятнее.</div>','q':'В мешке 5 красных и 3 синих шара. Какова вероятность достать красный?'},
-            {'name':'Частота','theory':'<p>Относительная частота = сколько раз произошло событие / сколько всего испытаний.</p>','q':'Монетку подбросили 100 раз, орел выпал 48 раз. Найди частоту орла.'},
+            {'name':'Вероятность','theory':'<p>P = благоприятные / всего.</p>','q':'5 красных + 3 синих. P(красный)?','ans':'5/8'},
+            {'name':'Частота','theory':'<p>Частота = сколько раз / всего.</p>','q':'Орёл 48 из 100. Частота?','ans':'0.48'},
         ]},
     ]),
     'russian': ('Русский язык', 'ru', [
         {'title':'Фонетика','tasks':[
-            {'name':'Гласные и согласные','theory':'<p>В русском языке 10 гласных букв: <b>а, е, ё, и, о, у, ы, э, ю, я</b>. Согласных — 21.</p><p>Гласные — ударные и безударные. Согласные — твёрдые/мягкие, звонкие/глухие.</p>','q':'Сколько в слове "молоко" гласных звуков?'},
-            {'name':'Ударение','theory':'<p>В русском языке ударение свободное — может падать на любой слог. Оно помогает различать слова: <b>з\'амок</b> (строение) и <b>зам\'ок</b> (дверной).</p>','q':'В каком слове ударение падает на второй слог? а) книга б) окно в) город'},
+            {'name':'Гласные и согласные','theory':'<p>10 гласных букв, 21 согласная.</p>','q':'Сколько гласных в "молоко"?','ans':'3'},
+            {'name':'Ударение','theory':'<p>Ударение свободное, может менять смысл слова.</p>','q':'В каком слове ударение на 2-й слог? (книга/окно/город)','ans':'окно'},
         ]},
     ]),
     'lit': ('Литература', 'lit', [
         {'title':'Древнерусская литература','tasks':[
-            {'name':'Слово о полку Игореве','theory':'<p>«Слово о полку Игореве» — памятник древнерусской литературы XII века. Рассказывает о неудачном походе князя Игоря против половцев.</p>','q':'В каком веке было написано «Слово о полку Игореве»?'},
-            {'name':'Былины','theory':'<p>Былины — народные эпические песни о богатырях. Главные герои: Илья Муромец, Добрыня Никитич, Алёша Попович.</p>','q':'Кто из богатырей был сыном попа?'},
+            {'name':'Слово о полку Игореве','theory':'<p>Памятник литературы XII века о походе князя Игоря.</p>','q':'Век написания?','ans':'xii'},
+            {'name':'Былины','theory':'<p>Богатыри: Илья Муромец, Добрыня Никитич, Алёша Попович.</p>','q':'Кто сын попа?','ans':'алёша попович'},
         ]},
     ]),
     'physics': ('Физика', 'phys', [
         {'title':'Механика','tasks':[
-            {'name':'Скорость и движение','theory':'<p>Скорость = расстояние / время. <code>v = s / t</code>. Единица измерения — м/с.</p><div class="info">Равномерное движение — когда скорость не меняется.</div>','q':'Автомобиль проехал 120 км за 2 часа. Найди скорость.'},
-            {'name':'Сила и масса','theory':'<p>Второй закон Ньютона: <code>F = m × a</code>. Сила = масса × ускорение. Единица силы — Ньютон (Н).</p>','q':'Какая сила действует на тело массой 5 кг с ускорением 2 м/с²?'},
+            {'name':'Скорость и движение','theory':'<p>v = s / t. Равномерное — скорость постоянна.</p>','q':'120 км за 2 ч. Скорость?','ans':'60'},
+            {'name':'Сила и масса','theory':'<p>F = m × a. Единица — Ньютон.</p>','q':'5 кг × 2 м/с² = ?','ans':'10'},
         ]},
     ]),
     'bio': ('Биология', 'bio', [
         {'title':'Клетка','tasks':[
-            {'name':'Строение клетки','theory':'<p>Клетка — основная единица жизни. Основные части: ядро, цитоплазма, клеточная мембрана, митохондрии, рибосомы.</p><div class="info">Растительная клетка отличается от животной наличием хлоропластов и клеточной стенки.</div>','q':'Какой органоид отвечает за выработку энергии в клетке?'},
-            {'name':'Деление клетки','theory':'<p>Митоз — деление, при котором из одной клетки получаются две одинаковые. Мейоз — деление половых клеток.</p>','q':'Сколько клеток получается после митоза из одной?'},
+            {'name':'Строение клетки','theory':'<p>Ядро, цитоплазма, мембрана, митохондрии, рибосомы.</p>','q':'Какой органоид — «энергетическая станция»?','ans':'митохондрии'},
+            {'name':'Деление клетки','theory':'<p>Митоз — 2 одинаковые клетки. Мейоз — половые.</p>','q':'Сколько клеток после митоза?','ans':'2'},
         ]},
     ]),
     'geo': ('География', 'geo', [
         {'title':'Земля','tasks':[
-            {'name':'Форма и размеры','theory':'<p>Земля — геоид, почти шар. Экватор — 40 075 км. Ось наклонена на 23,5°.</p>','q':'Чему равна длина экватора?'},
-            {'name':'Градусная сетка','theory':'<p>Параллели — линии, параллельные экватору. Меридианы — линии от Северного полюса к Южному.</p>','q':'Сколько всего меридианов на глобусе?'},
+            {'name':'Форма и размеры','theory':'<p>Земля — геоид, экватор ≈ 40 000 км.</p>','q':'Длина экватора (км)?','ans':'40075'},
+            {'name':'Градусная сетка','theory':'<p>Меридианы — от полюса к полюсу. Параллели — параллельны экватору.</p>','q':'Сколько меридианов?','ans':'360'},
         ]},
     ]),
     'history': ('История', 'hist', [
         {'title':'Древний мир','tasks':[
-            {'name':'Древний Египет','theory':'<p>Древний Египет — одна из первых цивилизаций. Возникла вдоль реки Нил. Фараоны, пирамиды, иероглифы.</p><div class="info">Пирамида Хеопса — единственное сохранившееся чудо света.</div>','q':'Вдоль какой реки возник Древний Египет?'},
-            {'name':'Древняя Греция','theory':'<p>Древняя Греция — колыбель демократии, философии, Олимпийских игр. Полисы: Афины, Спарта, Фивы.</p>','q':'В каком городе-государстве (полисе) была демократия?'},
+            {'name':'Древний Египет','theory':'<p>Цивилизация вдоль Нила. Пирамиды, фараоны, иероглифы.</p>','q':'Река?','ans':'нил'},
+            {'name':'Древняя Греция','theory':'<p>Полисы: Афины (демократия), Спарта, Фивы.</p>','q':'Где была демократия?','ans':'афины'},
         ]},
     ]),
     'english': ('Английский язык', 'eng', [
         {'title':'Грамматика','tasks':[
-            {'name':'Глагол to be','theory':'<p><b>To be</b> — быть, являться, находиться. Формы: <code>I am</code>, <code>you/we/they are</code>, <code>he/she/it is</code>.</p>','q':'Вставь правильную форму: She ___ a student.'},
-            {'name':'Артикли','theory':'<p>Неопределённый артикль <b>a/an</b> — если говорим о чём-то впервые. Определённый <b>the</b> — если уже знаем, о чём речь.</p><p><code>a</code> — перед согласным звуком, <code>an</code> — перед гласным.</p>','q':'Поставь a или an: ___ apple, ___ book'},
+            {'name':'Глагол to be','theory':'<p>I am, you/we/they are, he/she/it is.</p>','q':'She ___ a student.','ans':'is'},
+            {'name':'Артикли','theory':'<p>a — согласный, an — гласный, the — определённый.</p>','q':'a или an: ___ apple, ___ book','ans':'an a'},
         ]},
     ]),
     'geometry': ('Геометрия', 'geom', [
         {'title':'Основы геометрии','tasks':[
-            {'name':'Точки и прямые','theory':'<p>Через любые две точки можно провести только одну прямую. Отрезок — часть прямой, ограниченная двумя точками.</p>','q':'Сколько прямых можно провести через одну точку?'},
-            {'name':'Углы','theory':'<p>Острый угол < 90°, прямой = 90°, тупой > 90°, развёрнутый = 180°.</p>','q':'Чему равна сумма смежных углов?'},
+            {'name':'Точки и прямые','theory':'<p>Через две точки — одна прямая. Отрезок — часть прямой.</p>','q':'Сколько прямых через одну точку?','ans':'много'},
+            {'name':'Углы','theory':'<p>Острый < 90°, прямой = 90°, тупой > 90°, развёрнутый = 180°.</p>','q':'Сумма смежных углов?','ans':'180'},
         ]},
     ]),
 }

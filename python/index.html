@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--accent:#d97757;--accent2:#c0653f}
+:root{--accent:#3b82f6;--accent2:#2563eb}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#141416;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column}
 .nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.06);padding:4px;height:44px}
 .nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.5);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
@@ -49,7 +49,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .lgrp-body.open{max-height:400px}
 .ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:#6b6b70;border-radius:4px;margin:1px 4px;transition:.2s;display:block}
 .ltask:hover{background:rgba(255,255,255,0.04);color:#e0e0e0}
-.ltask.active{background:rgba(217,119,87,0.1);color:var(--accent);font-weight:600}
+.ltask.active{background:rgba(59,130,246,0.1);color:var(--accent);font-weight:600}
 .ltask .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.1);margin-right:8px;flex-shrink:0}
 .ltask .dot.done{background:var(--accent)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -63,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .content table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
 .content th{border:1px solid rgba(255,255,255,0.08);padding:6px;background:#1a1a1d;color:var(--accent);text-align:left}
 .content td{border:1px solid rgba(255,255,255,0.06);padding:6px;color:#a0a0a0}
-.content .info{background:rgba(217,119,87,0.06);border-left:3px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c0c0c0}
+.content .info{background:rgba(59,130,246,0.06);border-left:3px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c0c0c0}
 .task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:20px 22px;border-radius:12px;margin-top:14px}
 .task-box h4{color:var(--accent);font-size:16px;margin-bottom:12px}
 .theory{font-size:14px}
@@ -71,7 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .gate .dim{color:#a0a0a0;font-size:14px}
 .btn-gotit{background:var(--accent);color:#141416;border:none;padding:11px 26px;border-radius:28px;cursor:pointer;font-size:15px;font-weight:600;transition:.2s}
 .btn-gotit:hover{background:var(--accent2);transform:translateY(-1px)}
-.btn-gotit.done{background:rgba(217,119,87,0.15);color:var(--accent);border:1px solid var(--accent);cursor:default;transform:none}
+.btn-gotit.done{background:rgba(59,130,246,0.15);color:var(--accent);border:1px solid var(--accent);cursor:default;transform:none}
 .editor-panel{background:#1a1a1d;border-top:2px solid var(--accent);padding:10px 15px;flex-shrink:0;display:none}
 .editor-panel.open{display:block}
 .er-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
@@ -86,7 +86,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ed-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
 .ed-btn:hover{background:var(--accent);color:#141416}
 .res-ban{padding:10px 14px;border-radius:8px;margin:10px 0;font-size:13px;font-weight:600;display:none;white-space:pre-wrap}
-.res-ban.ok{display:block;background:rgba(217,119,87,0.12);color:var(--accent);border:1px solid var(--accent)}
+.res-ban.ok{display:block;background:rgba(59,130,246,0.12);color:var(--accent);border:1px solid var(--accent)}
 .res-ban.err{display:block;background:rgba(229,83,75,0.12);color:#e5534b;border:1px solid #e5534b}
 .res-ban.ok::before{content:'✓  '}
 .res-ban.err::before{content:'✗  '}
@@ -290,12 +290,13 @@ const g=document.getElementById('gateBox');
 if(g)g.innerHTML='<span class="dim">Задание открыто. Пиши код в редакторе ниже 👇</span>';
 document.getElementById('editorPanel').classList.add('open');
 loadCode();
+setTimeout(()=>{const p=document.getElementById('editorPanel');if(p)p.scrollIntoView({behavior:'smooth',block:'start'})},60);
 }
 function renderContent(){
 const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];
 let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4><div class="theory">'+renderTheory(THEORY[curLesson+'_'+curTask]||'## Задание\n\nНапиши код, который выводит ожидаемый результат.')+'</div><div class="gate" id="gateBox">';
 if(isRevealed(curLesson,curTask)){h+='<span class="dim">Задание открыто. Пиши код в редакторе ниже 👇</span>'}
-else{h+='<button class="btn-gotit" onclick="gotIt('+curLesson+','+curTask+')">Я понял</button>'}
+else{h+='<button class="btn-gotit" onclick="gotIt('+curLesson+','+curTask+')">К заданию →</button>'}
 h+='</div></div>';c.innerHTML=h;
 document.getElementById('taskLabel').textContent='Задание '+l.title;
 document.getElementById('taskTarget').textContent='Нужно вывести: '+t.expect;

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HarmoniumUIstudy — учись программировать</title>
 <style>
-:root{--accent:#d97757;--accent-soft:rgba(217,119,87,0.15);--accent-text:#f0b094;--glass-bg:0.92;--glass-blur:16px}
+:root{--accent:#3b82f6;--accent-soft:rgba(59,130,246,0.15);--accent-text:#93c5fd;--glass-bg:0.92;--glass-blur:16px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#141416;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column;padding-top:0}
 .nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.06);padding:4px;height:44px}
@@ -44,7 +44,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .settings-sidebar{width:140px;flex-shrink:0;padding:16px 0;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:2px;overflow-y:auto}
 .settings-tab{padding:7px 14px;font-size:12.5px;color:#6b6b70;cursor:pointer;border:none;background:none;text-align:left;transition:.15s;margin:0 6px;border-radius:6px;font-weight:500}
 .settings-tab:hover{color:#e0e0e0;background:rgba(255,255,255,0.04)}
-.settings-tab.active{color:var(--accent);background:rgba(217,119,87,0.08)}
+.settings-tab.active{color:var(--accent);background:rgba(59,130,246,0.08)}
 .settings-main{flex:1;padding:20px 24px;display:flex;flex-direction:column;overflow-y:auto;position:relative}
 .settings-page{display:none;flex-direction:column}
 .settings-page.active{display:flex}
@@ -177,8 +177,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="set-row">
 <label>Цвет акцента</label>
 <div style="display:flex;gap:6px">
-<div class="color-dot" style="background:#d97757" onclick="setColor('#d97757')"></div>
-<div class="color-dot" style="background:#f0b094" onclick="setColor('#f0b094')"></div>
+<div class="color-dot" style="background:#3b82f6" onclick="setColor('#3b82f6')"></div>
+<div class="color-dot" style="background:#93c5fd" onclick="setColor('#93c5fd')"></div>
 <div class="color-dot" style="background:#34d399" onclick="setColor('#34d399')"></div>
 <div class="color-dot" style="background:#f472b6" onclick="setColor('#f472b6')"></div>
 <div class="color-dot" style="background:#fbbf24" onclick="setColor('#fbbf24')"></div>
@@ -482,7 +482,7 @@ setTimeout(()=>{btn.textContent=userVerified?'Отправить ссылку с
 function toggleAccent(){
 const on=document.getElementById('accentCheck').checked;
 localStorage.setItem('lingx_accent',on?'1':'0');
-setAccentColor(on?'#f0b094':'#d97757');
+setAccentColor(on?'#93c5fd':'#3b82f6');
 }
 function toggleBigText(){
 const on=document.getElementById('bigTextCheck').checked;
@@ -492,9 +492,9 @@ document.documentElement.style.fontSize=on?'17px':'14px';
 function setColor(c){
 localStorage.setItem('lingx_color',c);
 setAccentColor(c);
-document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c||d.style.background==='rgb(217, 119, 87)'&&c==='#d97757'));
+document.querySelectorAll('.color-dot').forEach(d=>d.classList.toggle('active',d.style.background===c||d.style.background==='rgb(59, 130, 246)'&&c==='#3b82f6'));
 const cb=document.getElementById('accentCheck');
-if(cb)cb.checked=c!=='#d97757';
+if(cb)cb.checked=c!=='#3b82f6';
 }
 function setAccentColor(c){
 document.documentElement.style.setProperty('--accent',c);

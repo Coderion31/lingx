@@ -3,112 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Python — LingX</title>
+<title>Python — HarmoniumUIstudy</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
 <script src="https://skulpt.org/js/skulpt.min.js"></script>
 <script src="https://skulpt.org/js/skulpt-stdlib.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"></script>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--hover:#1e293b;--active:#1e3a5f;--accent:#60a5fa;--accent2:#3b82f6;--ok:#48bb78;--okbg:#1a2e1a;--err:#fc8181;--errbg:#2e1a1a;--code-bg:#1a2332;--shadow:rgba(0,0,0,0.3);--editor-bg:#1a2332;--header-bg:#1a2332}
-.light{--bg:#f0f4f8;--card:#fff;--text:#1e293b;--text2:#475569;--border:#e2e8f0;--hover:#f1f5f9;--active:#eff6ff;--accent:#2563eb;--accent2:#1d4ed8;--ok:#38a169;--okbg:#f0fff4;--err:#e53e3e;--errbg:#fff5f5;--code-bg:#f1f5f9;--shadow:rgba(0,0,0,0.05);--editor-bg:#f8fafc;--header-bg:#fff}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;transition:background .3s,color .3s}
-.h-logo{width:24px;height:24px;flex-shrink:0}
-.h-title{font-size:16px;font-weight:700;color:var(--accent);cursor:pointer;letter-spacing:-.3px}
-.h-div{color:var(--text2);font-size:13px}
-.h-bread{font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.h-right{margin-left:auto;display:flex;align-items:center;gap:6px}
-.h-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 8px;border-radius:5px;cursor:pointer;font-size:11px;transition:.2s;white-space:nowrap}
-.h-btn:hover{background:var(--hover);color:var(--text)}
-.av{background:var(--accent);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0}
-.em{font-size:11px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pr{width:80px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
-.pr-bar{height:100%;background:var(--accent);transition:width .5s;border-radius:2px}
+:root{--accent:#d97757;--accent2:#c0653f}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#141416;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column}
+.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.06);padding:4px;height:44px}
+.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.5);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
+.nav-bar button:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
+.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.menu-btn:hover{background:rgba(255,255,255,0.08)}
+.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.5)}
+.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(20,20,22,0.96);backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.06)}
+.menu-overlay.open{transform:translateX(0)}
+.menu-items{display:flex;flex-direction:column;gap:8px;width:100%}
+.menu-items a{color:#a0a0a0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.02);transition:.3s}
+.menu-items a:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-sub-hdr{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:100px;color:#a0a0a0;font-size:16px;font-weight:500;cursor:pointer;transition:.3s}
+.m-sub-hdr:hover{background:rgba(255,255,255,0.06);color:#e0e0e0}
+.m-arr{font-size:10px;transition:transform .25s;color:rgba(255,255,255,0.3);margin-left:auto}
+.m-arr.open{transform:rotate(90deg)}
+.m-sub-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.m-sub-body.open{max-height:200px}
+.m-sub-body a{padding-left:36px!important;font-size:14px!important;color:rgba(255,255,255,0.5)!important}
+.m-sub-body a:hover{color:#e0e0e0!important;background:rgba(255,255,255,0.04)!important}
+.m-bottom{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.m-settings{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.04);color:#a0a0a0;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
+.m-settings:hover{background:rgba(255,255,255,0.08);color:#e0e0e0}
 .container{display:flex;flex:1;overflow:hidden}
-.sidebar{width:240px;background:var(--card);overflow-y:auto;flex-shrink:0;border-right:1px solid var(--border)}
+.sidebar{width:220px;background:#1a1a1d;overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04)}
 .sidebar-in{padding:10px}
 .sidebar h3{color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:0 4px}
-.lgrp{margin-bottom:2px;border-radius:6px;overflow:hidden}
-.lgrp-hdr{cursor:pointer;padding:8px 10px;font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px;border-radius:6px;transition:.2s}
-.lgrp-hdr:hover{background:var(--hover)}
-.lgrp-hdr .arr{font-size:10px;transition:transform .2s;color:var(--text2)}
+.lgrp{margin-bottom:2px}
+.lgrp-hdr{cursor:pointer;padding:8px 10px;font-size:13px;font-weight:500;color:#e0e0e0;display:flex;align-items:center;gap:6px;border-radius:6px;transition:.2s}
+.lgrp-hdr:hover{background:rgba(255,255,255,0.04)}
+.lgrp-hdr .arr{font-size:10px;transition:transform .2s;color:rgba(255,255,255,0.3)}
 .lgrp-hdr .arr.open{transform:rotate(90deg)}
-.lgrp-hdr .cnt{font-size:10px;color:var(--text2);margin-left:auto;opacity:.7}
+.lgrp-hdr .cnt{font-size:10px;color:#6b6b70;margin-left:auto}
 .lgrp-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .lgrp-body.open{max-height:400px}
-.ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:var(--text2);border-radius:4px;margin:1px 4px;transition:.2s;display:flex;align-items:center;gap:5px}
-.ltask:hover{background:var(--hover)}
-.ltask.active{background:var(--active);color:var(--accent);font-weight:600}
-.ltask .dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0}
-.ltask .dot.done{background:var(--ok)}
+.ltask{cursor:pointer;padding:5px 10px 5px 26px;font-size:12px;color:#6b6b70;border-radius:4px;margin:1px 4px;transition:.2s;display:block}
+.ltask:hover{background:rgba(255,255,255,0.04);color:#e0e0e0}
+.ltask.active{background:rgba(217,119,87,0.1);color:var(--accent);font-weight:600}
+.ltask .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.1);margin-right:8px;flex-shrink:0}
+.ltask .dot.done{background:var(--accent)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.content{flex:1;overflow-y:auto;padding:18px 22px}
-.content h2{font-size:18px;margin-bottom:8px;color:var(--text)}
-.content h3{color:var(--accent);font-size:14px;margin:12px 0 5px}
-.content p{line-height:1.65;margin:5px 0;color:var(--text2);font-size:14px}
-.content pre{background:var(--code-bg);padding:10px 12px;border-radius:6px;overflow-x:auto;margin:6px 0;border:1px solid var(--border);font-size:13px}
-.content code{color:var(--accent);font-size:13px}
-.content .info{background:var(--active);border-left:3px solid var(--accent);padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13px;color:var(--text2)}
-.task-bar{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
-.tb{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;font-size:11px;transition:.2s}
-.tb:hover{border-color:var(--accent);color:var(--accent)}
-.tb.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tb.done{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
-.task-box{background:var(--card);border:1px solid var(--accent);padding:12px 14px;border-radius:8px;margin:10px 0}
-.task-box h4{color:var(--accent);font-size:14px;margin-bottom:8px}
-.res-ban{padding:8px 14px;border-radius:6px;margin:8px 0;font-size:13px;font-weight:600;display:none}
-.res-ban.ok{display:block;background:var(--okbg);color:var(--ok);border:1px solid var(--ok)}
-.res-ban.err{display:block;background:var(--errbg);color:var(--err);border:1px solid var(--err)}
-.res-ban.ok::before{content:'✓ '}
-.res-ban.err::before{content:'✗ '}
-.editor-panel{background:var(--card);border-top:2px solid var(--border);padding:10px 15px;flex-shrink:0}
-.er-bar{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.content{flex:1;overflow-y:auto;padding:22px 28px}
+.content h2{font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+.content h3{color:var(--accent);font-size:15px;margin:16px 0 6px}
+.content p{line-height:1.7;margin:6px 0;color:#a0a0a0;font-size:14px}
+.content li{margin:2px 0;color:#a0a0a0;font-size:13px;list-style:none}
+.content pre{background:#1a1a1d;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:8px;overflow-x:auto;margin:10px 0;font-family:'Consolas','Courier New',monospace;font-size:13px;color:#e0e0e0;line-height:1.5}
+.content code{color:var(--accent);font-size:13px;font-family:'Consolas','Courier New',monospace;background:rgba(255,255,255,0.03);padding:1px 5px;border-radius:4px}
+.content table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+.content th{border:1px solid rgba(255,255,255,0.08);padding:6px;background:#1a1a1d;color:var(--accent);text-align:left}
+.content td{border:1px solid rgba(255,255,255,0.06);padding:6px;color:#a0a0a0}
+.content .info{background:rgba(217,119,87,0.06);border-left:3px solid var(--accent);padding:12px 16px;margin:10px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c0c0c0}
+.task-box{border:1px solid rgba(255,255,255,0.06);background:#1a1a1d;padding:20px 22px;border-radius:12px;margin-top:14px}
+.task-box h4{color:var(--accent);font-size:16px;margin-bottom:12px}
+.theory{font-size:14px}
+.gate{display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 0 6px;margin-top:14px;border-top:1px dashed rgba(255,255,255,0.08);flex-wrap:wrap;text-align:center}
+.gate .dim{color:#a0a0a0;font-size:14px}
+.btn-gotit{background:var(--accent);color:#141416;border:none;padding:11px 26px;border-radius:28px;cursor:pointer;font-size:15px;font-weight:600;transition:.2s}
+.btn-gotit:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-gotit.done{background:rgba(217,119,87,0.15);color:var(--accent);border:1px solid var(--accent);cursor:default;transform:none}
+.editor-panel{background:#1a1a1d;border-top:2px solid var(--accent);padding:10px 15px;flex-shrink:0;display:none}
+.editor-panel.open{display:block}
+.er-bar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
 .er-bar label{color:var(--accent);font-size:12px;font-weight:600}
+.er-bar .target{font-size:12px;color:#a0a0a0}
+.er-bar .sp{flex:1}
 .er-row{display:flex;gap:10px;min-height:200px}
 .er-col{flex:1;display:flex;flex-direction:column}
-.er-col textarea{flex:1;background:var(--editor-bg);color:var(--text);border:1px solid var(--border);border-radius:5px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;resize:vertical;min-height:180px;tab-size:4;outline:none}
+.er-col textarea{flex:1;background:#141416;color:#e0e0e0;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;resize:vertical;min-height:180px;tab-size:4;outline:none}
 .er-col textarea:focus{border-color:var(--accent)}
-.out{flex:1;background:var(--editor-bg);border:1px solid var(--border);border-radius:5px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:auto;white-space:pre-wrap;min-height:180px;color:var(--text2)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:100}
-.modal-overlay.open{display:flex}
-.modal{background:var(--card);border-radius:12px;padding:24px;width:340px;box-shadow:0 10px 40px var(--shadow)}
-.modal h2{font-size:17px;margin-bottom:4px;color:var(--text)}
-.modal p{font-size:12px;color:var(--text2);margin-bottom:14px}
-.modal input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:5px;font-size:14px;background:var(--editor-bg);color:var(--text);outline:none}
-.modal input:focus{border-color:var(--accent)}
-.modal .btn{width:100%;margin-top:10px;padding:9px;font-size:13px}
-.modal .merr{color:var(--err);font-size:12px;margin-top:6px;display:none}
-.btn{background:var(--accent);color:#fff;border:none;padding:5px 14px;border-radius:5px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
-.btn:hover{background:var(--accent2)}
-.btn.outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
-.btn.outline:hover{background:var(--accent);color:#fff}
-.btn.sm{padding:4px 10px;font-size:11px}
-.CodeMirror{height:100%!important;font-family:'Consolas','Courier New',monospace!important;font-size:13px!important;border-radius:5px;background:var(--editor-bg)!important;color:var(--text)!important}
-.CodeMirror-gutters{background:var(--editor-bg)!important;border-right:1px solid var(--border)!important}
+.out{flex:1;background:#141416;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px;font-family:'Consolas','Courier New',monospace;font-size:13px;overflow:auto;white-space:pre-wrap;min-height:180px;color:#c0c0c0}
+.ed-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
+.ed-btn:hover{background:var(--accent);color:#141416}
+.res-ban{padding:10px 14px;border-radius:8px;margin:10px 0;font-size:13px;font-weight:600;display:none;white-space:pre-wrap}
+.res-ban.ok{display:block;background:rgba(217,119,87,0.12);color:var(--accent);border:1px solid var(--accent)}
+.res-ban.err{display:block;background:rgba(229,83,75,0.12);color:#e5534b;border:1px solid #e5534b}
+.res-ban.ok::before{content:'✓  '}
+.res-ban.err::before{content:'✗  '}
+.CodeMirror{height:100%!important;font-family:'Consolas','Courier New',monospace!important;font-size:13px!important;border-radius:6px;background:#141416!important;color:#e0e0e0!important;border:1px solid rgba(255,255,255,0.08)}
+.CodeMirror-gutters{background:#141416!important;border-right:1px solid rgba(255,255,255,0.06)!important}
 .CodeMirror-cursor{border-color:var(--accent)!important}
 .cm-s-default .cm-keyword{color:#c792ea!important}
 .cm-s-default .cm-builtin{color:#82aaff!important}
 .cm-s-default .cm-string{color:#c3e88d!important}
 .cm-s-default .cm-number{color:#f78c6c!important}
-.cm-s-default .cm-comment{color:#546e7a!important;font-style:italic}
-@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}.h-bread{display:none}}
-
-.nav-bar{position:fixed;top:16px;right:68px;display:flex;gap:2px;z-index:100;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:4px;height:44px}
-.nav-bar button{background:transparent;border:none;color:rgba(255,255,255,0.7);padding:8px 14px;cursor:pointer;border-radius:18px;font-size:16px;transition:.3s;display:flex;align-items:center;justify-content:center;height:36px;width:36px}
-.nav-bar button:hover{background:rgba(255,255,255,0.12);color:#fff}
-.menu-btn{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);cursor:pointer;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.3s}
-.menu-btn:hover{background:rgba(255,255,255,0.15);transform:scale(1.05)}
-.menu-btn span{display:block;width:18px;height:2px;background:rgba(255,255,255,0.8);border-radius:2px;transition:.3s}
-.menu-overlay{position:fixed;top:12px;left:12px;bottom:12px;width:280px;background:rgba(15,23,42,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:20px;z-index:99;transform:translateX(-110%);transition:transform .35s ease;display:flex;flex-direction:column;padding:80px 16px 16px;border:1px solid rgba(255,255,255,0.08)}
-.menu-overlay.open{transform:translateX(0)}
-.menu-items{display:flex;flex-direction:column;gap:8px;width:100%;flex:1;overflow-y:auto}
-.menu-items a{color:#e2e8f0;text-decoration:none;font-size:16px;font-weight:500;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,0.04);transition:.3s;display:block}
-.menu-items a:hover{background:rgba(255,255,255,0.1)}
-.menu-bottom{margin-top:auto;width:100%;display:flex;flex-direction:column;gap:8px}
-.menu-settings{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:100px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:#cbd5e1;cursor:pointer;font-size:14px;font-weight:500;transition:.3s}
-.menu-settings:hover{background:rgba(255,255,255,0.12);color:#fff}
-
+.cm-s-default .cm-comment{color:#6b6b70!important;font-style:italic}
+.footer{text-align:center;padding:16px;color:#6b6b70;font-size:12px;border-top:1px solid rgba(255,255,255,0.04)}
+@media(max-width:768px){.container{flex-direction:column}.sidebar{width:100%;max-height:180px}.er-row{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -117,454 +108,252 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button onclick="location.href='../'" title="Домой">⌂</button>
 <button onclick="history.forward()" title="Вперёд">→</button>
 </div>
-
-<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
-<span></span><span></span><span></span>
-</button>
-
+<button class="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 <div class="menu-overlay" id="menuOverlay">
 <div class="menu-items" onclick="closeMenu()">
 <a href="../">Главная</a>
-<a href="../python/">Python</a>
-<a href="../cpp/">C++</a>
-<a href="../c/">C</a>
-<a href="../csharp/">C#</a>
-<a href="../html/">HTML</a>
-<a href="../css/">CSS</a>
-<a href="../js/">JavaScript</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('mathSub',this)">Математика <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="mathSub"><a href="../algebra/">Алгебра</a><a href="../stats/">Вер и стат</a><a href="../geometry/">Геометрия</a></div>
 </div>
-<div class="menu-bottom">
-<button class="menu-settings" onclick="location.href='../'">Настройки</button>
+<a href="../russian/">Русский язык</a>
+<a href="../lit/">Литература</a>
+<a href="../physics/">Физика</a>
+<a href="../bio/">Биология</a>
+<a href="../geo/">География</a>
+<a href="../history/">История</a>
+<a href="../english/">Английский язык</a>
+<div class="m-sub-wrap">
+<div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('progSub',this)">Программирование <span class="m-arr">▶</span></div>
+<div class="m-sub-body" id="progSub"><a href="../python/">Python</a></div>
 </div>
 </div>
-
+<div class="m-bottom"><button class="m-settings" onclick="location.href='../'">Настройки</button></div>
+</div>
 <div class="container">
 <div class="sidebar"><div class="sidebar-in">
 <h3>Уроки</h3>
 <div id="lessonList"></div>
-<div style="margin-top:12px;padding:0 4px">
-<h3>Статистика</h3>
-<div style="font-size:11px;color:var(--text2)" id="statsText">Решено: 0 / 0</div>
-</div>
+<div style="margin-top:12px"><h3>Статистика</h3><div style="font-size:11px;color:#6b6b70" id="statsText">0 / 0</div></div>
 </div></div>
 <div class="main">
 <div class="content" id="content"></div>
-<div class="editor-panel">
+<div class="editor-panel" id="editorPanel">
 <div class="er-bar">
-<label>Редактор кода</label>
-<div style="flex:1"></div>
-<button class="btn sm" onclick="runAndCheck()">▶ Проверить</button>
-<button class="btn outline sm" onclick="resetCode()">↺ Сброс</button>
-<button class="btn outline sm" onclick="showHint()">💡 Подсказка</button>
+<label id="taskLabel">Задание</label>
+<div class="target" id="taskTarget"></div>
+<div class="sp"></div>
+<button class="ed-btn" onclick="runAndCheck()">▶ Проверить</button>
+<button class="ed-btn" onclick="resetCode()">↺ Сброс</button>
+<button class="ed-btn" onclick="showHint()">💡 Подсказка</button>
 </div>
+<div class="res-ban" id="resBan"></div>
 <div class="er-row">
 <div class="er-col"><textarea id="codeEditor" spellcheck="false"></textarea></div>
-<div class="er-col"><div class="out" id="output">// Напиши код и нажми "Проверить"</div></div>
+<div class="er-col"><div class="out" id="output">// Прочитай теорию выше и нажми «Я понял», чтобы получить задание</div></div>
 </div>
 </div>
 </div>
 </div>
-<div class="modal-overlay" id="loginModal">
-<div class="modal">
-<h2>Вход</h2>
-<p>Email сохранит твой прогресс</p>
-<input type="email" id="loginEmail" placeholder="email@example.com" onkeydown="if(event.key==='Enter')doLogin()">
-<div class="merr" id="loginErr">Некорректный email</div>
-<button class="btn" onclick="doLogin()">Войти</button>
-<button class="btn outline" style="margin-top:6px" onclick="closeLogin()">Отмена</button>
-</div>
-</div>
+<footer class="footer">HarmoniumUIstudy 2026</footer>
 <script>
-// ====== LESSONS ======
-const lessons = [
-{title:"Основы print()",icon:"1",tasks:[
+const P='sbj_python';
+const LESSONS=[
+{title:"Основы print()",tasks:[
 {name:"Привет, мир!",code:'print("Привет, мир!")',expect:"Привет, мир!",hint:'print("текст") — кавычки обязательны'},
 {name:"Выводим числа",code:'print(42)\nprint(3 + 5)',expect:"42\n8",hint:'print(42) и print(3+5) без кавычек'},
 {name:"Две строки",code:'print("Первая строка")\nprint("Вторая строка")',expect:"Первая строка\nВторая строка",hint:'Два print() — две строки'},
 {name:"Несколько аргументов",code:'print("Я", "учу", "Python")',expect:"Я учу Python",hint:'print("слово1", "слово2") — пробел сам'}
 ]},
-{title:"Переменные",icon:"2",tasks:[
+{title:"Переменные",tasks:[
 {name:"Создаём переменную",code:'name = "Аня"\nprint(name)',expect:"Аня",hint:'name = "значение"; print(name)'},
 {name:"Текст + переменная",code:'city = "Москва"\nprint("Я живу в", city)',expect:"Я живу в Москва",hint:'print("текст", переменная)'},
 {name:"Две переменные",code:'name = "Макс"\nage = 10\nprint("Имя:", name, "Возраст:", age)',expect:"Имя: Макс Возраст: 10",hint:'print("текст", var1, "текст", var2)'},
 {name:"Математика с переменными",code:'a = 10\nb = 4\nprint(a + b)\nprint(a - b)',expect:"14\n6",hint:'a = 10; b = 4; print(a+b); print(a-b)'}
 ]},
-{title:"Типы данных",icon:"T",tasks:[
+{title:"Типы данных",tasks:[
 {name:"Типы значений",code:'print(type("Привет"))\nprint(type(42))\nprint(type(3.14))',expect:"<class 'str'>\n<class 'int'>\n<class 'float'>",hint:'type(значение) — показывает тип'},
 {name:"Преобразование",code:'print(int(7.9))\nprint(float(3))\nprint(int("15") + 5)',expect:"7\n3.0\n20",hint:'int() — в целое, float() — в дробное'}
 ]},
-{title:"Математика",icon:"+",tasks:[
+{title:"Математика",tasks:[
 {name:"Арифметика",code:'print(7 + 2)\nprint(7 - 2)\nprint(7 * 2)\nprint(7 / 2)',expect:"9\n5\n14\n3.5",hint:'+ - * / — обычные знаки'},
 {name:"// и %",code:'print(17 // 5)\nprint(17 % 5)',expect:"3\n2",hint:'// — целая часть, % — остаток'},
 {name:"Порядок действий",code:'print(5 + 2 * 3)\nprint((5 + 2) * 3)',expect:"11\n21",hint:'Сначала *, /, потом +, -. Скобки меняют порядок'}
 ]},
-{title:"Условия if",icon:"⚖️",tasks:[
+{title:"Условия if",tasks:[
 {name:"if/else",code:'age = 12\nif age >= 18:\n    print("Взрослый")\nelse:\n    print("Ребёнок")',expect:"Ребёнок",hint:'if условие: с новой строки с отступом'},
 {name:"elif",code:'mark = 85\nif mark >= 90:\n    print("Отлично")\nelif mark >= 70:\n    print("Хорошо")\nelse:\n    print("Нормально")',expect:"Хорошо",hint:'elif = else + if'},
 {name:"Знак числа",code:'x = -5\nif x > 0:\n    print("Плюс")\nelif x < 0:\n    print("Минус")\nelse:\n    print("Ноль")',expect:"Минус",hint:'if x>0: elif x<0: else:'},
 {name:"Чётное/нечётное",code:'n = 7\nif n % 2 == 0:\n    print("Чётное")\nelse:\n    print("Нечётное")',expect:"Нечётное",hint:'n % 2 == 0 — чётное'}
 ]},
-{title:"Цикл for",icon:"🔄",tasks:[
+{title:"Цикл for",tasks:[
 {name:"range()",code:'for i in range(5):\n    print(i)',expect:"0\n1\n2\n3\n4",hint:'range(N) — числа 0..N-1'},
 {name:"С шагом",code:'for i in range(0, 10, 2):\n    print(i)',expect:"0\n2\n4\n6\n8",hint:'range(начало, конец, шаг)'},
 {name:"Сумма чисел",code:'total = 0\nfor i in range(1, 6):\n    total = total + i\nprint(total)',expect:"15",hint:'total = total + i — накапливает'},
 {name:"Таблица умножения",code:'for i in range(1, 6):\n    print("3 x", i, "=", 3*i)',expect:"3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15",hint:'print("3 x", i, "=", 3*i)'}
 ]},
-{title:"Списки",icon:"📋",tasks:[
+{title:"Списки",tasks:[
 {name:"Индексы",code:'fruits = ["яблоко", "банан", "вишня"]\nprint(fruits[0])\nprint(fruits[-1])',expect:"яблоко\nвишня",hint:'список[0] — первый, [-1] — последний'},
 {name:"Методы",code:'colors = ["красный", "синий"]\ncolors.append("зелёный")\nprint(len(colors))\nprint(colors)',expect:"3\n['красный', 'синий', 'зелёный']",hint:'.append() — в конец, len() — длина'},
 {name:"for по списку",code:'for fruit in ["яблоко", "банан", "вишня"]:\n    print("Я люблю", fruit)',expect:"Я люблю яблоко\nЯ люблю банан\nЯ люблю вишня",hint:'for элемент in список:'}
 ]},
-{title:"Словари",icon:"📖",tasks:[
+{title:"Словари",tasks:[
 {name:"Создание",code:'student = {"name": "Дима", "age": 10}\nprint(student["name"])\nprint(student["age"])',expect:"Дима\n10",hint:'словарь["ключ"] — получить'},
 {name:"Изменение",code:'student = {"name": "Аня", "age": 9}\nstudent["age"] = 10\nstudent["city"] = "Казань"\nprint(student)',expect:"{'name': 'Аня', 'age': 10, 'city': 'Казань'}",hint:'словарь["ключ"] = значение'},
 {name:"Перебор",code:'person = {"name": "Тимур", "age": 11, "hobby": "спорт"}\nfor key in person:\n    print(key, ":", person[key])',expect:"name : Тимур\nage : 11\nhobby : спорт",hint:'for key in dict: print(key, dict[key])'}
 ]},
-{title:"Цикл while",icon:"♻️",tasks:[
+{title:"Цикл while",tasks:[
 {name:"Счётчик",code:'count = 0\nwhile count < 5:\n    print(count)\n    count += 1',expect:"0\n1\n2\n3\n4",hint:'while условие: — пока верно, повторяет'},
 {name:"Обратный отсчёт",code:'n = 5\nwhile n > 0:\n    print(n)\n    n -= 1\nprint("Пуск!")',expect:"5\n4\n3\n2\n1\nПуск!",hint:'n -= 1 — уменьшить на 1'}
 ]},
-{title:"Функции",icon:"⚙️",tasks:[
+{title:"Функции",tasks:[
 {name:"Создание",code:'def say_hello():\n    print("Привет!")\n    print("Рад тебя видеть!")\n\nsay_hello()',expect:"Привет!\nРад тебя видеть!",hint:'def имя(): тело с отступом'},
 {name:"Параметры",code:'def greet(name):\n    print("Привет,", name, "!")\n\ngreet("Аня")\ngreet("Макс")',expect:"Привет, Аня !\nПривет, Макс !",hint:'def имя(параметр):'},
 {name:"return",code:'def double(x):\n    return x * 2\n\nprint(double(5))\nprint(double(8))',expect:"10\n16",hint:'return значение — функция отдаёт результат'},
 {name:"Два параметра",code:'def add(a, b):\n    return a + b\n\nprint(add(3, 5))\nprint(add(10, 7))',expect:"8\n17",hint:'def имя(п1, п2): return ...'}
 ]},
-{title:"Строки",icon:"📝",tasks:[
+{title:"Строки",tasks:[
 {name:"Методы строк",code:'text = "Привет, Мир!"\nprint(text.upper())\nprint(text.lower())\nprint(len(text))',expect:"ПРИВЕТ, МИР!\nпривет, мир!\n12",hint:'.upper() — заглавные, .lower() — строчные'},
 {name:"f-строки",code:'name = "Дима"\nage = 10\nprint(f"Меня зовут {name}, мне {age} лет")',expect:"Меня зовут Дима, мне 10 лет",hint:'f"текст {переменная}"'}
 ]},
-{title:"Модули",icon:"📦",tasks:[
+{title:"Модули",tasks:[
 {name:"import math",code:'import math\nprint(math.sqrt(16))\nprint(math.pi)\nprint(math.floor(3.7))',expect:"4.0\n3.141592653589793\n3",hint:'import math — матем. модуль'},
 {name:"random",code:'import random\nprint(random.randint(1, 6))\nprint(random.choice(["орёл", "решка"]))',expect:"",hint:'random.randint(1,6) — кубик'},
 {name:"Угадайка",code:'import random\nsecret = random.randint(1, 10)\nguess = 5\nif guess == secret:\n    print("Угадал!")\nelse:\n    print(f"Не угадал. Было {secret}")',expect:"",hint:'secret = random.randint(1,10); if guess == secret'}
 ]},
-{title:"Финальный проект",icon:"🏆",tasks:[
+{title:"Финальный проект",tasks:[
 {name:"Калькулятор",code:'a = 15\nb = 4\nprint(f"{a} + {b} = {a + b}")\nprint(f"{a} - {b} = {a - b}")\nprint(f"{a} * {b} = {a * b}")\nprint(f"{a} // {b} = {a // b}")\nprint(f"{a} % {b} = {a % b}")',expect:"15 + 4 = 19\n15 - 4 = 11\n15 * 4 = 60\n15 // 4 = 3\n15 % 4 = 3",hint:'f"{a} + {b} = {a+b}"'},
 {name:"Список учеников",code:'students = ["Аня", "Макс", "Дима", "Катя"]\nprint("Список учеников:")\nfor s in students:\n    print(f"- {s}")\nprint(f"Всего: {len(students)}")',expect:"Список учеников:\n- Аня\n- Макс\n- Дима\n- Катя\nВсего: 4",hint:'for s in students: print(f"- {s}")'},
 {name:"Чат-бот",code:'name = "Бот"\nprint(f"Привет! Я {name}.")\nprint("Как у тебя дела?")\nmood = "хорошо"\nif mood == "хорошо":\n    print("Отлично! Рад за тебя!")\nelse:\n    print("Не грусти, всё наладится!")',expect:"Привет! Я Бот.\nКак у тебя дела?\nОтлично! Рад за тебя!",hint:'f"текст {переменная}"'},
 {name:"Генератор паролей",code:'import random\nletters = ["a", "b", "c", "d", "e", "f", "g"]\npassword = ""\nfor i in range(6):\n    password = password + random.choice(letters)\nprint("Твой пароль:", password)',expect:"",hint:'password = password + буква'}
 ]}
 ];
-
-// ====== STATE ======
-let curLesson = 0, curTask = 0;
-let userEmail = localStorage.getItem('lingx_email') || '';
-let dark = localStorage.getItem('lingx_theme') !== 'light';
-let progress = JSON.parse(localStorage.getItem('lingx_progress') || '{}');
-if(!dark){document.body.classList.add('light')};
-updateThemeBtn();
-updateUserUI();
-
-function stats() {
-let total = 0, done = 0;
-lessons.forEach((l,li) => l.tasks.forEach((t,ti) => { total++; if (progress[li+'_'+ti]) done++; }));
-return {total,done};
-}
-
-function updateStats() {
-const {total,done} = stats();
-const st=document.getElementById('statsText');if(st)st.textContent=`Решено: ${done} / ${total}`;
-const pb=document.getElementById('prBar');if(pb)pb.style.width=total?(done/total*100)+'%':'0%';
-renderSidebar();
-}
-
-function markDone(li,ti) {
-progress[li+'_'+ti] = true;
-localStorage.setItem('lingx_progress', JSON.stringify(progress));
-updateStats();
-}
-
-// ====== ACCORDION SIDEBAR ======
-let openLesson = -1;
-
-function renderSidebar() {
-const el = document.getElementById('lessonList');
-let h = '';
-lessons.forEach((l,li) => {
-const ldone = l.tasks.filter((t,ti) => progress[li+'_'+ti]).length;
-const isOpen = openLesson === li;
-h += `<div class="lgrp">`;
-h += `<div class="lgrp-hdr" onclick="toggleLesson(${li})">`;
-h += `<span class="arr ${isOpen?'open':''}">▶</span>`;
-h += `${l.icon||(li+1)}. ${l.title}`;
-h += `<span class="cnt">${ldone}/${l.tasks.length}</span>`;
-h += `</div>`;
-h += `<div class="lgrp-body ${isOpen?'open':''}">`;
-l.tasks.forEach((t,ti) => {
-const isActive = li===curLesson && ti===curTask;
-const isDone = progress[li+'_'+ti];
-h += `<div class="ltask ${isActive?'active':''}" onclick="selectTask(${li},${ti})">`;
-h += `<span class="dot ${isDone?'done':''}"></span>`;
-h += `${ti+1}. ${t.name}</div>`;
-});
-h += `</div></div>`;
-});
-el.innerHTML = h;
-}
-
-function toggleLesson(li) {
-openLesson = openLesson === li ? -1 : li;
-renderSidebar();
-}
-
-function selectTask(li,ti) {
-curLesson = li; curTask = ti;
-openLesson = li;
-renderSidebar();
-renderContent();
-loadCode();
-updateBread();
-document.getElementById('resBan').className = 'res-ban';
-}
-
-// ====== RENDER CONTENT ======
-function renderContent() {
-const c = document.getElementById('content');
-const l = lessons[curLesson];
-const t = l.tasks[curTask];
-let h = `<h2>${l.title}</h2>`;
-h += `<div class="task-bar">`;
-l.tasks.forEach((ta, idx) => {
-let cls = 'tb' + (idx===curTask?' active':'') + (progress[curLesson+'_'+idx]?' done':'');
-h += `<button class="${cls}" onclick="selectTask(${curLesson},${idx})">${idx+1}. ${ta.name}</button>`;
-});
-h += `</div>`;
-h += `<div class="task-box"><h4>Задание ${curLesson+1}.${curTask+1}: ${t.name}</h4>`;
-h += `<div id="theoryHere"></div>`;
-h += `<div class="res-ban" id="resBan"></div>`;
-h += `</div>`;
-c.innerHTML = h;
-// Load theory from lesson definitions
-const theoryText = getTheory(curLesson, curTask);
-document.getElementById('theoryHere').innerHTML = renderTheory(theoryText);
-}
-
-function getTheory(li, ti) {
-// Theory is embedded in each task as a comment above its code in the data
-// For simplicity we return empty and show a generic explanation
-// Actually let's embed it differently - store theory in a separate getter
-const theories = {
-"0_0": "## Твой первый код\n\nPython — язык, на котором ты говоришь компьютеру, что делать.\n\n**print()** — команда 'напечатай'. Компьютер выводит на экран то, что внутри скобок.\n\n```python\nprint(\"Привет, мир!\")\n```\n\nТекст в кавычках — это **строка**. Кавычки говорят компьютеру: 'это текст, не команда'.",
-"0_1": "## Числа без кавычек\n\nЧисла можно выводить **без** кавычек. Компьютер их понимает.\n\n```python\nprint(42)\nprint(3 + 5)\n```\n\nPython сам посчитает `3 + 5` и выведет `8`.",
-"0_2": "## Несколько строк\n\nОдин `print()` — одна строка. Хочешь две строки — напиши `print()` два раза.\n\n```python\nprint(\"Первая строка\")\nprint(\"Вторая строка\")\n```",
-"0_3": "## Запятая в print()\n\nЕсли в `print()` несколько значений через запятую, Python ставит между ними пробел.\n\n```python\nprint(\"Меня зовут\", \"Дима\")\n```\n\nЗапятая — это 'склей с пробелом'.",
-"1_0": "## Переменные — коробки\n\nПеременная — коробка с именем. Кладёшь туда значение знаком `=`.\n\n```python\nname = \"Аня\"\nage = 10\n```\n\nЗнак `=` — не 'равно', а **'положи в коробку'**.",
-"1_1": "## Текст + переменная\n\nПеременные можно использовать с текстом через `,`:\n\n```python\ncity = \"Москва\"\nprint(\"Я живу в\", city)\n```\n\nЗапятая подставляет пробел между элементами.",
-"1_2": "## Сколько угодно переменных\n\nВ `print()` можно передать сколько угодно значений через запятую.",
-"1_3": "## Считаем через переменные\n\n```python\na = 5\nb = 3\nprint(a + b)  # 8\nprint(a * b)  # 15\n```",
-"2_0": "## Типы данных\n\nКаждое значение имеет тип.\n\n- **str** — строка (текст), в кавычках\n- **int** — целое число, без кавычек\n- **float** — дробное число, с точкой\n\n`type()` показывает тип значения.",
-"2_1": "## Преобразование типов\n\nМожно превращать одно в другое:\n\n- `int(3.7)` → `3`\n- `float(5)` → `5.0`\n- `int(\"10\")` → `10`",
-"3_0": "## Арифметика\n\n| Действие | Знак |\n|----------|------|\n| Сложение | `+` |\n| Вычитание | `-` |\n| Умножение | `*` |\n| Деление | `/` |\n\nДеление всегда даёт дробное число.",
-"3_1": "## Целая часть и остаток\n\n`//` — сколько раз помещается (целая часть)\n`%` — сколько осталось (остаток)\n\n```python\nprint(9 // 2)  # 4\nprint(9 % 2)   # 1\n```\n\n**Как запомнить:** 9 конфет на 2 друзей. Каждому по 4, 1 остался.",
-"3_2": "## Порядок действий\n\nКак в математике: сначала в скобках, потом умножение/деление, потом сложение/вычитание.\n\n```python\nprint(2 + 3 * 4)    # 14\nprint((2 + 3) * 4)  # 20\n```",
-"4_0": "## if/else\n\n`if` — 'если'. Компьютер проверяет условие и выбирает, что делать.\n\n**Важно:** после `if` и `else` — `:`. Внутри — 4 пробела.\n\n| Знак | Значение |\n|------|----------|\n| `==` | равно |\n| `!=` | не равно |\n| `>` | больше |\n| `<` | меньше |\n| `>=` | больше или равно |\n| `<=` | меньше или равно |",
-"4_1": "## elif\n\nКогда нужно больше двух вариантов — `elif` ('иначе если').\n\nПроверка идёт сверху вниз. Как только нашлось подходящее — Python останавливается.",
-"4_2": "## Знак числа\n\nНапиши программу, которая определяет знак числа: положительное, отрицательное или ноль.",
-"4_3": "## Чётное/нечётное\n\nЧисло чётное, если `число % 2 == 0`. Остаток от деления на 2 равен 0.",
-"5_0": "## Цикл for\n\n`for` — команда 'для каждого'. Повторяет код несколько раз.\n\n`range(5)` — числа от **0** до **4** (5 не включается).",
-"5_1": "## range с шагом\n\n`range(начало, конец, шаг)`\n\nКонец **не включается**!",
-"5_2": "## Сумма в цикле\n\n`total = total + i` — 'возьми total, прибавь i, сохрани обратно'. Так накапливается сумма.",
-"5_3": "## Таблица умножения\n\nВыводим таблицу умножения через цикл и f-строки.",
-"6_0": "## Список\n\nСписок — коллекция в `[]`.\n\n**Нумерация с 0!** `list[0]` — первый. `list[-1]` — последний.",
-"6_1": "## Методы списков\n\n- `.append()` — добавить в конец\n- `.insert()` — вставить на место\n- `.remove()` — удалить\n- `len()` — длина",
-"6_2": "## for по списку\n\n`for` отлично работает со списками. На каждом шаге переменная получает следующий элемент.",
-"7_0": "## Словарь\n\nСловарь — `{}` с парами `ключ: значение`.\n\nКлюч — как ярлык на коробке. Говоришь 'name' — достаётся 'Дима'.",
-"7_1": "## Изменение словаря\n\nВ словарь можно добавлять новые ключи и менять старые.",
-"7_2": "## Перебор словаря\n\n`for` перебирает **ключи** словаря.",
-"8_0": "## while — 'пока'\n\n`while` повторяет код, **пока** условие верно.\n\n⚠️ Не забывай менять переменную в условии! Иначе цикл будет бесконечным.",
-"8_1": "## Обратный отсчёт\n\n`n -= 1` — уменьшаем на 1 каждый раз. Когда n станет 0 — цикл кончится.",
-"9_0": "## Твоя собственная команда\n\n`def` — 'определить функцию'. Это твоя личная команда.\n\n`def` → имя → `()` → `:` → тело с отступом.",
-"9_1": "## Параметры\n\nФункция может принимать данные — **параметры**. При каждом вызове подставляется новое значение.",
-"9_2": "## return\n\n`return` — функция **возвращает** значение обратно. Без `return` функция ничего не отдаёт.",
-"9_3": "## Два параметра\n\nУ функции может быть сколько угодно параметров.",
-"10_0": "## Методы строк\n\nУ строк есть встроенные методы: `.upper()`, `.lower()`, `.replace()`, `len()`.",
-"10_1": "## f-строки\n\nЕсли перед строкой поставить `f`, можно вставлять переменные в `{}`.\n\nГораздо удобнее, чем склеивать запятыми!",
-"11_0": "## import math\n\nМодуль — набор готовых функций. `import` — 'загрузить'.\n\n`math.sqrt()` — корень, `math.pi` — число π, `math.floor()` — вниз.",
-"11_1": "## random\n\nМодуль `random` умеет выбирать случайно. `random.randint(1,10)` — число от 1 до 10.",
-"11_2": "## Угадайка\n\nСобираем игру: компьютер загадывает число, ты угадываешь.",
-"12_0": "## Калькулятор\n\nСобираем всё вместе — программа, которая считает и выводит все операции.",
-"12_1": "## Список учеников\n\nРабота с данными: список, цикл, f-строки.",
-"12_2": "## Чат-бот\n\nПростой бот, который отвечает на приветствие.",
-"12_3": "## Генератор паролей\n\nСобираем всё, что выучил, в полезную программу."
+const THEORY={
+"0_0":"## Твой первый код\n\nPython — язык, на котором ты говоришь компьютеру, что делать.\n\n**print()** — команда 'напечатай'. Компьютер выводит на экран то, что внутри скобок.\n\n```python\nprint(\"Привет, мир!\")\n```\n\nТекст в кавычках — это **строка**. Кавычки говорят компьютеру: 'это текст, не команда'.",
+"0_1":"## Числа без кавычек\n\nЧисла можно выводить **без** кавычек. Компьютер их понимает.\n\n```python\nprint(42)\nprint(3 + 5)\n```\n\nPython сам посчитает `3 + 5` и выведет `8`.",
+"0_2":"## Несколько строк\n\nОдин `print()` — одна строка. Хочешь две строки — напиши `print()` два раза.\n\n```python\nprint(\"Первая строка\")\nprint(\"Вторая строка\")\n```",
+"0_3":"## Запятая в print()\n\nЕсли в `print()` несколько значений через запятую, Python ставит между ними пробел.\n\n```python\nprint(\"Меня зовут\", \"Дима\")\n```\n\nЗапятая — это 'склей с пробелом'.",
+"1_0":"## Переменные — коробки\n\nПеременная — коробка с именем. Кладёшь туда значение знаком `=`.\n\n```python\nname = \"Аня\"\nage = 10\n```\n\nЗнак `=` — не 'равно', а **'положи в коробку'**.",
+"1_1":"## Текст + переменная\n\nПеременные можно использовать с текстом через `,`:\n\n```python\ncity = \"Москва\"\nprint(\"Я живу в\", city)\n```\n\nЗапятая подставляет пробел между элементами.",
+"1_2":"## Сколько угодно переменных\n\nВ `print()` можно передать сколько угодно значений через запятую.",
+"1_3":"## Считаем через переменные\n\n```python\na = 5\nb = 3\nprint(a + b)  # 8\nprint(a * b)  # 15\n```",
+"2_0":"## Типы данных\n\nКаждое значение имеет тип.\n\n- **str** — строка (текст), в кавычках\n- **int** — целое число, без кавычек\n- **float** — дробное число, с точкой\n\n`type()` показывает тип значения.",
+"2_1":"## Преобразование типов\n\nМожно превращать одно в другое:\n\n- `int(3.7)` → `3`\n- `float(5)` → `5.0`\n- `int(\"10\")` → `10`",
+"3_0":"## Арифметика\n\n| Действие | Знак |\n|----------|------|\n| Сложение | `+` |\n| Вычитание | `-` |\n| Умножение | `*` |\n| Деление | `/` |\n\nДеление всегда даёт дробное число.",
+"3_1":"## Целая часть и остаток\n\n`//` — сколько раз помещается (целая часть)\n`%` — сколько осталось (остаток)\n\n```python\nprint(9 // 2)  # 4\nprint(9 % 2)   # 1\n```\n\n**Как запомнить:** 9 конфет на 2 друзей. Каждому по 4, 1 остался.",
+"3_2":"## Порядок действий\n\nКак в математике: сначала в скобках, потом умножение/деление, потом сложение/вычитание.\n\n```python\nprint(2 + 3 * 4)    # 14\nprint((2 + 3) * 4)  # 20\n```",
+"4_0":"## if/else\n\n`if` — 'если'. Компьютер проверяет условие и выбирает, что делать.\n\n**Важно:** после `if` и `else` — `:`. Внутри — 4 пробела.\n\n| Знак | Значение |\n|------|----------|\n| `==` | равно |\n| `!=` | не равно |\n| `>` | больше |\n| `<` | меньше |\n| `>=` | больше или равно |\n| `<=` | меньше или равно |",
+"4_1":"## elif\n\nКогда нужно больше двух вариантов — `elif` ('иначе если').\n\nПроверка идёт сверху вниз. Как только нашлось подходящее — Python останавливается.",
+"4_2":"## Знак числа\n\nНапиши программу, которая определяет знак числа: положительное, отрицательное или ноль.",
+"4_3":"## Чётное/нечётное\n\nЧисло чётное, если `число % 2 == 0`. Остаток от деления на 2 равен 0.",
+"5_0":"## Цикл for\n\n`for` — команда 'для каждого'. Повторяет код несколько раз.\n\n`range(5)` — числа от **0** до **4** (5 не включается).",
+"5_1":"## range с шагом\n\n`range(начало, конец, шаг)`\n\nКонец **не включается**!",
+"5_2":"## Сумма в цикле\n\n`total = total + i` — 'возьми total, прибавь i, сохрани обратно'. Так накапливается сумма.",
+"5_3":"## Таблица умножения\n\nВыводим таблицу умножения через цикл и f-строки.",
+"6_0":"## Список\n\nСписок — коллекция в `[]`.\n\n**Нумерация с 0!** `list[0]` — первый. `list[-1]` — последний.",
+"6_1":"## Методы списков\n\n- `.append()` — добавить в конец\n- `.insert()` — вставить на место\n- `.remove()` — удалить\n- `len()` — длина",
+"6_2":"## for по списку\n\n`for` отлично работает со списками. На каждом шаге переменная получает следующий элемент.",
+"7_0":"## Словарь\n\nСловарь — `{}` с парами `ключ: значение`.\n\nКлюч — как ярлык на коробке. Говоришь 'name' — достаётся 'Дима'.",
+"7_1":"## Изменение словаря\n\nВ словарь можно добавлять новые ключи и менять старые.",
+"7_2":"## Перебор словаря\n\n`for` перебирает **ключи** словаря.",
+"8_0":"## while — 'пока'\n\n`while` повторяет код, **пока** условие верно.\n\n⚠️ Не забывай менять переменную в условии! Иначе цикл будет бесконечным.",
+"8_1":"## Обратный отсчёт\n\n`n -= 1` — уменьшаем на 1 каждый раз. Когда n станет 0 — цикл кончится.",
+"9_0":"## Твоя собственная команда\n\n`def` — 'определить функцию'. Это твоя личная команда.\n\n`def` → имя → `()` → `:` → тело с отступом.",
+"9_1":"## Параметры\n\nФункция может принимать данные — **параметры**. При каждом вызове подставляется новое значение.",
+"9_2":"## return\n\n`return` — функция **возвращает** значение обратно. Без `return` функция ничего не отдаёт.",
+"9_3":"## Два параметра\n\nУ функции может быть сколько угодно параметров.",
+"10_0":"## Методы строк\n\nУ строк есть встроенные методы: `.upper()`, `.lower()`, `.replace()`, `len()`.",
+"10_1":"## f-строки\n\nЕсли перед строкой поставить `f`, можно вставлять переменные в `{}`.\n\nГораздо удобнее, чем склеивать запятыми!",
+"11_0":"## import math\n\nМодуль — набор готовых функций. `import` — 'загрузить'.\n\n`math.sqrt()` — корень, `math.pi` — число π, `math.floor()` — вниз.",
+"11_1":"## random\n\nМодуль `random` умеет выбирать случайно. `random.randint(1,10)` — число от 1 до 10.",
+"11_2":"## Угадайка\n\nСобираем игру: компьютер загадывает число, ты угадываешь.",
+"12_0":"## Калькулятор\n\nСобираем всё вместе — программа, которая считает и выводит все операции.",
+"12_1":"## Список учеников\n\nРабота с данными: список, цикл, f-строки.",
+"12_2":"## Чат-бот\n\nПростой бот, который отвечает на приветствие.",
+"12_3":"## Генератор паролей\n\nСобираем всё, что выучил, в полезную программу."
 };
-return theories[li+"_"+ti] || "## Задание\n\nНапиши код, который выводит ожидаемый результат.";
+
+let curLesson=0,curTask=0,openLesson=-1,revealed={};
+let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
+renderSidebar();renderContent();
+
+function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++}));return{t,d}}
+function updateStats(){const{t,d}=stats();const el=document.getElementById('statsText');if(el)el.textContent=d+' / '+t;renderSidebar()}
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats()}
+function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
+function isRevealed(li,ti){return revealed[li+'_'+ti]===true}
+function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;document.getElementById('editorPanel').classList.remove('open');renderSidebar();renderContent()}
+function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
+function gotIt(li,ti){
+revealed[li+'_'+ti]=true;
+const g=document.getElementById('gateBox');
+if(g)g.innerHTML='<span class="dim">Задание открыто. Пиши код в редакторе ниже 👇</span>';
+document.getElementById('editorPanel').classList.add('open');
+loadCode();
+}
+function renderContent(){
+const c=document.getElementById('content');const l=LESSONS[curLesson];const t=l.tasks[curTask];
+let h='<h2>'+l.title+'</h2><div class="task-box"><h4>'+t.name+'</h4><div class="theory">'+renderTheory(THEORY[curLesson+'_'+curTask]||'## Задание\n\nНапиши код, который выводит ожидаемый результат.')+'</div><div class="gate" id="gateBox">';
+if(isRevealed(curLesson,curTask)){h+='<span class="dim">Задание открыто. Пиши код в редакторе ниже 👇</span>'}
+else{h+='<button class="btn-gotit" onclick="gotIt('+curLesson+','+curTask+')">Я понял</button>'}
+h+='</div></div>';c.innerHTML=h;
+document.getElementById('taskLabel').textContent='Задание '+l.title;
+document.getElementById('taskTarget').textContent='Нужно вывести: '+t.expect;
+if(isRevealed(curLesson,curTask)){document.getElementById('editorPanel').classList.add('open');loadCode()}
 }
 
-// ====== RENDER THEORY ======
-function renderTheory(md) {
-let html = '', lines = md.split('\n'), inCode = false, codeLines = [];
-let th = [], ta = [], tal = [];
-for (let i = 0; i < lines.length; i++) {
-const l = lines[i];
-if (l.startsWith('```')) {
-if (inCode) { html += '<pre><code>' + esc(codeLines.join('\n')) + '</code></pre>'; codeLines=[]; inCode=false; }
-else inCode = true;
-continue;
-}
-if (inCode) { codeLines.push(l); continue; }
-if (l.startsWith('|') && l.endsWith('|')) {
-const p = l.split('|').filter(x=>x.trim());
-if (l.includes('---')) { tal = p.map(x=>x.includes(':')?'center':'left'); continue; }
-if (!th.length) th = p; else ta.push(p);
-continue;
-} else if (th.length) { html += buildT(th,tal,ta); th=[]; ta=[]; }
-if (l.startsWith('## ')) html += `<h3>${l.slice(3)}</h3>`;
-else if (l.startsWith('> ')) html += `<div class="info">${inline(l.slice(2))}</div>`;
-else if (l.startsWith('- ')) html += `<li style="margin:2px 0;color:var(--text2);font-size:13px">${inline(l.slice(2))}</li>`;
-else if (l.trim()==='') html += '<br>';
-else html += `<p style="font-size:14px">${inline(l)}</p>`;
-}
-if (inCode) html += '<pre><code>' + esc(codeLines.join('\n')) + '</code></pre>';
-if (th.length) html += buildT(th,tal,ta);
+function getTheory(li,ti){return THEORY[li+'_'+ti]||'## Задание\n\nНапиши код, который выводит ожидаемый результат.'}
+
+function renderTheory(md){
+let html='',lines=md.split('\n'),inCode=false,codeLines=[];
+let th=[],ta=[],tal=[];
+for(let i=0;i<lines.length;i++){const l=lines[i];
+if(l.startsWith('```')){if(inCode){html+='<pre><code>'+esc(codeLines.join('\n'))+'</code></pre>';codeLines=[];inCode=false}else inCode=true;continue}
+if(inCode){codeLines.push(l);continue}
+if(l.startsWith('|')&&l.endsWith('|')){const p=l.split('|').filter(x=>x.trim());if(l.includes('---')){tal=p.map(x=>x.includes(':')?'center':'left');continue}if(!th.length)th=p;else ta.push(p);continue}
+else if(th.length){html+=buildT(th,tal,ta);th=[];ta=[]}
+if(l.startsWith('## '))html+='<h3>'+l.slice(3)+'</h3>';
+else if(l.startsWith('> '))html+='<div class="info">'+inline(l.slice(2))+'</div>';
+else if(l.startsWith('- '))html+='<li>'+inline(l.slice(2))+'</li>';
+else if(l.trim()==='')html+='<br>';
+else html+='<p>'+inline(l)+'</p>';}
+if(inCode)html+='<pre><code>'+esc(codeLines.join('\n'))+'</code></pre>';
+if(th.length)html+=buildT(th,tal,ta);
 return html;
 }
-function buildT(hd,al,rows) {
-let h = '<table style="width:100%;border-collapse:collapse;margin:6px 0;font-size:13px"><thead><tr>';
-hd.forEach((c,i) => { h += `<th style="border:1px solid var(--border);padding:5px;background:var(--code-bg);color:var(--accent);text-align:${al[i]||'left'}">${c}</th>`; });
-h += '</tr></thead><tbody>';
-rows.forEach(r => { h += '<tr>'; r.forEach((c,i) => { h += `<td style="border:1px solid var(--border);padding:5px;color:var(--text2);text-align:${al[i]||'left'}">${inline(c)}</td>`; }); h += '</tr>'; });
-h += '</tbody></table>';
-return h;
-}
-function inline(t) { return t.replace(/\`([^`]+)\`/g, '<code style="background:var(--code-bg);padding:1px 5px;border-radius:3px;color:var(--accent);font-size:13px">$1</code>'); }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function buildT(hd,al,rows){let h='<table><thead><tr>';hd.forEach((c,i)=>{h+='<th style="text-align:'+(al[i]||'left')+'">'+c+'</th>'});h+='</tr></thead><tbody>';rows.forEach(r=>{h+='<tr>';r.forEach((c,i)=>{h+='<td style="text-align:'+(al[i]||'left')+'">'+inline(c)+'</td>'});h+='</tr>'});h+='</tbody></table>';return h}
+function inline(t){return String(t).replace(/\`([^`]+)\`/g,'<code>$1</code>')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ====== EDITOR ======
-let editor = null;
-function loadCode() {
-const t = lessons[curLesson].tasks[curTask];
-if(!editor){
-editor=CodeMirror.fromTextArea(document.getElementById('codeEditor'),{
-mode:'python',
-lineNumbers:true,
-indentUnit:4,
-tabSize:4,
-indentWithTabs:false
-});
-editor.setSize('100%','100%');
-}
+let editor=null;
+function loadCode(){
+const t=LESSONS[curLesson].tasks[curTask];
+if(!editor){editor=CodeMirror.fromTextArea(document.getElementById('codeEditor'),{mode:'python',lineNumbers:true,indentUnit:4,tabSize:4,indentWithTabs:false});editor.setSize('100%','100%')}
 editor.setValue(t.code);
-document.getElementById('output').textContent = '// Напиши код и нажми "Проверить"';
-document.getElementById('output').className = 'out';
+const o=document.getElementById('output');o.textContent='// Напиши код и нажми "Проверить"';o.className='out';
+const ban=document.getElementById('resBan');
 }
-function getCode(){return editor?editor.getValue():document.getElementById('codeEditor').value||'';}
-
-function normalize(s) {
-return s.replace(/\s+$/gm,'').replace(/^\s+/gm,'').replace(/[\r\n]+/g,'\n').trim();
+function getCode(){return editor?editor.getValue():document.getElementById('codeEditor').value||''}
+function normalize(s){return String(s).replace(/\s+$/gm,'').replace(/^\s+/gm,'').replace(/[\r\n]+/g,'\n').trim()}
+function runAndCheck(){
+const code=getCode();const out=document.getElementById('output');const ban=document.getElementById('resBan');const task=LESSONS[curLesson].tasks[curTask];
+if(!task){return}
+if(!ban){
+out.textContent=code?code:'нет кода';return;
 }
-
-function runAndCheck() {
-const code = getCode();
-const out = document.getElementById('output');
-const ban = document.getElementById('resBan');
-const task = lessons[curLesson].tasks[curTask];
-out.textContent = ''; out.className = 'out'; ban.className = 'res-ban';
-Sk.configure({output:s=>out.textContent+=s, read:builtinRead, __future__:Sk.python3});
-try {
-Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>",false,code,{syntaxerrors:"python3"})).then(() => {
-const a = normalize(out.textContent);
-const e = normalize(task.expect);
-if (!task.expect) {
-ban.textContent = 'Код выполнен! Попробуй изменить и запустить снова';
-ban.className = 'res-ban ok'; return;
+out.textContent='';out.className='out';ban.className='res-ban';
+Sk.configure({output:s=>out.textContent+=s,read:builtinRead,__future__:Sk.python3});
+try{Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,{syntaxerrors:"python3"})).then(()=>{const a=normalize(out.textContent);const e=normalize(task.expect);if(!task.expect){ban.textContent='Код выполнен! Попробуй изменить и запустить снова';ban.className='res-ban ok';return}if(a===e){ban.textContent='Отлично! Всё верно!';ban.className='res-ban ok';markDone(curLesson,curTask);if(curTask+1<LESSONS[curLesson].tasks.length){setTimeout(()=>selectTask(curLesson,curTask+1),1200)}else if(curLesson+1<LESSONS.length){setTimeout(()=>selectTask(curLesson+1,0),1500)}else{ban.textContent+=' Поздравляю! Ты прошёл все уроки! 🎉'}}else{ban.textContent='Ошибка. Ожидалось:\n'+task.expect+'\n\nПолучено:\n'+out.textContent;ban.className='res-ban err'}}).catch(err=>{out.textContent=err.toString();out.className='out';if(ban){ban.textContent='В коде синтаксическая ошибка!';ban.className='res-ban err'}})}catch(e){out.textContent=e.toString();out.className='out';if(ban){ban.textContent='Ошибка!';ban.className='res-ban err'}}
 }
-if (a === e) {
-ban.textContent = 'Отлично! Всё верно!';
-ban.className = 'res-ban ok';
-markDone(curLesson, curTask);
-const tasks = lessons[curLesson].tasks;
-if (curTask + 1 < tasks.length) {
-setTimeout(() => selectTask(curLesson, curTask + 1), 1200);
-} else if (curLesson + 1 < lessons.length) {
-setTimeout(() => { selectTask(curLesson + 1, 0); }, 1500);
-} else {
-ban.textContent += ' Поздравляю! Ты прошёл все уроки! 🎉';
-}
-} else {
-ban.textContent = `Ошибка. Ожидалось:\n${task.expect}\n\nПолучено:\n${out.textContent}`;
-ban.className = 'res-ban err';
-}
-}).catch(err => {
-out.textContent = err.toString(); out.className = 'out';
-ban.textContent = 'В коде синтаксическая ошибка!';
-ban.className = 'res-ban err';
-});
-} catch(e) {
-out.textContent = e.toString(); out.className = 'out';
-ban.textContent = 'Ошибка!'; ban.className = 'res-ban err';
-}
-}
-
-function builtinRead(x) {
-if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined) throw new Error("Not found: " + x);
-return Sk.builtinFiles["files"][x];
-}
-
-function resetCode() { loadCode(); document.getElementById('resBan').className = 'res-ban'; }
-function showHint() {
-const t = lessons[curLesson].tasks[curTask];
-document.getElementById('output').textContent = '💡 Подсказка: ' + t.hint;
-document.getElementById('output').className = 'out';
-}
-function goHome() { selectTask(0,0); }
-function updateBread() { document.getElementById('hBread').textContent = `Урок ${curLesson+1} — Зад. ${curLesson+1}.${curTask+1}`; }
-
-// ====== AUTH ======
-function openLogin() {
-if (userEmail) { logout(); return; }
-document.getElementById('loginModal').classList.add('open');
-document.getElementById('loginEmail').value = '';
-document.getElementById('loginErr').style.display = 'none';
-setTimeout(()=>document.getElementById('loginEmail').focus(),100);
-}
-function closeLogin() { document.getElementById('loginModal').classList.remove('open'); }
-function doLogin() {
-const email = document.getElementById('loginEmail').value.trim();
-if (!email||!email.includes('@')||!email.includes('.')) { document.getElementById('loginErr').style.display='block'; return; }
-document.getElementById('loginErr').style.display='none';
-userEmail = email;
-localStorage.setItem('lingx_email', email);
-const saved = localStorage.getItem('lingx_progress_'+email);
-if (saved) progress = JSON.parse(saved); else progress = {};
-localStorage.setItem('lingx_progress', JSON.stringify(progress));
-closeLogin(); updateUserUI(); updateStats();
-}
-function logout() {
-userEmail = ''; localStorage.removeItem('lingx_email'); localStorage.removeItem('lingx_progress'); progress = {};
-updateUserUI(); updateStats();
-}
-function updateUserUI() {
-const av = document.getElementById('hAvatar'), em = document.getElementById('hEmail');
-if(!av&&!em)return;
-if (userEmail) { if(av){av.textContent=userEmail[0].toUpperCase();av.title='Выйти'} if(em)em.textContent=userEmail; }
-else { if(av){av.textContent='?';av.title='Войти'} if(em)em.textContent=''; }
-}
-
-// ====== THEME ======
-function toggleTheme() { dark=!dark; if(dark){document.body.classList.remove('light');document.body.classList.add('dark')}else{document.body.classList.remove('dark');document.body.classList.add('light')} localStorage.setItem('lingx_theme',dark?'dark':'light'); updateThemeBtn(); }
-function updateThemeBtn() { const tb=document.getElementById('themeBtn'); if(tb)tb.textContent=dark?'🌙':'☀️'; }
-
-// ====== START ======
-renderSidebar();
-renderContent();
-loadCode();
-updateBread();
-updateStats();
+function builtinRead(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined)throw new Error("Not found: "+x);return Sk.builtinFiles["files"][x]}
+function resetCode(){loadCode();const ban=document.getElementById('resBan');if(ban)ban.className='res-ban'}
+function showHint(){const t=LESSONS[curLesson].tasks[curTask];const o=document.getElementById('output');if(o){o.textContent='💡 Подсказка: '+t.hint;o.className='out'}}
 
 function toggleMenu(){document.getElementById('menuOverlay').classList.toggle('open')}
 function closeMenu(){document.getElementById('menuOverlay').classList.remove('open')}
-function syncAccount(){
-const ue=localStorage.getItem('lingx_email')||'';
-const tok=localStorage.getItem('lingx_token')||'';
-const hav=document.getElementById('hAvatar'),hem=document.getElementById('hEmail');
-if(!hav&&!hem)return;
-if(hav)hav.textContent=ue?ue[0].toUpperCase():'?';
-if(hem)hem.textContent=ue||'';
-}
-syncAccount();
+function toggleSubmenu(id,el){const body=document.getElementById(id);const arr=el?el.querySelector('.m-arr'):null;body.classList.toggle('open');if(arr)arr.classList.toggle('open')}
+updateStats();
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
-
 </script>
 </body>
 </html>

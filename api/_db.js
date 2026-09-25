@@ -79,7 +79,10 @@ function sanitize(u) {
     name: u.name,
     verified: !!u.verified,
     createdAt: u.createdAt,
-    lastLogin: u.lastLogin
+    lastLogin: u.lastLogin,
+    role: u.role || null,
+    classCode: u.classCode || null,
+    className: u.className || null
   };
 }
 

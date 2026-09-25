@@ -1,40 +1,63 @@
 {
-  "users": {
-    "bunseriy@gmail.com": {
-      "email": "bunseriy@gmail.com",
-      "name": "bunseriy",
-      "passwordHash": "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
-      "verified": true,
-      "createdAt": "2026-09-18T17:22:06.159Z",
-      "lastLogin": "2026-09-18T17:48:39.263Z",
-      "progress": {},
-      "tokens": {
-        "6be25619b625d8b1d3e82ec9bcaacd4c7cc8ef1ffff16683d92476eed06d1f7e": 1792345719263
-      }
-    },
-    "l9204644@xmail.ru": {
-      "email": "l9204644@xmail.ru",
-      "name": "l9204644",
-      "passwordHash": "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
-      "verified": false,
-      "code": "234517",
-      "codeExpires": 1789752795317,
-      "createdAt": "2026-09-18T17:23:15.317Z",
-      "lastLogin": null,
-      "progress": {}
-    },
-    "serg035g@yandex.ru": {
-      "email": "serg035g@yandex.ru",
-      "name": "serg035g",
-      "verified": true,
-      "createdAt": "2026-09-18T17:35:56.241Z",
-      "progress": {},
-      "code": "154085",
-      "codeExpires": 1789753610163,
-      "lastLogin": "2026-09-18T17:36:14.878Z",
-      "tokens": {
-        "10493eac4c368e95729f462db6d67b56db270948826b1b419c6f3c0608799ee6": 1792344974878
-      }
-    }
-  }
+    "users":  {
+                  "bunseriy@gmail.com":  {
+                                             "email":  "bunseriy@gmail.com",
+                                             "name":  "bunseriy",
+                                             "passwordHash":  "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
+                                             "verified":  true,
+                                             "createdAt":  "2026-09-18T17:22:06.159Z",
+                                             "lastLogin":  "2026-09-18T17:48:39.263Z",
+                                             "progress":  {
+
+                                                          },
+                                             "tokens":  {
+                                                            "6be25619b625d8b1d3e82ec9bcaacd4c7cc8ef1ffff16683d92476eed06d1f7e":  1792345719263
+                                                        }
+                                         },
+                  "l9204644@xmail.ru":  {
+                                            "email":  "l9204644@xmail.ru",
+                                            "name":  "l9204644",
+                                            "passwordHash":  "054e3b308708370ea029dc2ebd1646c498d59d7203c9e1a44cf0484df98e581a",
+                                            "verified":  false,
+                                            "code":  "234517",
+                                            "codeExpires":  1789752795317,
+                                            "createdAt":  "2026-09-18T17:23:15.317Z",
+                                            "lastLogin":  null,
+                                            "progress":  {
+
+                                                         }
+                                        },
+                  "serg035g@yandex.ru":  {
+                                             "email":  "serg035g@yandex.ru",
+                                             "name":  "serg035g",
+                                             "verified":  true,
+                                             "createdAt":  "2026-09-18T17:35:56.241Z",
+                                             "progress":  {
+
+                                                          },
+                                             "code":  "154085",
+                                             "codeExpires":  1789753610163,
+                                             "lastLogin":  "2026-09-18T17:36:14.878Z",
+                                             "tokens":  {
+                                                            "10493eac4c368e95729f462db6d67b56db270948826b1b419c6f3c0608799ee6":  1792344974878
+                                                        }
+                                         }
+              },
+    "teacherCodes":  {
+                         "7F2A9KL1":  {
+                                          "teacherEmail":  null
+                                      },
+                         "8B3M2KJ2":  {
+                                          "teacherEmail":  null
+                                      },
+                         "9C4N3LP3":  {
+                                          "teacherEmail":  null
+                                      },
+                         "5D7Q4RX4":  {
+                                          "teacherEmail":  null
+                                      }
+                     },
+    "classes":  {
+
+                }
 }

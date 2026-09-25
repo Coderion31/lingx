@@ -50,7 +50,10 @@
       "lastLogin": "2026-09-25T18:53:03.976Z",
       "tokens": {
         "fe673cd0b679bda8d7279451a71860c193a961ab098995c23c0d3e30b174f856": 1792954383976
-      }
+      },
+      "role": "student",
+      "classCode": "7KT4XQ",
+      "className": ""
     }
   },
   "teacherCodes": {
@@ -75,7 +78,9 @@
       "code": "7KT4XQ",
       "teacher": "serg035g@yandex.ru",
       "name": "",
-      "students": []
+      "students": [
+        "l9204644@gmail.com"
+      ]
     }
   }
 }

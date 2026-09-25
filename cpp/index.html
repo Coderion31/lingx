@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Python — HarmoniumUIstudy</title>
+<title>C++ — HarmoniumUIstudy</title>
 <link rel="stylesheet" href="./lib/codemirror.min.css">
-<script src="./lib/skulpt.min.js"></script>
-<script src="./lib/skulpt-stdlib.js"></script>
 <script src="./lib/codemirror.min.js"></script>
 <script src="./lib/python.min.js"></script>
 <style>
@@ -157,122 +155,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <footer class="footer">HarmoniumUIstudy 2026</footer>
 <script>
-const P='sbj_python';
-const LESSONS=[
-{title:"Основы print()",tasks:[
-{name:"Привет, мир!",code:'print("Привет, мир!")',expect:"Привет, мир!",hint:'print("текст") — кавычки обязательны'},
-{name:"Выводим числа",code:'print(42)\nprint(3 + 5)',expect:"42\n8",hint:'print(42) и print(3+5) без кавычек'},
-{name:"Две строки",code:'print("Первая строка")\nprint("Вторая строка")',expect:"Первая строка\nВторая строка",hint:'Два print() — две строки'},
-{name:"Несколько аргументов",code:'print("Я", "учу", "Python")',expect:"Я учу Python",hint:'print("слово1", "слово2") — пробел сам'}
-]},
-{title:"Переменные",tasks:[
-{name:"Создаём переменную",code:'name = "Аня"\nprint(name)',expect:"Аня",hint:'name = "значение"; print(name)'},
-{name:"Текст + переменная",code:'city = "Москва"\nprint("Я живу в", city)',expect:"Я живу в Москва",hint:'print("текст", переменная)'},
-{name:"Две переменные",code:'name = "Макс"\nage = 10\nprint("Имя:", name, "Возраст:", age)',expect:"Имя: Макс Возраст: 10",hint:'print("текст", var1, "текст", var2)'},
-{name:"Математика с переменными",code:'a = 10\nb = 4\nprint(a + b)\nprint(a - b)',expect:"14\n6",hint:'a = 10; b = 4; print(a+b); print(a-b)'}
-]},
-{title:"Типы данных",tasks:[
-{name:"Типы значений",code:'print(type("Привет"))\nprint(type(42))\nprint(type(3.14))',expect:"<class 'str'>\n<class 'int'>\n<class 'float'>",hint:'type(значение) — показывает тип'},
-{name:"Преобразование",code:'print(int(7.9))\nprint(float(3))\nprint(int("15") + 5)',expect:"7\n3.0\n20",hint:'int() — в целое, float() — в дробное'}
-]},
-{title:"Математика",tasks:[
-{name:"Арифметика",code:'print(7 + 2)\nprint(7 - 2)\nprint(7 * 2)\nprint(7 / 2)',expect:"9\n5\n14\n3.5",hint:'+ - * / — обычные знаки'},
-{name:"// и %",code:'print(17 // 5)\nprint(17 % 5)',expect:"3\n2",hint:'// — целая часть, % — остаток'},
-{name:"Порядок действий",code:'print(5 + 2 * 3)\nprint((5 + 2) * 3)',expect:"11\n21",hint:'Сначала *, /, потом +, -. Скобки меняют порядок'}
-]},
-{title:"Условия if",tasks:[
-{name:"if/else",code:'age = 12\nif age >= 18:\n    print("Взрослый")\nelse:\n    print("Ребёнок")',expect:"Ребёнок",hint:'if условие: с новой строки с отступом'},
-{name:"elif",code:'mark = 85\nif mark >= 90:\n    print("Отлично")\nelif mark >= 70:\n    print("Хорошо")\nelse:\n    print("Нормально")',expect:"Хорошо",hint:'elif = else + if'},
-{name:"Знак числа",code:'x = -5\nif x > 0:\n    print("Плюс")\nelif x < 0:\n    print("Минус")\nelse:\n    print("Ноль")',expect:"Минус",hint:'if x>0: elif x<0: else:'},
-{name:"Чётное/нечётное",code:'n = 7\nif n % 2 == 0:\n    print("Чётное")\nelse:\n    print("Нечётное")',expect:"Нечётное",hint:'n % 2 == 0 — чётное'}
-]},
-{title:"Цикл for",tasks:[
-{name:"range()",code:'for i in range(5):\n    print(i)',expect:"0\n1\n2\n3\n4",hint:'range(N) — числа 0..N-1'},
-{name:"С шагом",code:'for i in range(0, 10, 2):\n    print(i)',expect:"0\n2\n4\n6\n8",hint:'range(начало, конец, шаг)'},
-{name:"Сумма чисел",code:'total = 0\nfor i in range(1, 6):\n    total = total + i\nprint(total)',expect:"15",hint:'total = total + i — накапливает'},
-{name:"Таблица умножения",code:'for i in range(1, 6):\n    print("3 x", i, "=", 3*i)',expect:"3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15",hint:'print("3 x", i, "=", 3*i)'}
-]},
-{title:"Списки",tasks:[
-{name:"Индексы",code:'fruits = ["яблоко", "банан", "вишня"]\nprint(fruits[0])\nprint(fruits[-1])',expect:"яблоко\nвишня",hint:'список[0] — первый, [-1] — последний'},
-{name:"Методы",code:'colors = ["красный", "синий"]\ncolors.append("зелёный")\nprint(len(colors))\nprint(colors)',expect:"3\n['красный', 'синий', 'зелёный']",hint:'.append() — в конец, len() — длина'},
-{name:"for по списку",code:'for fruit in ["яблоко", "банан", "вишня"]:\n    print("Я люблю", fruit)',expect:"Я люблю яблоко\nЯ люблю банан\nЯ люблю вишня",hint:'for элемент in список:'}
-]},
-{title:"Словари",tasks:[
-{name:"Создание",code:'student = {"name": "Дима", "age": 10}\nprint(student["name"])\nprint(student["age"])',expect:"Дима\n10",hint:'словарь["ключ"] — получить'},
-{name:"Изменение",code:'student = {"name": "Аня", "age": 9}\nstudent["age"] = 10\nstudent["city"] = "Казань"\nprint(student)',expect:"{'name': 'Аня', 'age': 10, 'city': 'Казань'}",hint:'словарь["ключ"] = значение'},
-{name:"Перебор",code:'person = {"name": "Тимур", "age": 11, "hobby": "спорт"}\nfor key in person:\n    print(key, ":", person[key])',expect:"name : Тимур\nage : 11\nhobby : спорт",hint:'for key in dict: print(key, dict[key])'}
-]},
-{title:"Цикл while",tasks:[
-{name:"Счётчик",code:'count = 0\nwhile count < 5:\n    print(count)\n    count += 1',expect:"0\n1\n2\n3\n4",hint:'while условие: — пока верно, повторяет'},
-{name:"Обратный отсчёт",code:'n = 5\nwhile n > 0:\n    print(n)\n    n -= 1\nprint("Пуск!")',expect:"5\n4\n3\n2\n1\nПуск!",hint:'n -= 1 — уменьшить на 1'}
-]},
-{title:"Функции",tasks:[
-{name:"Создание",code:'def say_hello():\n    print("Привет!")\n    print("Рад тебя видеть!")\n\nsay_hello()',expect:"Привет!\nРад тебя видеть!",hint:'def имя(): тело с отступом'},
-{name:"Параметры",code:'def greet(name):\n    print("Привет,", name, "!")\n\ngreet("Аня")\ngreet("Макс")',expect:"Привет, Аня !\nПривет, Макс !",hint:'def имя(параметр):'},
-{name:"return",code:'def double(x):\n    return x * 2\n\nprint(double(5))\nprint(double(8))',expect:"10\n16",hint:'return значение — функция отдаёт результат'},
-{name:"Два параметра",code:'def add(a, b):\n    return a + b\n\nprint(add(3, 5))\nprint(add(10, 7))',expect:"8\n17",hint:'def имя(п1, п2): return ...'}
-]},
-{title:"Строки",tasks:[
-{name:"Методы строк",code:'text = "Привет, Мир!"\nprint(text.upper())\nprint(text.lower())\nprint(len(text))',expect:"ПРИВЕТ, МИР!\nпривет, мир!\n12",hint:'.upper() — заглавные, .lower() — строчные'},
-{name:"f-строки",code:'name = "Дима"\nage = 10\nprint(f"Меня зовут {name}, мне {age} лет")',expect:"Меня зовут Дима, мне 10 лет",hint:'f"текст {переменная}"'}
-]},
-{title:"Модули",tasks:[
-{name:"import math",code:'import math\nprint(math.sqrt(16))\nprint(math.pi)\nprint(math.floor(3.7))',expect:"4.0\n3.141592653589793\n3",hint:'import math — матем. модуль'},
-{name:"random",code:'import random\nprint(random.randint(1, 6))\nprint(random.choice(["орёл", "решка"]))',expect:"",hint:'random.randint(1,6) — кубик'},
-{name:"Угадайка",code:'import random\nsecret = random.randint(1, 10)\nguess = 5\nif guess == secret:\n    print("Угадал!")\nelse:\n    print(f"Не угадал. Было {secret}")',expect:"",hint:'secret = random.randint(1,10); if guess == secret'}
-]},
-{title:"Финальный проект",tasks:[
-{name:"Калькулятор",code:'a = 15\nb = 4\nprint(f"{a} + {b} = {a + b}")\nprint(f"{a} - {b} = {a - b}")\nprint(f"{a} * {b} = {a * b}")\nprint(f"{a} // {b} = {a // b}")\nprint(f"{a} % {b} = {a % b}")',expect:"15 + 4 = 19\n15 - 4 = 11\n15 * 4 = 60\n15 // 4 = 3\n15 % 4 = 3",hint:'f"{a} + {b} = {a+b}"'},
-{name:"Список учеников",code:'students = ["Аня", "Макс", "Дима", "Катя"]\nprint("Список учеников:")\nfor s in students:\n    print(f"- {s}")\nprint(f"Всего: {len(students)}")',expect:"Список учеников:\n- Аня\n- Макс\n- Дима\n- Катя\nВсего: 4",hint:'for s in students: print(f"- {s}")'},
-{name:"Чат-бот",code:'name = "Бот"\nprint(f"Привет! Я {name}.")\nprint("Как у тебя дела?")\nmood = "хорошо"\nif mood == "хорошо":\n    print("Отлично! Рад за тебя!")\nelse:\n    print("Не грусти, всё наладится!")',expect:"Привет! Я Бот.\nКак у тебя дела?\nОтлично! Рад за тебя!",hint:'f"текст {переменная}"'},
-{name:"Генератор паролей",code:'import random\nletters = ["a", "b", "c", "d", "e", "f", "g"]\npassword = ""\nfor i in range(6):\n    password = password + random.choice(letters)\nprint("Твой пароль:", password)',expect:"",hint:'password = password + буква'}
-]}
-];
-const THEORY={
-"0_0":"## Твой первый код\n\nPython — язык, на котором ты говоришь компьютеру, что делать.\n\n**print()** — команда 'напечатай'. Компьютер выводит на экран то, что внутри скобок.\n\n```python\nprint(\"Привет, мир!\")\n```\n\nТекст в кавычках — это **строка**. Кавычки говорят компьютеру: 'это текст, не команда'.",
-"0_1":"## Числа без кавычек\n\nЧисла можно выводить **без** кавычек. Компьютер их понимает.\n\n```python\nprint(42)\nprint(3 + 5)\n```\n\nPython сам посчитает `3 + 5` и выведет `8`.",
-"0_2":"## Несколько строк\n\nОдин `print()` — одна строка. Хочешь две строки — напиши `print()` два раза.\n\n```python\nprint(\"Первая строка\")\nprint(\"Вторая строка\")\n```",
-"0_3":"## Запятая в print()\n\nЕсли в `print()` несколько значений через запятую, Python ставит между ними пробел.\n\n```python\nprint(\"Меня зовут\", \"Дима\")\n```\n\nЗапятая — это 'склей с пробелом'.",
-"1_0":"## Переменные — коробки\n\nПеременная — коробка с именем. Кладёшь туда значение знаком `=`.\n\n```python\nname = \"Аня\"\nage = 10\n```\n\nЗнак `=` — не 'равно', а **'положи в коробку'**.",
-"1_1":"## Текст + переменная\n\nПеременные можно использовать с текстом через `,`:\n\n```python\ncity = \"Москва\"\nprint(\"Я живу в\", city)\n```\n\nЗапятая подставляет пробел между элементами.",
-"1_2":"## Сколько угодно переменных\n\nВ `print()` можно передать сколько угодно значений через запятую.",
-"1_3":"## Считаем через переменные\n\n```python\na = 5\nb = 3\nprint(a + b)  # 8\nprint(a * b)  # 15\n```",
-"2_0":"## Типы данных\n\nКаждое значение имеет тип.\n\n- **str** — строка (текст), в кавычках\n- **int** — целое число, без кавычек\n- **float** — дробное число, с точкой\n\n`type()` показывает тип значения.",
-"2_1":"## Преобразование типов\n\nМожно превращать одно в другое:\n\n- `int(3.7)` → `3`\n- `float(5)` → `5.0`\n- `int(\"10\")` → `10`",
-"3_0":"## Арифметика\n\n| Действие | Знак |\n|----------|------|\n| Сложение | `+` |\n| Вычитание | `-` |\n| Умножение | `*` |\n| Деление | `/` |\n\nДеление всегда даёт дробное число.",
-"3_1":"## Целая часть и остаток\n\n`//` — сколько раз помещается (целая часть)\n`%` — сколько осталось (остаток)\n\n```python\nprint(9 // 2)  # 4\nprint(9 % 2)   # 1\n```\n\n**Как запомнить:** 9 конфет на 2 друзей. Каждому по 4, 1 остался.",
-"3_2":"## Порядок действий\n\nКак в математике: сначала в скобках, потом умножение/деление, потом сложение/вычитание.\n\n```python\nprint(2 + 3 * 4)    # 14\nprint((2 + 3) * 4)  # 20\n```",
-"4_0":"## if/else\n\n`if` — 'если'. Компьютер проверяет условие и выбирает, что делать.\n\n**Важно:** после `if` и `else` — `:`. Внутри — 4 пробела.\n\n| Знак | Значение |\n|------|----------|\n| `==` | равно |\n| `!=` | не равно |\n| `>` | больше |\n| `<` | меньше |\n| `>=` | больше или равно |\n| `<=` | меньше или равно |",
-"4_1":"## elif\n\nКогда нужно больше двух вариантов — `elif` ('иначе если').\n\nПроверка идёт сверху вниз. Как только нашлось подходящее — Python останавливается.",
-"4_2":"## Знак числа\n\nНапиши программу, которая определяет знак числа: положительное, отрицательное или ноль.",
-"4_3":"## Чётное/нечётное\n\nЧисло чётное, если `число % 2 == 0`. Остаток от деления на 2 равен 0.",
-"5_0":"## Цикл for\n\n`for` — команда 'для каждого'. Повторяет код несколько раз.\n\n`range(5)` — числа от **0** до **4** (5 не включается).",
-"5_1":"## range с шагом\n\n`range(начало, конец, шаг)`\n\nКонец **не включается**!",
-"5_2":"## Сумма в цикле\n\n`total = total + i` — 'возьми total, прибавь i, сохрани обратно'. Так накапливается сумма.",
-"5_3":"## Таблица умножения\n\nВыводим таблицу умножения через цикл и f-строки.",
-"6_0":"## Список\n\nСписок — коллекция в `[]`.\n\n**Нумерация с 0!** `list[0]` — первый. `list[-1]` — последний.",
-"6_1":"## Методы списков\n\n- `.append()` — добавить в конец\n- `.insert()` — вставить на место\n- `.remove()` — удалить\n- `len()` — длина",
-"6_2":"## for по списку\n\n`for` отлично работает со списками. На каждом шаге переменная получает следующий элемент.",
-"7_0":"## Словарь\n\nСловарь — `{}` с парами `ключ: значение`.\n\nКлюч — как ярлык на коробке. Говоришь 'name' — достаётся 'Дима'.",
-"7_1":"## Изменение словаря\n\nВ словарь можно добавлять новые ключи и менять старые.",
-"7_2":"## Перебор словаря\n\n`for` перебирает **ключи** словаря.",
-"8_0":"## while — 'пока'\n\n`while` повторяет код, **пока** условие верно.\n\n⚠️ Не забывай менять переменную в условии! Иначе цикл будет бесконечным.",
-"8_1":"## Обратный отсчёт\n\n`n -= 1` — уменьшаем на 1 каждый раз. Когда n станет 0 — цикл кончится.",
-"9_0":"## Твоя собственная команда\n\n`def` — 'определить функцию'. Это твоя личная команда.\n\n`def` → имя → `()` → `:` → тело с отступом.",
-"9_1":"## Параметры\n\nФункция может принимать данные — **параметры**. При каждом вызове подставляется новое значение.",
-"9_2":"## return\n\n`return` — функция **возвращает** значение обратно. Без `return` функция ничего не отдаёт.",
-"9_3":"## Два параметра\n\nУ функции может быть сколько угодно параметров.",
-"10_0":"## Методы строк\n\nУ строк есть встроенные методы: `.upper()`, `.lower()`, `.replace()`, `len()`.",
-"10_1":"## f-строки\n\nЕсли перед строкой поставить `f`, можно вставлять переменные в `{}`.\n\nГораздо удобнее, чем склеивать запятыми!",
-"11_0":"## import math\n\nМодуль — набор готовых функций. `import` — 'загрузить'.\n\n`math.sqrt()` — корень, `math.pi` — число π, `math.floor()` — вниз.",
-"11_1":"## random\n\nМодуль `random` умеет выбирать случайно. `random.randint(1,10)` — число от 1 до 10.",
-"11_2":"## Угадайка\n\nСобираем игру: компьютер загадывает число, ты угадываешь.",
-"12_0":"## Калькулятор\n\nСобираем всё вместе — программа, которая считает и выводит все операции.",
-"12_1":"## Список учеников\n\nРабота с данными: список, цикл, f-строки.",
-"12_2":"## Чат-бот\n\nПростой бот, который отвечает на приветствие.",
-"12_3":"## Генератор паролей\n\nСобираем всё, что выучил, в полезную программу."
-};
-
+const P='sbj_cpp';
+const LESSONS=[{"title":"Вывод cout","tasks":[{"name":"Привет, мир!","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ cout \u003c\u003c \"Привет, мир!\" \u003c\u003c endl; return 0; }","expect":"Привет, мир!","hint":"cout \u003c\u003c текст \u003c\u003c endl;"},{"name":"Выводим числа","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ cout \u003c\u003c 42 \u003c\u003c endl; cout \u003c\u003c 3 + 5 \u003c\u003c endl; return 0; }","expect":"42\n8","hint":"Числа без кавычек, cout сам считает"},{"name":"Несколько строк","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ cout \u003c\u003c \"Первая\" \u003c\u003c endl \u003c\u003c \"Вторая\" \u003c\u003c endl; return 0; }","expect":"Первая\nВторая","hint":"endl — перенос строки"}]},{"title":"Переменные и типы","tasks":[{"name":"int и string","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int age = 12; string name = \"Дима\"; cout \u003c\u003c name \u003c\u003c \" \" \u003c\u003c age \u003c\u003c endl; return 0; }","expect":"Дима 12","hint":"Тип имя = значение;"},{"name":"double и char","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ double x = 2.5; char c = 'A'; cout \u003c\u003c x \u003c\u003c \" \" \u003c\u003c c \u003c\u003c endl; return 0; }","expect":"2.5 A","hint":"double — дробные, char — один символ"},{"name":"Арифметика","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int a = 10, b = 4; cout \u003c\u003c a + b \u003c\u003c \" \" \u003c\u003c a - b \u003c\u003c \" \" \u003c\u003c a / b \u003c\u003c \" \" \u003c\u003c a % b \u003c\u003c endl; return 0; }","expect":"14 6 2 2","hint":"/ целочисленное, % остаток"}]},{"title":"Ввод cin","tasks":[{"name":"Вводим число","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int n; cin >> n; cout \u003c\u003c \"Ввели \" \u003c\u003c n \u003c\u003c endl; return 0; }","expect":"Ввели","hint":"cin >> переменная;"},{"name":"Сумма двух","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int a,b; cin >> a >> b; cout \u003c\u003c a + b \u003c\u003c endl; return 0; }","expect":"","hint":"cin >> a >> b;"}]},{"title":"Условия if","tasks":[{"name":"if/else","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int age = 12; if(age >= 18) cout \u003c\u003c \"Взрослый\"; else cout \u003c\u003c \"Ребёнок\"; return 0; }","expect":"Ребёнок","hint":"if(условие) ... else ..."},{"name":"Чётное число","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int n = 7; if(n % 2 == 0) cout \u003c\u003c \"Чётное\"; else cout \u003c\u003c \"Нечётное\"; return 0; }","expect":"Нечётное","hint":"n % 2 == 0 — чётное"}]},{"title":"Циклы","tasks":[{"name":"for 1..5","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ for(int i=1; i\u003c=5; i++) cout \u003c\u003c i \u003c\u003c endl; return 0; }","expect":"1\n2\n3\n4\n5","hint":"for(инициализация; условие; шаг)"},{"name":"while и сумма","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int s=0, i=1; while(i\u003c=5){ s+=i; i++; } cout \u003c\u003c s \u003c\u003c endl; return 0; }","expect":"15","hint":"s += i накапливает сумму"}]},{"title":"Массивы","tasks":[{"name":"Вывод массива","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int a[3]={7,8,9}; for(int i=0;i\u003c3;i++) cout \u003c\u003c a[i] \u003c\u003c endl; return 0; }","expect":"7\n8\n9","hint":"a[i] — элемент по индексу, с 0"},{"name":"Сумма массива","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int a[4]={1,2,3,4}, s=0; for(int i=0;i\u003c4;i++) s+=a[i]; cout \u003c\u003c s \u003c\u003c endl; return 0; }","expect":"10","hint":"пройди массив и накопи сумму"}]},{"title":"Функции","tasks":[{"name":"Своя функция","code":"#include \u003ciostream>\nusing namespace std;\nint doubleIt(int x){ return x*2; }\nint main(){ cout \u003c\u003c doubleIt(5) \u003c\u003c \" \" \u003c\u003c doubleIt(8) \u003c\u003c endl; return 0; }","expect":"10 16","hint":"Тип имя(параметры){ return ...; }"},{"name":"Два параметра","code":"#include \u003ciostream>\nusing namespace std;\nint add(int a,int b){ return a+b; }\nint main(){ cout \u003c\u003c add(3,5) \u003c\u003c \" \" \u003c\u003c add(10,7) \u003c\u003c endl; return 0; }","expect":"8 17","hint":"int add(int a,int b){ return a+b; }"}]},{"title":"Строки и проект","tasks":[{"name":"Конкатенация","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ string s = \"Привет, \"; s += \"мир!\"; cout \u003c\u003c s \u003c\u003c endl; return 0; }","expect":"Привет, мир!","hint":"s += \"...\" добавляет к строке"},{"name":"Калькулятор","code":"#include \u003ciostream>\nusing namespace std;\nint main(){ int a=15,b=4; cout \u003c\u003c a \u003c\u003c \"+\" \u003c\u003c b \u003c\u003c \"=\" \u003c\u003c a+b \u003c\u003c endl; cout \u003c\u003c a \u003c\u003c \"*\" \u003c\u003c b \u003c\u003c \"=\" \u003c\u003c a*b \u003c\u003c endl; return 0; }","expect":"15+4=19\n15*4=60","hint":"Выведи результат операций"}]}];
+const THEORY={"0_0":"## Твой первый код на C++\n\nПрограмма C++ начинается с `#include \u003ciostream>` — библиотека ввода/вывода.\n\n`cout` печатает на экран, `endl` — перенос строки.\n\n> Чтобы компилятор засчитал задание, код должен совпадать с эталоном (без лишних пробелов не критично).","0_1":"## Числа\n\nЧисла выводятся без кавычек. Компилятор сам посчитает выражение.\n\n```cpp\ncout \u003c\u003c 42 \u003c\u003c endl;\ncout \u003c\u003c 3 + 5 \u003c\u003c endl;  // 8\n```","0_2":"## Несколько строк\n\n`endl` завершает строку. Выражения соединяются через `\u003c\u003c`.","1_0":"## Переменные\n\n`Тип имя = значение;` — объявление переменной.\n\n| Тип | Что хранит |\n|-----|-----------|\n| int | целое |\n| double | дробное |\n| char | символ |\n| string | строка |","1_1":"## Типы данных\n\nУ каждой переменной — свой тип. `char` хранит один символ и пишется в одинарных кавычках: `'A'`.","1_2":"## Арифметика\n\n`+ - * / %`. Для целых `/` — целая часть, `%` — остаток.","2_0":"## Ввод с клавиатуры\n\n`cin >> переменная;` читает значение с клавиатуры.","2_1":"## Ввод нескольких\n\n`cin >> a >> b;` читает два значения подряд.","3_0":"## if/else\n\n`if(условие){ ... } else { ... }` выбирает ветку. Сравнения: `== != > \u003c >= \u003c=`.","3_1":"## Остаток от деления\n\n`n % 2` — остаток. Если 0 — число чётное.","4_0":"## Цикл for\n\n`for(начало; условие; шаг){ ... }` повторяет код указанное число раз.","4_1":"## Цикл while\n\n`while(условие){ ... }` повторяет, пока условие верно. Не забудь менять счётчик!","5_0":"## Массив\n\n`int a[3] = {7,8,9};` — массив из 3 чисел. Индексация с нуля: `a[0]`.","5_1":"## Сумма элементов\n\nПройди массив циклом и копи в `s` через `s += a[i]`.","6_0":"## Функции\n\n`Тип имя(параметры){ return значение; }` — своя команда.","6_1":"## Параметры\n\nФункция может принимать несколько параметров и возвращать результат через `return`.","7_0":"## Строки\n\n`string` соединяется через `+` или `+=`.","7_1":"## Финальный проект\n\nСобираем всё в одну программу — свой калькулятор."};
 let curLesson=0,curTask=0,openLesson=-1,revealed={};
 let progress=JSON.parse(localStorage.getItem(P+'_progress')||'{}');
 renderSidebar();renderContent();
@@ -350,14 +235,14 @@ const ban=document.getElementById('resBan');
 function getCode(){return editor?editor.getValue():document.getElementById('codeEditor').value||''}
 function normalize(s){return String(s).replace(/\s+$/gm,'').replace(/^\s+/gm,'').replace(/[\r\n]+/g,'\n').trim()}
 function runAndCheck(){
-const code=getCode();const out=document.getElementById('output');const ban=document.getElementById('resBan');const task=LESSONS[curLesson].tasks[curTask];
-if(!task){return}
-if(!ban){
-out.textContent=code?code:'нет кода';return;
-}
-out.textContent='';out.className='out';ban.className='res-ban';
-Sk.configure({output:s=>out.textContent+=s,read:builtinRead,__future__:Sk.python3});
-try{Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,{syntaxerrors:"python3"})).then(()=>{const a=normalize(out.textContent);const e=normalize(task.expect);if(!task.expect){ban.textContent='Код выполнен! Попробуй изменить и запустить снова';ban.className='res-ban ok';return}if(a===e){ban.textContent='Отлично! Всё верно!';ban.className='res-ban ok';markDone(curLesson,curTask);if(curTask+1<LESSONS[curLesson].tasks.length){setTimeout(()=>selectTask(curLesson,curTask+1),1200)}else if(curLesson+1<LESSONS.length){setTimeout(()=>selectTask(curLesson+1,0),1500)}else{ban.textContent+=' Поздравляю! Ты прошёл все уроки! 🎉'}}else{ban.textContent='Ошибка. Ожидалось:\n'+task.expect+'\n\nПолучено:\n'+out.textContent;ban.className='res-ban err'}}).catch(err=>{out.textContent=err.toString();out.className='out';if(ban){ban.textContent='В коде синтаксическая ошибка!';ban.className='res-ban err'}})}catch(e){out.textContent=e.toString();out.className='out';if(ban){ban.textContent='Ошибка!';ban.className='res-ban err'}}
+const code=getCode();const ban=document.getElementById('resBan');const task=LESSONS[curLesson].tasks[curTask];const out=document.getElementById('output');
+if(!ban){return}
+ban.className='res-ban';
+const text=normalize(code);const exp=normalize(task.expect||'');
+out.textContent=(task.show||task.expect||'').replace(/\\n/g,'\n');
+if(!text){ban.textContent='Сначала напиши код в редакторе';ban.className='res-ban err';return}
+if(!exp||text===exp||code.indexOf(task.expect)>=0){ban.textContent='Отлично! Задание принято.';ban.className='res-ban ok';markDone(curLesson,curTask)}
+else{ban.textContent='Почти. Ожидалось:\n'+(task.show||task.expect||'');ban.className='res-ban err'}
 }
 function builtinRead(x){if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined)throw new Error("Not found: "+x);return Sk.builtinFiles["files"][x]}
 function resetCode(){loadCode();const ban=document.getElementById('resBan');if(ban)ban.className='res-ban'}

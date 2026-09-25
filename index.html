@@ -85,7 +85,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </button>
 
 <div class="menu-overlay" id="menuOverlay">
-<div class="menu-items" onclick="closeMenu()">
+<div class="menu-items" onclick="closeMenu()"><a id="adminMenuBtn" style="display:none" onclick="event.preventDefault();event.stopPropagation();openAdmin()">&#128295; Админ панель</a>
 <a href="#">Главная</a>
 <div class="m-sub-wrap">
 <div class="m-sub-hdr" onclick="event.stopPropagation();toggleSubmenu('mathSub',this)">Математика <span class="m-arr">▶</span></div>
@@ -114,7 +114,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="acc-avatar" id="accAvatar"></div>
 <div class="acc-info"><span id="accName">Email</span><span id="accEmail"></span></div>
 </div>
-<button class="menu-settings" id="adminMenuBtn" style="display:none" onclick="openAdmin()">&#128295; Админ панель</button>class="menu-settings" onclick="openSettings()">Настройки</button>
+<button class="menu-settings" onclick="openSettings()">Настройки</button>
 </div>
 </div>
 

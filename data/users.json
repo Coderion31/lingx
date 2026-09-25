@@ -47,8 +47,10 @@
       "verified": false,
       "createdAt": "2026-09-25T18:52:51.757Z",
       "progress": {},
-      "code": "444001",
-      "codeExpires": 1790362971757
+      "lastLogin": "2026-09-25T18:53:03.976Z",
+      "tokens": {
+        "fe673cd0b679bda8d7279451a71860c193a961ab098995c23c0d3e30b174f856": 1792954383976
+      }
     }
   },
   "teacherCodes": {

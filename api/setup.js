@@ -31,10 +31,13 @@ module.exports = async function handler(req, res) {
       if (!inv) return res.status(400).json({ error: 'Нет такого кода учителя' });
       if (inv.teacherEmail && inv.teacherEmail !== email) return res.status(400).json({ error: 'Этот код уже занят другим учителем' });
       inv.teacherEmail = email;
-      db.classes[code] = db.classes[code] || { code, teacher: email, name: '', students: [] };
+      // the teacher gets a SEPARATE class code (this is what the teacher gives to students)
+      let classCode;
+      do { classCode = genClass(); } while (db.classes[classCode] || db.teacherCodes[classCode]);
+      db.classes[classCode] = { code: classCode, teacher: email, name: '', students: [] };
       user.role = 'teacher';
-      user.classCode = code;
-      user.className = db.classes[code].name || '';
+      user.classCode = classCode;
+      user.className = '';
     } else if (role === 'student') {
       if (!code) return res.status(400).json({ error: 'Введи код класса' });
       const cls = db.classes[code];
@@ -64,6 +67,10 @@ module.exports = async function handler(req, res) {
     res.status(500).json({ error: 'Server error: ' + e.message });
   }
 };
+
+function genClass() {
+  return Math.random().toString(36).slice(2, 5).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase();
+}
 
 function findEmail(db, token) {
   if (!token || !db.users) return null;

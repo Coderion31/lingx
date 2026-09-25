@@ -41,16 +41,14 @@ module.exports = async function handler(req, res) {
     };
 
     if (role === 'teacher') {
+      // The admin issues ONLY the teacher REGISTRATION code.
+      // The teacher's class code (for students) is generated when the teacher registers via /setup.
       if (!code) code = gen();
       if (db.teacherCodes[code] && db.teacherCodes[code].teacherEmail && db.teacherCodes[code].teacherEmail !== target) {
         return res.status(400).json({ error: 'Код уже занят другим учителем' });
       }
       db.teacherCodes[code] = db.teacherCodes[code] || { teacherEmail: null };
       if (target) db.teacherCodes[code].teacherEmail = target;
-      db.classes[code] = db.classes[code] || { code, teacher: target || null, name: '', students: [] };
-      if (target && db.users[target]) {
-        db.users[target].role = 'teacher'; db.users[target].classCode = code; db.users[target].className = db.classes[code].name || '';
-      }
     } else if (role === 'student') {
       if (!code) return res.status(400).json({ error: 'Введи код класса (выдал учитель)' });
       const cls = db.classes[code];

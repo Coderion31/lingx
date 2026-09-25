@@ -283,7 +283,15 @@ function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progr
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
 function isRevealed(li,ti){return revealed[li+'_'+ti]===true}
 function selectTask(li,ti){curLesson=li;curTask=ti;openLesson=li;document.getElementById('editorPanel').classList.remove('open');renderSidebar();renderContent()}
-function toggleLesson(li){openLesson=openLesson===li?-1:li;renderSidebar()}
+function toggleLesson(li){
+openLesson=openLesson===li?-1:li;
+document.querySelectorAll('#lessonList .lgrp').forEach(function(g,idx){
+var body=g.querySelector('.lgrp-body'),arr=g.querySelector('.arr');
+var on=idx===openLesson;
+if(body)body.classList.toggle('open',on);
+if(arr)arr.classList.toggle('open',on);
+});
+}
 function gotIt(li,ti){
 revealed[li+'_'+ti]=true;
 const g=document.getElementById('gateBox');

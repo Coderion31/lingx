@@ -34,7 +34,10 @@
       "tokens": {
         "10493eac4c368e95729f462db6d67b56db270948826b1b419c6f3c0608799ee6": 1792344974878,
         "3ac9a0addc083310058ab0cccd72f11b04ef82d163b09bea8ad074d19424a16f": 1792950423859
-      }
+      },
+      "role": "teacher",
+      "classCode": "7KT4XQ",
+      "className": ""
     }
   },
   "teacherCodes": {
@@ -49,7 +52,17 @@
     },
     "5D7Q4RX4": {
       "teacherEmail": null
+    },
+    "SERG35GT": {
+      "teacherEmail": "serg035g@yandex.ru"
     }
   },
-  "classes": {}
+  "classes": {
+    "7KT4XQ": {
+      "code": "7KT4XQ",
+      "teacher": "serg035g@yandex.ru",
+      "name": "",
+      "students": []
+    }
+  }
 }

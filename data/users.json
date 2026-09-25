@@ -31,16 +31,15 @@
       "verified": true,
       "createdAt": "2026-09-18T17:35:56.241Z",
       "progress": {},
-      "lastLogin": "2026-09-25T17:47:03.859Z",
+      "lastLogin": "2026-09-25T18:45:03.667Z",
       "tokens": {
         "10493eac4c368e95729f462db6d67b56db270948826b1b419c6f3c0608799ee6": 1792344974878,
-        "3ac9a0addc083310058ab0cccd72f11b04ef82d163b09bea8ad074d19424a16f": 1792950423859
+        "3ac9a0addc083310058ab0cccd72f11b04ef82d163b09bea8ad074d19424a16f": 1792950423859,
+        "c68ecb083c7919b5e68dfd257c9e64bfcccd4d63bd25470a3060de69b4663da4": 1792953903667
       },
       "role": "teacher",
       "classCode": "7KT4XQ",
-      "className": "",
-      "code": "249157",
-      "codeExpires": 1790362485836
+      "className": ""
     }
   },
   "teacherCodes": {

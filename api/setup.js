@@ -13,6 +13,7 @@ module.exports = async function handler(req, res) {
     const token = String(body.token || '').trim();
     const role = String(body.role || '').trim().toLowerCase();
     const code = String(body.code || '').trim().toUpperCase();
+    const myClassCode = String(body.classCode || '').trim().toUpperCase();
 
     const db = await readDb();
     const email = findEmail(db, token);
@@ -31,10 +32,15 @@ module.exports = async function handler(req, res) {
       if (!inv) return res.status(400).json({ error: 'Нет такого кода учителя' });
       if (inv.teacherEmail && inv.teacherEmail !== email) return res.status(400).json({ error: 'Этот код уже занят другим учителем' });
       inv.teacherEmail = email;
-      // the teacher gets a SEPARATE class code (this is what the teacher gives to students)
-      let classCode;
-      do { classCode = genClass(); } while (db.classes[classCode] || db.teacherCodes[classCode]);
-      db.classes[classCode] = { code: classCode, teacher: email, name: '', students: [] };
+      // the teacher makes their OWN class code; if empty, we generate one
+      let classCode = myClassCode;
+      if (classCode) {
+        if (db.classes[classCode] || db.teacherCodes[classCode]) return res.status(400).json({ error: 'Такой код класса уже занят' });
+        db.classes[classCode] = { code: classCode, teacher: email, name: '', students: [] };
+      } else {
+        do { classCode = genClass(); } while (db.classes[classCode] || db.teacherCodes[classCode]);
+        db.classes[classCode] = { code: classCode, teacher: email, name: '', students: [] };
+      }
       user.role = 'teacher';
       user.classCode = classCode;
       user.className = '';
@@ -57,8 +63,8 @@ module.exports = async function handler(req, res) {
     await writeDb(db);
 
     let classInfo = null;
-    if (code && db.classes[code]) {
-      const cls = db.classes[code];
+    if (user.classCode && db.classes[user.classCode]) {
+      const cls = db.classes[user.classCode];
       classInfo = { code: cls.code, name: cls.name, teacherEmail: cls.teacher, studentsCount: (cls.students || []).length };
     }
 

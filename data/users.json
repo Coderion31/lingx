@@ -48,7 +48,8 @@
       "createdAt": "2026-09-25T18:52:51.757Z",
       "progress": {
         "sbj_python": {
-          "0_0": true
+          "0_0": true,
+          "0_1": true
         }
       },
       "lastLogin": "2026-09-25T18:53:03.976Z",

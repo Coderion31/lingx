@@ -79,7 +79,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .light .menu-items a,.light .menu-items .m-sub-hdr{background:rgba(15,23,42,0.03)!important;color:#475569!important;border-radius:100px!important}
 .light .menu-items a:hover,.light .menu-items .m-sub-hdr:hover{background:rgba(15,23,42,0.06)!important;color:#1e293b!important}
 .menu-items .m-sub-body a{background:rgba(255,255,255,0.03)!important;color:#a0a0a0!important;border-radius:12px!important;padding:9px 14px 9px 32px!important;font-size:14px!important;font-weight:500!important}
-.light .menu-items .m-sub-body a{background:rgba(15,23,42,0.03)!important;color:#475569!important}.menu-items a,.menu-items .m-sub-hdr,.menu-items .m-sub-body a{border-radius:999px!important}.light .menu-overlay{background:#e2e6eb!important;border-color:rgba(15,23,42,0.12)!important}.light .menu-hdr-title{color:#000!important;text-shadow:none!important}.light .menu-hdr{color:#000}.light .m-arr{color:#000!important}.light #accEmail{color:#000!important}.light #accName{color:#111!important}.menu-account{background:rgba(255,255,255,0.06)!important;border:1.5px solid rgba(255,255,255,0.45)!important}.light .menu-account{background:rgba(15,23,42,0.05)!important;border:1.5px solid rgba(15,23,42,0.4)!important}.menu-settings{background:rgba(255,255,255,0.06)!important;border:1.5px solid rgba(255,255,255,0.45)!important}.light .menu-settings{background:rgba(15,23,42,0.05)!important;border:1.5px solid rgba(15,23,42,0.4)!important}.light .settings-window{background:#e2e6eb!important}.light .settings-sidebar{border-right:1px solid rgba(15,23,42,0.08)!important}.light .settings-page h3{color:#000!important}</style></head>
+.light .menu-items .m-sub-body a{background:rgba(15,23,42,0.03)!important;color:#475569!important}.menu-items a,.menu-items .m-sub-hdr,.menu-items .m-sub-body a{border-radius:999px!important}.light .menu-overlay{background:#e2e6eb!important;border-color:rgba(15,23,42,0.12)!important}.light .menu-hdr-title{color:#000!important;text-shadow:none!important}.light .menu-hdr{color:#000}.light .m-arr{color:#000!important}.light #accEmail{color:#000!important}.light #accName{color:#111!important}.menu-account{background:rgba(255,255,255,0.06)!important;border:1.5px solid rgba(255,255,255,0.45)!important}.light .menu-account{background:rgba(15,23,42,0.05)!important;border:1.5px solid rgba(15,23,42,0.4)!important}.menu-settings{background:rgba(255,255,255,0.06)!important;border:1.5px solid rgba(255,255,255,0.45)!important}.light .menu-settings{background:rgba(15,23,42,0.05)!important;border:1.5px solid rgba(15,23,42,0.4)!important}.light .settings-window{background:#e2e6eb!important}.light .settings-sidebar{border-right:1px solid rgba(15,23,42,0.08)!important}.light .settings-page h3{color:#000!important}html.no-anim *{animation:none!important;transition:none!important}html.compact .card{padding:18px 16px;min-height:120px}html.compact .c-val{font-size:24px}html.contrast .menu-items a,html.contrast .menu-items .m-sub-hdr{border:1px solid rgba(255,255,255,0.25)}html.contrast.light .menu-items a{border:1px solid rgba(15,23,42,0.3)}</style></head>
 <body>
 
 <div class="nav-bar">
@@ -162,6 +162,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div><label>Имя профиля</label><div class="hint">Показывается в меню</div></div>
 <button class="set-btn" onclick="editName()" id="nameBtn">Изменить</button>
 </div>
+
+<div class="set-row"><div><label>Роль в классе</label><div class="hint">Учитель / Ученик / Для себя</div></div><span class="set-btn" id="roleBadge">—</span></div>
+<div class="set-row"><div><label>Удалить аккаунт</label><div class="hint">Очистить данные и выйти</div></div><button class="set-btn" style="color:#e5534b" onclick="clearData()">Удалить</button></div>
 </div>
 
 <div class="settings-page" id="page-appearance">
@@ -178,6 +181,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div><label>Крупный текст</label><div class="hint">Увеличить шрифты</div></div>
 <label class="toggle"><input type="checkbox" id="bigTextCheck" onchange="toggleBigText()"><span class="sli"></span></label>
 </div>
+
+<div class="set-row"><div><label>Уменьшить анимации</label><div class="hint">Меньше движения</div></div><label class="toggle"><input type="checkbox" id="prefAnim" onchange="setPref('anim',this.checked)"><span class="sli"></span></label></div>
+<div class="set-row"><div><label>Компактные карточки</label><div class="hint">Плотнее на главной</div></div><label class="toggle"><input type="checkbox" id="prefCompact" onchange="setPref('compact',this.checked)"><span class="sli"></span></label></div>
 </div>
 
 <div class="settings-page" id="page-custom">
@@ -208,6 +214,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <option value="4">4</option>
 </select>
 </div>
+
+<div class="set-row"><div><label>Скруглённость</label><div class="hint">Радиус карточек</div></div><select class="set-select" id="radiusSel" onchange="setRadius(this.value)"><option value="soft" selected>Мягкая</option><option value="sharp">Прямые</option><option value="round">Таблетки</option></select></div>
+<div class="set-row"><div><label>Контраст</label><div class="hint">Ярче границы и текст</div></div><label class="toggle"><input type="checkbox" id="prefContrast" onchange="setPref('contrast',this.checked)"><span class="sli"></span></label></div>
 </div>
 
 <div class="settings-page" id="page-notify">
@@ -220,6 +229,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div><label>Напоминания</label><div class="hint">Продолжай учиться</div></div>
 <button class="set-btn" onclick="toggleNotify('remind',this)">Вкл</button>
 </div>
+
+<div class="set-row"><div><label>Новый ученик в классе</label><div class="hint">Письмо учителю</div></div><button class="set-btn" onclick="toggleNotify('class',this)">Вкл</button></div>
+<div class="set-row"><div><label>Достижения</label><div class="hint">Когда проходят модули</div></div><button class="set-btn" onclick="toggleNotify('ach',this)">Вкл</button></div>
 </div>
 
 <div class="settings-page" id="page-language">
@@ -233,6 +245,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <option value="de">Deutsch</option>
 </select>
 </div>
+
+<div class="set-row"><label>Регион</label><select class="set-select"><option selected>Россия</option><option>Европа</option><option>Азия</option><option>Америка</option></select></div>
 </div>
 
 <div class="settings-page" id="page-security">
@@ -245,6 +259,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div><label>Сессии</label><div class="hint">Активные входы</div></div>
 <button class="set-btn sm" onclick="showSessions()">Показать</button>
 </div>
+
+<div class="set-row"><div><label>Выйти на всех устройствах</label><div class="hint">Сбросить сессии</div></div><button class="set-btn sm" onclick="location.reload()">Выйти</button></div>
 </div>
 
 <div class="settings-page" id="page-data">
@@ -257,6 +273,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div><label>Скачать данные</label><div class="hint">Экспорт в JSON</div></div>
 <button class="set-btn sm" onclick="downloadData()">Скачать</button>
 </div>
+
+<div class="set-row"><div><label>Сбросить настройки</label><div class="hint">Вернуть персонализацию</div></div><button class="set-btn sm" onclick="resetPrefs()">Сбросить</button></div>
 </div>
 
 <div class="settings-page" id="page-about">
@@ -265,6 +283,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <p>HarmoniumUIstudy v1.0 — интерактивное обучение программированию.</p><p>Python — твой первый язык программирования.</p>
 <p style="margin-top:6px;color:#64748b;font-size:10.5px">Сделано в России</p>
 </div>
+
+<p style="margin-top:8px;color:#64748b;font-size:10.5px">Python · C++ · GoLang · Все предметы<br>Версия: 1.2.0</p>
 </div>
 </div>
 </div>
@@ -581,6 +601,13 @@ function setMenuGreet(){var e=document.getElementById('menuGreet');if(e)e.textCo
 function setClassBtn(){var b=document.getElementById('classBtn');if(b)b.style.display=(localStorage.getItem('lingx_role')==='teacher')?'flex':'none'}
 function openClassPanel(){var m=document.getElementById('classModal');if(!m)return;m.classList.add('open');var info=document.getElementById('classInfo'),list=document.getElementById('classList');if(info)info.textContent='Загрузка...';if(list)list.innerHTML='';fetch((typeof API!=='undefined'?API:'/api')+'/teacher?token='+encodeURIComponent(token)).then(function(r){return r.json()}).then(function(d){if(d&&d.ok){if(info)info.textContent='Код класса: '+d.classCode+' · учеников: '+d.students.length;var cb=document.getElementById('classCount');if(cb)cb.textContent=d.students.length;if(list){if(!d.students.length){list.innerHTML='<div style="color:#94a3b8;font-size:13px;text-align:center;padding:14px">Пока учеников нет. Раздай код класса <b style="color:var(--accent)">'+(d.classCode||'')+'</b></div>'}else{list.innerHTML=d.students.map(function(s){var nm=s.name||s.email;return '<div class="class-row"><div class="class-av">'+(nm.charAt(0).toUpperCase())+'</div><span class="class-em">'+nm+' · '+s.email+'</span></div>'}).join('')}}}else{if(info)info.textContent='Ошибка загрузки'}}).catch(function(){if(info)info.textContent='Ошибка соединения'})}
 function closeClassPanel(){var m=document.getElementById('classModal');if(m)m.classList.remove('open')}
+
+function setPref(k,on){localStorage.setItem('lingx_'+k,on?'1':'0');applyPrefs()}
+function applyPrefs(){var h=document.documentElement;h.classList.toggle('no-anim',localStorage.getItem('lingx_anim')==='1');h.classList.toggle('compact',localStorage.getItem('lingx_compact')==='1');h.classList.toggle('contrast',localStorage.getItem('lingx_contrast')==='1');var a=document.getElementById('prefAnim'),cm=document.getElementById('prefCompact'),ct=document.getElementById('prefContrast');if(a)a.checked=localStorage.getItem('lingx_anim')==='1';if(cm)cm.checked=localStorage.getItem('lingx_compact')==='1';if(ct)ct.checked=localStorage.getItem('lingx_contrast')==='1';var r=document.getElementById('radiusSel');if(r){var v=localStorage.getItem('lingx_radius')||'soft';r.value=v;document.documentElement.style.setProperty('--card-radius',v==='sharp'?'6px':v==='round'?'40px':'22px')}}
+function setRadius(v){localStorage.setItem('lingx_radius',v);applyPrefs()}
+function resetPrefs(){if(!confirm('Сбросить настройки персонализации?'))return;localStorage.removeItem('lingx_anim');localStorage.removeItem('lingx_compact');localStorage.removeItem('lingx_contrast');localStorage.removeItem('lingx_radius');applyPrefs()}
+(function(){applyPrefs();var rb=document.getElementById('roleBadge');if(rb){var r=localStorage.getItem('lingx_role')||'';rb.textContent=r==='teacher'?'Учитель':r==='student'?'Ученик':r==='personal'?'Для себя':'—'}})();
+
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();if(e.key==='Enter'&&document.getElementById('loginModal').classList.contains('open'))stepLogin();});
 </script>
 <script>(function(){function $(id){return document.getElementById(id)}function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}var z=new Date(),s=null;try{s=JSON.parse(localStorage.getItem("lingx_streak")||"null")}catch(e){}(function(){if(!s||!s.last){localStorage.setItem("lingx_streak",JSON.stringify({last:iso(z),count:1}))}else{var y=new Date(z);y.setDate(y.getDate()-1);var c=s.count;importC="";if(s.last!==iso(z)){if(s.last===iso(y)){c++;s.last=iso(z)}else{c=1;s.last=iso(z)}}localStorage.setItem("lingx_streak",JSON.stringify({last:s.last,count:c}))}})();var vs=$("vStreak");try{var sc=JSON.parse(localStorage.getItem("lingx_streak")||"{}");if(vs)vs.textContent=sc.count||1}catch(e){if(vs)vs.textContent=1}var SUBJ={algebra:4,stats:2,geometry:2,russian:2,lit:2,physics:2,bio:2,geo:2,history:2,english:2,python:42},done=0,total=0;for(var k in SUBJ){total+=SUBJ[k];try{var p=JSON.parse(localStorage.getItem("sbj_"+k+"_progress")||"{}");for(var x in p){if(p[x])done++}}catch(e){}}var pct=total?Math.round(done/total*100):0,cl=CLASS=32;var vp=$("vProg");if(vp)vp.textContent=pct+"%";var vps=$("vProgSub");if(vps)vps.textContent="выполнено "+done+" из "+total;var CC=30,SCH=160,cRank=Math.max(1,Math.round(CC-pct/100*(CC-1))),sRank=Math.max(1,Math.round(SCH-pct/100*(SCH-1)));var vc=$("vClass");if(vc)vc.textContent=cRank;var vsh=$("vSchool");if(vsh)vsh.textContent=sRank;})();</script></body>

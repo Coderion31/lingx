@@ -113,7 +113,10 @@
       "lastLogin": "2026-09-26T19:49:22.244Z",
       "tokens": {
         "45ca8ad4fd9591463bab716ef18c8e51c49a97ea24981d24e5278ea656530a8e": 1793044162244
-      }
+      },
+      "role": "personal",
+      "classCode": "",
+      "className": ""
     }
   },
   "teacherCodes": {

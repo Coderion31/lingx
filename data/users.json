@@ -103,6 +103,15 @@
       "role": "student",
       "classCode": "7KT4XQ",
       "className": ""
+    },
+    "vanulkin.me@gmail.com": {
+      "email": "vanulkin.me@gmail.com",
+      "name": "vanulkin.me",
+      "verified": false,
+      "createdAt": "2026-09-26T19:48:30.303Z",
+      "progress": {},
+      "code": "292414",
+      "codeExpires": 1790452710303
     }
   },
   "teacherCodes": {

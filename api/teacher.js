@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
         if (pobj && typeof pobj === 'object') { Object.keys(pobj).forEach(function (t) { if (pobj[t]) done++; }); }
       });
       const pct = grandTotal ? Math.round(done / grandTotal * 100) : 0;
-      return { email: e, name: s.name || e, done: done, total: grandTotal, pct: pct };
+      return { email: e, name: s.name || e, done: done, total: grandTotal, pct: pct, progress: pr };
     });
 
     res.json({ ok: true, classCode: cc, className: (cls && cls.name) || '', teacher: (cls && cls.teacher) || null, students });

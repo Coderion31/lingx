@@ -287,7 +287,9 @@ renderSidebar();renderContent();
 
 function stats(){let t=0,d=0;LESSONS.forEach((l,li)=>l.tasks.forEach((x,ti)=>{t++;if(progress[li+'_'+ti])d++}));return{t,d}}
 function updateStats(){const{t,d}=stats();const el=document.getElementById('statsText');if(el)el.textContent=d+' / '+t;renderSidebar()}
-function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats()}
+function syncProgress(){var tok=localStorage.getItem('lingx_token');if(!tok)return;var pr={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('sbj_')===0&&k.indexOf('_progress')>0){try{pr[k.replace('_progress','')]=JSON.parse(localStorage.getItem(k))}catch(e){}}}}catch(e){}fetch((typeof API!=='undefined'&&API?API:'/api')+'/me',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:tok,progress:pr})}).catch(function(){})}
+(function(){setTimeout(syncProgress,1200)})();
+function markDone(li,ti){progress[li+'_'+ti]=true;localStorage.setItem(P+'_progress',JSON.stringify(progress));updateStats();syncProgress()}
 function renderSidebar(){const el=document.getElementById('lessonList');let h='';LESSONS.forEach((l,li)=>{const ld=l.tasks.filter((x,ti)=>progress[li+'_'+ti]).length;h+='<div class="lgrp"><div class="lgrp-hdr" onclick="toggleLesson('+li+')"><span class="arr '+(openLesson===li?'open':'')+'">▶</span>'+(li+1)+'. '+l.title+'<span class="cnt">'+ld+'/'+l.tasks.length+'</span></div><div class="lgrp-body '+(openLesson===li?'open':'')+'">';l.tasks.forEach((t,ti)=>{h+='<div class="ltask'+(li===curLesson&&ti===curTask?' active':'')+'" data-li="'+li+'" data-ti="'+ti+'" onclick="selectTask('+li+','+ti+')"><span class="dot'+(progress[li+'_'+ti]?' done':'')+'"></span>'+t.name+'</div>'});h+='</div></div>'});el.innerHTML=h}
 function isRevealed(li,ti){return revealed[li+'_'+ti]===true}
 function selectTask(li,ti){

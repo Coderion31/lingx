@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
       const email = findEmail(db, token);
       if (!email) return res.status(401).json({ error: 'Не авторизован' });
       const user = db.users[email];
-      user.progress = body.progress || {};
+      var np = body.progress || {};user.progress = user.progress || {};for(var k in np){user.progress[k]=np[k];}
       const { writeDb } = require('./_db');
       await writeDb(db);
       const safe = sanitize(user);

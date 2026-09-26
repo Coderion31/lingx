@@ -15,9 +15,18 @@ module.exports = async function handler(req, res) {
     const cc = u.classCode || '';
     const cls = (db.classes && db.classes[cc]) || null;
     const list = (cls && cls.students) || [];
+    const TOTALS = { sbj_algebra: 4, sbj_stats: 2, sbj_geometry: 2, sbj_russian: 2, sbj_lit: 2, sbj_physics: 2, sbj_bio: 2, sbj_geo: 2, sbj_history: 2, sbj_english: 2, sbj_python: 42, sbj_cpp: 18, sbj_go: 17 };
+    const grandTotal = Object.keys(TOTALS).reduce(function (a, k) { return a + TOTALS[k]; }, 0);
     const students = list.map(function (e) {
       const s = db.users[e] || {};
-      return { email: e, name: s.name || e };
+      const pr = s.progress || {};
+      let done = 0;
+      Object.keys(pr).forEach(function (sk) {
+        const pobj = pr[sk];
+        if (pobj && typeof pobj === 'object') { Object.keys(pobj).forEach(function (t) { if (pobj[t]) done++; }); }
+      });
+      const pct = grandTotal ? Math.round(done / grandTotal * 100) : 0;
+      return { email: e, name: s.name || e, done: done, total: grandTotal, pct: pct };
     });
 
     res.json({ ok: true, classCode: cc, className: (cls && cls.name) || '', teacher: (cls && cls.teacher) || null, students });

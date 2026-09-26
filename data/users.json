@@ -30,7 +30,29 @@
       "name": "serg035g",
       "verified": true,
       "createdAt": "2026-09-18T17:35:56.241Z",
-      "progress": {},
+      "progress": {
+        "sbj_algebra": {
+          "0_0": true,
+          "1_0": true
+        },
+        "sbj_cpp": {
+          "0_0": true
+        },
+        "sbj_russian": {
+          "0_0": true
+        },
+        "sbj_english": {
+          "0_0": true,
+          "0_1": true
+        },
+        "sbj_python": {
+          "0_0": true,
+          "12_2": true
+        },
+        "sbj_history": {
+          "0_0": true
+        }
+      },
       "lastLogin": "2026-09-25T18:45:03.667Z",
       "tokens": {
         "10493eac4c368e95729f462db6d67b56db270948826b1b419c6f3c0608799ee6": 1792344974878,
